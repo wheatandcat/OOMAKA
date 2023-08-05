@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.mini-logo-title {
+  font-size: 10px;
+}
+.logo-title {
+  letter-spacing: 0.8rem;
+}
