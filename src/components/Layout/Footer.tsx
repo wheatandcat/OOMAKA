@@ -1,7 +1,17 @@
 import * as React from "react";
 
 const Footer: React.FC = () => (
-  <div className="container gap-12 px-4 py-2">aaa</div>
+  <div className="footer-text container mx-auto gap-12 px-4 py-2 leading-3">
+    <div className="pb-1">
+      OOMAKAは1年間のスケジュールをざっくり書き出して、スケジュールを把握するwebサービスです。
+    </div>
+    <div className="pb-1">
+      タスク1つにつき10文字、1ヶ月5件まで登録できます。
+    </div>
+    <div>
+      ログインすると、過去のタスク閲覧や、スケジュールの限定公開ができるようになります。
+    </div>
+  </div>
 );
 
 export default Footer;
