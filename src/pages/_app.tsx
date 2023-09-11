@@ -5,6 +5,8 @@ import { api } from "~/utils/api";
 import Layout from "~/components/Layout/Layout";
 import "~/styles/globals.css";
 import { Noto_Sans_JP } from "@next/font/google";
+import "dayjs/locale/ja";
+import { DatesProvider } from "@mantine/dates";
 
 const notojp = Noto_Sans_JP({
   weight: ["400", "500", "800"],
@@ -17,13 +19,17 @@ const MyApp: AppType<{ session: Session | null }> = ({
   pageProps: { session, ...pageProps },
 }) => {
   return (
-    <SessionProvider session={session}>
-      <div className={notojp.className}>
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
-      </div>
-    </SessionProvider>
+    <DatesProvider
+      settings={{ locale: "ja", firstDayOfWeek: 0, weekendDays: [0] }}
+    >
+      <SessionProvider session={session}>
+        <div className={notojp.className}>
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </div>
+      </SessionProvider>
+    </DatesProvider>
   );
 };
 

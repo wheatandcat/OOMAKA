@@ -1,6 +1,9 @@
 import * as React from "react";
-import dayjs from "dayjs";
 import { Big_Shoulders_Text } from "@next/font/google";
+import { emoji } from "~/lib/emoji";
+import { DatePickerInput } from "@mantine/dates";
+import { Modal } from "@mantine/core";
+import InputItem from "./InputItem";
 
 const bigShoulders = Big_Shoulders_Text({
   weight: ["400", "500", "800"],
@@ -14,18 +17,23 @@ type Props = {
 
 const text = [
   {
+    emoji: "🎍",
     text: "マウス乗せるとメニュー",
   },
   {
+    emoji: "⛩️",
     text: "チェックマーク",
   },
   {
+    emoji: "🎌",
     text: "空きカラム",
   },
   {
+    emoji: "🌅",
     text: "土日祝は日付の色が",
   },
   {
+    emoji: "🍱",
     text: "日付選択ない時絵文字",
   },
 ];
@@ -49,7 +57,7 @@ const Items = (props: Props) => {
   const monthItem = [...(monthText[props.month - 1] ?? "")];
 
   return (
-    <div className="flex w-52">
+    <div className="flex px-10 sm:w-fit sm:px-0">
       <div>
         <div
           className={`text-4xl font-bold text-gray-300 ${bigShoulders.className}`}
@@ -62,21 +70,23 @@ const Items = (props: Props) => {
           ))}
         </div>
       </div>
-      <div className="py-2 pl-3 text-xs font-bold text-gray-600">
+      <div className="py-2 pl-3 text-base font-bold text-gray-600 sm:text-xs">
         {text.map((t) => (
-          <div key={t.text} className="border-b py-1 pr-2">
-            <span className="pr-2">1</span>
-            {t.text}
+          <div key={t.text} className="flex items-center">
+            <div className="relative block">
+              <span className="absolute top-1/2 w-12 -translate-y-1/2 transform sm:h-5 sm:w-8">
+                {t.emoji}
+              </span>
+              <input
+                type="text"
+                className="focus:border-b-1 w-scree block border-b border-gray-300 py-1 pl-7 outline-none focus:border-blue-500 sm:pl-5"
+                placeholder="タスクを入力"
+                value={t.text}
+              />
+            </div>
           </div>
         ))}
-        <div className="flex items-center justify-center">
-          <span>A</span>
-          <input
-            type="text"
-            className="block w-full border-b border-gray-300 py-1 pl-2 outline-none focus:border-b-2 focus:border-blue-500"
-            placeholder="タスクを入力"
-          />
-        </div>
+        <InputItem />
       </div>
     </div>
   );
