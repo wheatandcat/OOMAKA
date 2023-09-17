@@ -14,3 +14,13 @@
 .footer-text {
   font-size: 10px;
 }
+
+.input-item {
+  margin-bottom: 0.6rem;
+}
+
+@media screen and (min-width: 640px) {
+  .input-item {
+    margin-bottom: 0.1rem;
+  }
+}
