@@ -11,5 +11,8 @@
   // ファイル保存時、最終行以降の空行を削除する
   "files.trimFinalNewlines": true,
   // ファイル保存時、末尾の空白をトリミングする
-  "files.trimTrailingWhitespace": true
+  "files.trimTrailingWhitespace": true,
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
 }

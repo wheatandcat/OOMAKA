@@ -3,49 +3,16 @@ import Head from "next/head";
 import Period from "~/features/schedules/components/Period";
 import Items from "~/features/schedules/components/Items";
 import { api } from "~/utils/api";
-import dayjs from "dayjs";
-
-const items = [
-  {
-    month: 1,
-  },
-  {
-    month: 2,
-  },
-  {
-    month: 3,
-  },
-  {
-    month: 4,
-  },
-  {
-    month: 5,
-  },
-  {
-    month: 6,
-  },
-  {
-    month: 7,
-  },
-  {
-    month: 8,
-  },
-  {
-    month: 9,
-  },
-  {
-    month: 10,
-  },
-  {
-    month: 11,
-  },
-  {
-    month: 12,
-  },
-];
+import dayjs from "~/utils/dayjs";
+import { monthItems, getScheduleInMonth } from "~/utils/schedule";
 
 export default function Home() {
-  const hello = api.example.hello.useQuery({ text: "from tRPC" });
+  const hello = api.example.getAll.useQuery();
+  const schedules = api.schedule.fetch.useQuery({ urlId: "aaaa" });
+  const months = monthItems(
+    Number(dayjs().format("M")),
+    Number(dayjs().year())
+  );
 
   return (
     <>
@@ -62,11 +29,20 @@ export default function Home() {
           />
         </div>
         <div className="flex flex-col flex-nowrap items-center justify-center pt-10 sm:flex-row sm:flex-wrap sm:justify-start">
-          {items.map((item) => (
-            <div key={item.month} className="px-8 pb-8 sm:pb-16">
-              <Items month={item.month} />
+          {schedules.isLoading ? (
+            <div className="flex h-screen w-screen items-center justify-center">
+              loading...
             </div>
-          ))}
+          ) : (
+            months.map((item, index) => (
+              <div key={index} className="px-8 pb-8 sm:pb-16">
+                <Items
+                  date={item}
+                  defaultItems={getScheduleInMonth(item, schedules.data ?? [])}
+                />
+              </div>
+            ))
+          )}
         </div>
       </main>
     </>

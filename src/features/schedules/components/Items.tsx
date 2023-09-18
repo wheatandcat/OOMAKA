@@ -1,8 +1,8 @@
-import * as React from "react";
+import React, { useState, useCallback } from "react";
 import { Big_Shoulders_Text } from "@next/font/google";
-import { emoji } from "~/lib/emoji";
-import { DatePickerInput } from "@mantine/dates";
-import { Modal } from "@mantine/core";
+import { type Schedule } from "@prisma/client";
+import type dayjs from "~/utils/dayjs";
+import { api } from "~/utils/api";
 import InputItem from "./InputItem";
 
 const bigShoulders = Big_Shoulders_Text({
@@ -12,31 +12,9 @@ const bigShoulders = Big_Shoulders_Text({
 });
 
 type Props = {
-  month: number;
+  date: dayjs.Dayjs;
+  defaultItems: Schedule[];
 };
-
-const text = [
-  {
-    emoji: "🎍",
-    text: "マウス乗せるとメニュー",
-  },
-  {
-    emoji: "⛩️",
-    text: "チェックマーク",
-  },
-  {
-    emoji: "🎌",
-    text: "空きカラム",
-  },
-  {
-    emoji: "🌅",
-    text: "土日祝は日付の色が",
-  },
-  {
-    emoji: "🍱",
-    text: "日付選択ない時絵文字",
-  },
-];
 
 const monthText = [
   "JUN",
@@ -53,16 +31,41 @@ const monthText = [
   "DEC",
 ];
 
+const createArray = (length: number): number[] => {
+  return Array.from({ length }, (_, i) => i);
+};
+
 const Items = (props: Props) => {
-  const monthItem = [...(monthText[props.month - 1] ?? "")];
+  const [items, setItems] = useState(props.defaultItems ?? []);
+  const schedules = api.schedule.fetchInPeriod.useQuery(
+    {
+      urlId: "aaaa",
+      startDate: props.date.toDate(),
+      endDate: props.date.endOf("month").toDate(),
+    },
+    {
+      enabled: false,
+    }
+  );
+
+  const month = Number(props.date.format("M"));
+  const monthItem = [...(monthText[month - 1] ?? "")];
+
+  const onRefresh = useCallback(async () => {
+    const r = await schedules.refetch();
+    if (r.error) {
+      return;
+    }
+    setItems(r.data ?? []);
+  }, [schedules]);
 
   return (
     <div className="flex px-10 sm:w-fit sm:px-0">
       <div>
         <div
-          className={`text-4xl font-bold text-gray-300 ${bigShoulders.className}`}
+          className={`w-6 text-center text-4xl font-bold text-gray-300 ${bigShoulders.className}`}
         >
-          {props.month}
+          {month}
         </div>
         <div className="month-title text-center text-gray-300">
           {monthItem.map((m) => (
@@ -71,10 +74,42 @@ const Items = (props: Props) => {
         </div>
       </div>
       <div className="py-2 pl-3 text-base font-bold text-gray-600 sm:text-xs">
-        {text.map((t, index) => (
-          <InputItem key={index} emoji={t.emoji} value={t.text} />
+        {items.map((t, index) => (
+          <InputItem
+            key={index}
+            emoji={t.emoji ?? ""}
+            date={t.date}
+            value={t.text}
+            minDate={props.date}
+            maxDate={props.date.endOf("month")}
+            onRefresh={() => {
+              onRefresh().catch((error) => {
+                console.error(error);
+              });
+            }}
+          />
         ))}
-        <InputItem input />
+        <InputItem
+          input
+          minDate={props.date}
+          maxDate={props.date.endOf("month")}
+          onRefresh={() => {
+            onRefresh().catch((error) => {
+              console.error(error);
+            });
+          }}
+        />
+        {(() => {
+          if (items.length <= 4) {
+            const myArray = createArray(4 - items.length);
+            return myArray.map((_, index) => (
+              <div className="input-item border-b border-gray-300" key={index}>
+                <div className="relative block h-6" />
+              </div>
+            ));
+          }
+          return null;
+        })()}
       </div>
     </div>
   );

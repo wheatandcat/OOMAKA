@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "Schedule" ALTER COLUMN "day" DROP NOT NULL,
+ALTER COLUMN "emoji" DROP NOT NULL;
