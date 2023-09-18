@@ -74,9 +74,10 @@ const Items = (props: Props) => {
         </div>
       </div>
       <div className="py-2 pl-3 text-base font-bold text-gray-600 sm:text-xs">
-        {items.map((t, index) => (
+        {items.map((t) => (
           <InputItem
-            key={index}
+            key={t.id}
+            id={t.id}
             emoji={t.emoji ?? ""}
             date={t.date}
             value={t.text}

@@ -68,4 +68,44 @@ export const scheduleRouter = createTRPCRouter({
       });
       return schedule;
     }),
+  delete: publicProcedure
+    .input(
+      z.object({
+        id: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const schedule = await ctx.prisma.schedule.delete({
+        where: {
+          id: input.id,
+        },
+      });
+      return schedule;
+    }),
+  update: publicProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        urlId: z.string(),
+        day: z.number(),
+        date: z.date(),
+        emoji: z.string(),
+        text: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const schedule = await ctx.prisma.schedule.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          urlId: input.urlId,
+          day: input.day,
+          date: input.date,
+          emoji: input.emoji,
+          text: input.text,
+        },
+      });
+      return schedule;
+    }),
 });

@@ -28,7 +28,7 @@ export default function Home() {
             endDate={dayjs().add(1, "years").format()}
           />
         </div>
-        <div className="flex flex-col flex-nowrap items-center justify-center pt-10 sm:flex-row sm:flex-wrap sm:justify-start">
+        <div className="flex flex-col flex-nowrap justify-center pt-10 sm:flex-row sm:flex-wrap sm:justify-start">
           {schedules.isLoading ? (
             <div className="flex h-screen w-screen items-center justify-center">
               loading...

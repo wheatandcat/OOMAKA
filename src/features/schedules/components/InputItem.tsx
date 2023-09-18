@@ -18,6 +18,7 @@ type Props = {
 
 const InputItem = (props: Props) => {
   const [loading, setLoading] = useState(false);
+  const [isComposing, setIsComposing] = useState(false);
   const [value, setValue] = useState(props.value ?? "");
   const [isOpen, setIsOpen] = useState(false);
   const [date, setDate] = useState<DateValue | null>(props.date ?? null);
@@ -30,14 +31,30 @@ const InputItem = (props: Props) => {
       props.onRefresh();
     },
   });
+  const deleteMutation = api.schedule.delete.useMutation({
+    onError: (error) => {
+      console.log(error);
+    },
+    onSuccess: () => {
+      props.onRefresh();
+    },
+  });
+  const updateMutation = api.schedule.update.useMutation({
+    onError: (error) => {
+      console.log(error);
+    },
+    onSuccess: () => {
+      props.onRefresh();
+    },
+  });
 
   const onKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLInputElement>) => {
-      if (e.key === "Enter") {
+      if (e.key === "Enter" && !isComposing) {
         let emoji = "";
 
         if (date) {
-          emoji = "";
+          emoji = props.emoji ?? "";
         } else {
           if (!props.emoji) {
             const month = Number(dayjs().format("M")) - 1;
@@ -51,28 +68,65 @@ const InputItem = (props: Props) => {
         }
 
         if (value) {
-          const variables = {
-            urlId: "aaaa",
-            day: date ? date.getDate() : 99,
-            date: date ? date : dayjs(props.maxDate).toDate(),
-            emoji,
-            text: value,
-          };
-          createMutation.mutate(variables);
-          e.currentTarget.value = "";
-          setValue("");
-          setLoading(true);
+          if (props.id) {
+            const variables = {
+              id: props.id ?? "",
+              urlId: "aaaa",
+              day: date ? date.getDate() : 99,
+              date: date ? date : dayjs(props.maxDate).toDate(),
+              emoji,
+              text: value,
+            };
+            updateMutation.mutate(variables);
+          } else {
+            const variables = {
+              urlId: "aaaa",
+              day: date ? date.getDate() : 99,
+              date: date ? date : dayjs(props.maxDate).toDate(),
+              emoji,
+              text: value,
+            };
+
+            createMutation.mutate(variables);
+            e.currentTarget.value = "";
+            setValue("");
+            setDate(null);
+            setLoading(true);
+          }
+        } else {
+          // valueが空の場合は削除
+          if (props.id) {
+            const variables = {
+              id: props.id ?? "",
+            };
+            deleteMutation.mutate(variables);
+          }
         }
       }
     },
-    [createMutation, date, props.emoji, props.maxDate, value]
+    [
+      isComposing,
+      date,
+      value,
+      props.emoji,
+      props.maxDate,
+      props.id,
+      createMutation,
+      updateMutation,
+      deleteMutation,
+    ]
   );
+
+  const onRemoveDate = useCallback(() => {
+    setDate(null);
+    setIsOpen(false);
+  }, []);
 
   return (
     <div className="input-item flex items-center">
       <div className="relative block h-6">
         <span
-          className="absolute top-1/2 h-4 w-8 -translate-y-1/2 transform cursor-pointer"
+          className="absolute top-1/2 h-4 w-4 -translate-y-1/2 transform cursor-pointer rounded text-center hover:bg-blue-100"
           onClick={() => setIsOpen(true)}
         >
           {(() => {
@@ -88,7 +142,7 @@ const InputItem = (props: Props) => {
           })()}
         </span>
         <Modal opened={isOpen} onClose={() => setIsOpen(false)}>
-          <div className="mb-5 flex items-center justify-center">
+          <div className="mb-5 flex flex-col items-center justify-center">
             <DatePicker
               value={date}
               onChange={(value) => {
@@ -99,6 +153,13 @@ const InputItem = (props: Props) => {
               minDate={props.minDate.toDate()}
               maxDate={props.maxDate.toDate()}
             />
+            <br />
+            <button
+              className="rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
+              onClick={onRemoveDate}
+            >
+              日付を解除
+            </button>
           </div>
         </Modal>
 
@@ -108,6 +169,8 @@ const InputItem = (props: Props) => {
           placeholder="タスクを入力"
           defaultValue={value}
           onChange={(e) => setValue(e.currentTarget.value)}
+          onCompositionStart={() => setIsComposing(true)}
+          onCompositionEnd={() => setIsComposing(false)}
           onKeyDown={onKeyDown}
           maxLength={10}
           disabled={loading}
