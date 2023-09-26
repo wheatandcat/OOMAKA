@@ -47,6 +47,28 @@ CREATE TABLE "User" (
 );
 
 -- CreateTable
+CREATE TABLE "Url" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT,
+
+    CONSTRAINT "Url_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Schedule" (
+    "id" TEXT NOT NULL,
+    "urlId" TEXT NOT NULL,
+    "date" TIMESTAMP(3) NOT NULL,
+    "day" INTEGER,
+    "emoji" VARCHAR(5),
+    "text" VARCHAR(10) NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "Schedule_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "VerificationToken" (
     "identifier" TEXT NOT NULL,
     "token" TEXT NOT NULL,
@@ -63,6 +85,9 @@ CREATE UNIQUE INDEX "Session_sessionToken_key" ON "Session"("sessionToken");
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- CreateIndex
+CREATE INDEX "Schedule_urlId_date_day_idx" ON "Schedule"("urlId", "date", "day");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "VerificationToken_token_key" ON "VerificationToken"("token");
 
 -- CreateIndex
@@ -73,3 +98,6 @@ ALTER TABLE "Account" ADD CONSTRAINT "Account_userId_fkey" FOREIGN KEY ("userId"
 
 -- AddForeignKey
 ALTER TABLE "Session" ADD CONSTRAINT "Session_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Schedule" ADD CONSTRAINT "Schedule_urlId_fkey" FOREIGN KEY ("urlId") REFERENCES "Url"("id") ON DELETE CASCADE ON UPDATE CASCADE;

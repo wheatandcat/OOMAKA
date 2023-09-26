@@ -1,5 +1,6 @@
 import { signIn, signOut, useSession } from "next-auth/react";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import Period from "~/features/schedules/components/Period";
 import Items from "~/features/schedules/components/Items";
 import { api } from "~/utils/api";
@@ -7,8 +8,10 @@ import dayjs from "~/utils/dayjs";
 import { monthItems, getScheduleInMonth } from "~/utils/schedule";
 
 export default function Home() {
-  const hello = api.example.getAll.useQuery();
-  const schedules = api.schedule.fetch.useQuery({ urlId: "aaaa" });
+  const router = useRouter();
+  const { id } = router.query;
+
+  const schedules = api.schedule.fetch.useQuery({ urlId: String(id) });
   const months = monthItems(
     Number(dayjs().format("M")),
     Number(dayjs().year())
@@ -37,6 +40,7 @@ export default function Home() {
             months.map((item, index) => (
               <div key={index} className="px-8 pb-8 sm:pb-16">
                 <Items
+                  urlId={String(id)}
                   date={item}
                   defaultItems={getScheduleInMonth(item, schedules.data ?? [])}
                 />

@@ -12,6 +12,7 @@ const bigShoulders = Big_Shoulders_Text({
 });
 
 type Props = {
+  urlId: string;
   date: dayjs.Dayjs;
   defaultItems: Schedule[];
 };
@@ -39,7 +40,7 @@ const Items = (props: Props) => {
   const [items, setItems] = useState(props.defaultItems ?? []);
   const schedules = api.schedule.fetchInPeriod.useQuery(
     {
-      urlId: "aaaa",
+      urlId: props.urlId,
       startDate: props.date.toDate(),
       endDate: props.date.endOf("month").toDate(),
     },
@@ -77,6 +78,7 @@ const Items = (props: Props) => {
         {items.map((t) => (
           <InputItem
             key={t.id}
+            urlId={props.urlId}
             id={t.id}
             emoji={t.emoji ?? ""}
             date={t.date}
@@ -92,6 +94,7 @@ const Items = (props: Props) => {
         ))}
         <InputItem
           input
+          urlId={props.urlId}
           minDate={props.date}
           maxDate={props.date.endOf("month")}
           onRefresh={() => {

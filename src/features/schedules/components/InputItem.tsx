@@ -6,6 +6,7 @@ import dayjs from "~/utils/dayjs";
 import { emojiList } from "~/utils/emoji";
 
 type Props = {
+  urlId: string;
   id?: string;
   date?: DateValue;
   emoji?: string;
@@ -58,7 +59,6 @@ const InputItem = (props: Props) => {
         } else {
           if (!props.emoji) {
             const month = Number(dayjs().format("M")) - 1;
-            console.log(month);
             const items = emojiList[month] ?? [];
             const index = Math.floor(Math.random() * items.length);
             emoji = items[index] ?? "";
@@ -71,7 +71,7 @@ const InputItem = (props: Props) => {
           if (props.id) {
             const variables = {
               id: props.id ?? "",
-              urlId: "aaaa",
+              urlId: props.urlId,
               day: date ? date.getDate() : 99,
               date: date ? date : dayjs(props.maxDate).toDate(),
               emoji,
@@ -80,7 +80,7 @@ const InputItem = (props: Props) => {
             updateMutation.mutate(variables);
           } else {
             const variables = {
-              urlId: "aaaa",
+              urlId: props.urlId,
               day: date ? date.getDate() : 99,
               date: date ? date : dayjs(props.maxDate).toDate(),
               emoji,
@@ -111,6 +111,7 @@ const InputItem = (props: Props) => {
       props.emoji,
       props.maxDate,
       props.id,
+      props.urlId,
       createMutation,
       updateMutation,
       deleteMutation,
@@ -118,6 +119,18 @@ const InputItem = (props: Props) => {
   );
 
   const onRemoveDate = useCallback(() => {
+    if (props.id) {
+      const variables = {
+        id: props.id ?? "",
+        urlId: props.urlId,
+        day: date ? date.getDate() : 99,
+        date: date ? date : dayjs(props.maxDate).toDate(),
+        emoji,
+        text: value,
+      };
+      updateMutation.mutate(variables);
+    }
+
     setDate(null);
     setIsOpen(false);
   }, []);
