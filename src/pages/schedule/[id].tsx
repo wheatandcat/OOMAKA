@@ -1,5 +1,5 @@
-import { signIn, signOut, useSession } from "next-auth/react";
 import Head from "next/head";
+import { useEffect } from "react";
 import { useRouter } from "next/router";
 import Period from "~/features/schedules/components/Period";
 import Items from "~/features/schedules/components/Items";
@@ -10,6 +10,15 @@ import { monthItems, getScheduleInMonth } from "~/utils/schedule";
 export default function Home() {
   const router = useRouter();
   const { id } = router.query;
+
+  const url = api.url.exists.useQuery({ id: String(id) });
+
+  useEffect(() => {
+    if (url.data === false) {
+      // 存在しないURLの場合はトップページに戻す
+      void router.push(`/`);
+    }
+  }, [url.data, router]);
 
   const schedules = api.schedule.fetch.useQuery({ urlId: String(id) });
   const months = monthItems(

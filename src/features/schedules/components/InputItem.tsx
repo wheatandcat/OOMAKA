@@ -3,7 +3,7 @@ import { DatePicker, type DateValue } from "@mantine/dates";
 import { Modal } from "@mantine/core";
 import { api } from "~/utils/api";
 import dayjs from "~/utils/dayjs";
-import { emojiList } from "~/utils/emoji";
+import { getEmoji } from "~/utils/emoji";
 
 type Props = {
   urlId: string;
@@ -49,73 +49,79 @@ const InputItem = (props: Props) => {
     },
   });
 
+  const save = useCallback(() => {
+    let emoji = "";
+
+    if (date) {
+      emoji = props.emoji ?? "";
+    } else {
+      if (!props.emoji) {
+        emoji = getEmoji(props.minDate);
+      } else {
+        emoji = props.emoji ?? "";
+      }
+    }
+
+    if (value) {
+      if (props.id) {
+        const variables = {
+          id: props.id ?? "",
+          urlId: props.urlId,
+          day: date ? date.getDate() : 99,
+          date: date ? date : dayjs(props.maxDate).toDate(),
+          emoji,
+          text: value,
+        };
+        updateMutation.mutate(variables);
+        return "update";
+      } else {
+        const variables = {
+          urlId: props.urlId,
+          day: date ? date.getDate() : 99,
+          date: date ? date : dayjs(props.maxDate).toDate(),
+          emoji,
+          text: value,
+        };
+
+        createMutation.mutate(variables);
+
+        setValue("");
+        setDate(null);
+        setLoading(true);
+        return "new";
+      }
+    } else {
+      // valueが空の場合は削除
+      if (props.id) {
+        const variables = {
+          id: props.id ?? "",
+        };
+        deleteMutation.mutate(variables);
+        return "delete";
+      }
+    }
+  }, [
+    date,
+    value,
+    props.emoji,
+    props.minDate,
+    props.id,
+    props.urlId,
+    props.maxDate,
+    updateMutation,
+    createMutation,
+    deleteMutation,
+  ]);
+
   const onKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLInputElement>) => {
       if (e.key === "Enter" && !isComposing) {
-        let emoji = "";
-
-        if (date) {
-          emoji = props.emoji ?? "";
-        } else {
-          if (!props.emoji) {
-            const month = Number(dayjs().format("M")) - 1;
-            const items = emojiList[month] ?? [];
-            const index = Math.floor(Math.random() * items.length);
-            emoji = items[index] ?? "";
-          } else {
-            emoji = props.emoji ?? "";
-          }
-        }
-
-        if (value) {
-          if (props.id) {
-            const variables = {
-              id: props.id ?? "",
-              urlId: props.urlId,
-              day: date ? date.getDate() : 99,
-              date: date ? date : dayjs(props.maxDate).toDate(),
-              emoji,
-              text: value,
-            };
-            updateMutation.mutate(variables);
-          } else {
-            const variables = {
-              urlId: props.urlId,
-              day: date ? date.getDate() : 99,
-              date: date ? date : dayjs(props.maxDate).toDate(),
-              emoji,
-              text: value,
-            };
-
-            createMutation.mutate(variables);
-            e.currentTarget.value = "";
-            setValue("");
-            setDate(null);
-            setLoading(true);
-          }
-        } else {
-          // valueが空の場合は削除
-          if (props.id) {
-            const variables = {
-              id: props.id ?? "",
-            };
-            deleteMutation.mutate(variables);
-          }
+        if (save() === "new") {
+          e.currentTarget.value = "";
         }
       }
     },
-    [
-      isComposing,
-      date,
-      value,
-      props.emoji,
-      props.maxDate,
-      props.id,
-      props.urlId,
-      createMutation,
-      updateMutation,
-      deleteMutation,
-    ]
+    [isComposing, save]
   );
 
   const onRemoveDate = useCallback(() => {
@@ -123,9 +129,9 @@ const InputItem = (props: Props) => {
       const variables = {
         id: props.id ?? "",
         urlId: props.urlId,
-        day: date ? date.getDate() : 99,
-        date: date ? date : dayjs(props.maxDate).toDate(),
-        emoji,
+        day: 99,
+        date: dayjs(props.maxDate).toDate(),
+        emoji: getEmoji(props.minDate),
         text: value,
       };
       updateMutation.mutate(variables);
@@ -133,7 +139,35 @@ const InputItem = (props: Props) => {
 
     setDate(null);
     setIsOpen(false);
-  }, []);
+  }, [
+    value,
+    props.id,
+    props.urlId,
+    props.minDate,
+    props.maxDate,
+    updateMutation,
+  ]);
+
+  const onChangeDate = useCallback(
+    (tDate: DateValue) => {
+      if (props.id) {
+        const variables = {
+          id: props.id ?? "",
+          urlId: props.urlId,
+          day: tDate?.getDate?.() ?? 99,
+          date: tDate ?? dayjs(props.maxDate).toDate(),
+          emoji: "",
+          text: value,
+        };
+        console.log(variables);
+        updateMutation.mutate(variables);
+      }
+
+      setDate(tDate);
+      setIsOpen(false);
+    },
+    [value, props.id, props.urlId, props.maxDate, updateMutation]
+  );
 
   return (
     <div className="input-item flex items-center">
@@ -158,10 +192,7 @@ const InputItem = (props: Props) => {
           <div className="mb-5 flex flex-col items-center justify-center">
             <DatePicker
               value={date}
-              onChange={(value) => {
-                setDate(value);
-                setIsOpen(false);
-              }}
+              onChange={onChangeDate}
               defaultDate={props.minDate.toDate()}
               minDate={props.minDate.toDate()}
               maxDate={props.maxDate.toDate()}

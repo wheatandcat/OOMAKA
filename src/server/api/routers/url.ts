@@ -18,4 +18,18 @@ export const urlRouter = createTRPCRouter({
       });
       return urlItem;
     }),
+  exists: publicProcedure
+    .input(
+      z.object({
+        id: z.string(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const urlItem = await ctx.prisma.url.findUnique({
+        where: {
+          id: input.id,
+        },
+      });
+      return urlItem !== null;
+    }),
 });
