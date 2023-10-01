@@ -14,6 +14,9 @@ export default function Home() {
 
   const url = api.url.exists.useQuery({ id: String(id) });
 
+  const test = api.url.test.useQuery();
+  console.log("test:", test);
+
   useEffect(() => {
     if (url.data === false) {
       // 存在しないURLの場合はトップページに戻す

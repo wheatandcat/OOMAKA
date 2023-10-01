@@ -32,4 +32,22 @@ export const urlRouter = createTRPCRouter({
       });
       return urlItem !== null;
     }),
+  existsByUserId: publicProcedure
+    .input(
+      z.object({
+        userId: z.string(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const urlItem = await ctx.prisma.url.findFirst({
+        where: {
+          userId: input.userId,
+        },
+      });
+
+      return urlItem;
+    }),
+  test: publicProcedure.query(() => {
+    return "test";
+  }),
 });

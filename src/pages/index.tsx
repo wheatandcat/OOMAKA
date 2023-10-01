@@ -1,4 +1,4 @@
-import { signIn, useSession } from "next-auth/react";
+import { signIn, signOut, useSession } from "next-auth/react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { api } from "~/utils/api";
@@ -9,12 +9,21 @@ export default function Home() {
   const { data: sessionData } = useSession();
   const router = useRouter();
   const { value, setValueAndStorage } = useLocalStorage("URL_ID");
+  const url = api.url.existsByUserId.useQuery({
+    userId: String(sessionData?.user?.id),
+  });
 
   useEffect(() => {
     if (value) {
       void router.push(`/schedule/${value}`);
     }
   }, [value, router]);
+
+  useEffect(() => {
+    if (sessionData) {
+      void url.refetch();
+    }
+  }, [sessionData, setValueAndStorage, url]);
 
   const createMutation = api.url.create.useMutation({
     onError: (error) => {
@@ -52,19 +61,21 @@ export default function Home() {
               >
                 新しいカレンダーを作る
               </button>
-              <button
-                className="my-3 w-72 rounded-full bg-blue-500 px-10 py-3  font-semibold text-white no-underline transition hover:bg-blue-300"
-                onClick={() => void signIn()}
-              >
-                新規アカウントを作る
-              </button>
-
-              {sessionData && (
+              <br />
+              {!sessionData && (
                 <button
                   className="my-3 w-72 rounded-full bg-blue-500 px-10 py-3  font-semibold text-white no-underline transition hover:bg-blue-300"
                   onClick={() => void signIn()}
                 >
-                  ログイン
+                  新規アカウントを作る
+                </button>
+              )}
+              {sessionData && (
+                <button
+                  className="w-72 rounded-full bg-red-500 px-10 py-3  font-semibold text-white no-underline transition hover:bg-red-300"
+                  onClick={() => void signOut()}
+                >
+                  ログアウト
                 </button>
               )}
             </div>
