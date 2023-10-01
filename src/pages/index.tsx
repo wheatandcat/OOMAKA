@@ -3,9 +3,11 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { api } from "~/utils/api";
 import useLocalStorage from "~/hooks/useLocalStorage";
-import { useEffect } from "react";
+import { useEffect, useCallback, memo } from "react";
 
-export default function Home() {
+let login = false;
+
+function Home() {
   const { data: sessionData } = useSession();
   const router = useRouter();
   const { value, setValueAndStorage } = useLocalStorage("URL_ID");
@@ -14,16 +16,10 @@ export default function Home() {
   });
 
   useEffect(() => {
-    if (value) {
+    if (value && value !== "") {
       void router.push(`/schedule/${value}`);
     }
   }, [value, router]);
-
-  useEffect(() => {
-    if (sessionData) {
-      void url.refetch();
-    }
-  }, [sessionData, setValueAndStorage, url]);
 
   const createMutation = api.url.create.useMutation({
     onError: (error) => {
@@ -35,9 +31,26 @@ export default function Home() {
     },
   });
 
-  const onCreateURL = () => {
+  const onLogIn = useCallback(async () => {
+    const res = await url.refetch();
+    if (res.data) {
+      setValueAndStorage(res.data.id);
+      await router.push(`/schedule/${res.data.id}`);
+    } else {
+      createMutation.mutate({ userId: String(sessionData?.user?.id) });
+    }
+  }, [createMutation, router, sessionData?.user?.id, setValueAndStorage, url]);
+
+  useEffect(() => {
+    if (sessionData && !login) {
+      login = true;
+      void onLogIn();
+    }
+  }, [onLogIn, sessionData, setValueAndStorage, url]);
+
+  const onCreateURL = useCallback(() => {
     createMutation.mutate({ userId: "" });
-  };
+  }, [createMutation]);
 
   return (
     <>
@@ -67,7 +80,7 @@ export default function Home() {
                   className="my-3 w-72 rounded-full bg-blue-500 px-10 py-3  font-semibold text-white no-underline transition hover:bg-blue-300"
                   onClick={() => void signIn()}
                 >
-                  新規アカウントを作る
+                  ログイン
                 </button>
               )}
               {sessionData && (
@@ -85,3 +98,5 @@ export default function Home() {
     </>
   );
 }
+
+export default memo(Home);
