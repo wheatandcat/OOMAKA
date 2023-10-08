@@ -1,4 +1,5 @@
 import React, { memo } from "react";
+import { JpZodiac } from "~/utils/emoji";
 import dayjs from "dayjs";
 
 type Props = {
@@ -14,13 +15,14 @@ const Period = (props: Props) => (
         .format(new Date(props.startDate))
         .split("/")[0]
     }
-    年🐰 〜 {dayjs(props.endDate).year()}/{" "}
+    年{JpZodiac[(dayjs(props.startDate).year() + 8) % 12]} 〜{" "}
+    {dayjs(props.endDate).year()}/{" "}
     {
       new Intl.DateTimeFormat("ja-JP-u-ca-japanese", { era: "long" })
         .format(new Date(props.endDate))
         .split("/")[0]
     }
-    年🐲
+    年{JpZodiac[(dayjs(props.endDate).year() + 8) % 12]}
   </div>
 );
 

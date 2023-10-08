@@ -12,7 +12,7 @@ export const emojiList = [
   ["🎑", "🍁", "🍂", "🐞"],
   ["😈", "🎃", "💀", "👻"],
   ["🐈", "🚀", "🐕", "✌️", "💎"],
-  ["🎄", "⭐️", "🍪", "🌟", "🎅", "🎁"],
+                                                                                                                ["🎄", "⭐️", "🍪", "🌟", "🎅", "🎁"],
 ];
 
 export const getEmoji = (date: dayjs.Dayjs) => {
@@ -21,3 +21,18 @@ export const getEmoji = (date: dayjs.Dayjs) => {
   const index = Math.floor(Math.random() * items.length);
   return items[index] ?? "";
 };
+
+export const JpZodiac = [
+  "🐭",
+  "🐮",
+  "🐯",
+  "🐰",
+  "🐲",
+  "🐍",
+  "🐴",
+  "🐑",
+  "🐵",
+  "🐔",
+  "🐶",
+  "🐗",
+];
