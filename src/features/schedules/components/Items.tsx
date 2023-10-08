@@ -1,10 +1,11 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { memo, useState, useCallback, useEffect } from "react";
 import { Big_Shoulders_Text } from "@next/font/google";
 import { type Schedule } from "@prisma/client";
 import type dayjs from "~/utils/dayjs";
 import { api } from "~/utils/api";
-import InputItem from "./InputItem";
 import usePrevious from "~/hooks/usePrevious";
+import InputItem from "./InputItem";
+import ShareItem from "./ShareItem";
 
 const bigShoulders = Big_Shoulders_Text({
   weight: ["400", "500", "800"],
@@ -16,6 +17,7 @@ type Props = {
   urlId: string;
   date: dayjs.Dayjs;
   defaultItems: Schedule[];
+  share?: boolean;
 };
 
 const monthText = [
@@ -81,14 +83,42 @@ const Items = (props: Props) => {
         </div>
       </div>
       <div className="w-4/5 py-2 pl-3 text-base font-bold text-gray-600 sm:w-fit sm:text-xs">
-        {items.map((t) => (
+        {items.map((t) => {
+          if (props.share) {
+            return (
+              <ShareItem
+                key={t.id}
+                date={t.date}
+                emoji={t.emoji ?? ""}
+                value={t.text}
+              />
+            );
+          }
+
+          return (
+            <InputItem
+              key={t.id}
+              urlId={props.urlId}
+              id={t.id}
+              emoji={t.emoji ?? ""}
+              date={t.date}
+              value={t.text}
+              minDate={props.date}
+              maxDate={props.date.endOf("month")}
+              onRefresh={() => {
+                onRefresh().catch((error) => {
+                  console.error(error);
+                });
+              }}
+            />
+          );
+        })}
+
+        {props.share ? (
+          <ShareItem noEmoji />
+        ) : (
           <InputItem
-            key={t.id}
             urlId={props.urlId}
-            id={t.id}
-            emoji={t.emoji ?? ""}
-            date={t.date}
-            value={t.text}
             minDate={props.date}
             maxDate={props.date.endOf("month")}
             onRefresh={() => {
@@ -97,24 +127,14 @@ const Items = (props: Props) => {
               });
             }}
           />
-        ))}
-        <InputItem
-          input
-          urlId={props.urlId}
-          minDate={props.date}
-          maxDate={props.date.endOf("month")}
-          onRefresh={() => {
-            onRefresh().catch((error) => {
-              console.error(error);
-            });
-          }}
-        />
+        )}
+
         {(() => {
           if (items.length <= 4) {
             const myArray = createArray(4 - items.length);
             return myArray.map((_, index) => (
               <div className="input-item border-b border-gray-300" key={index}>
-                <div className="relative block h-6" />
+                <div className="h-6" />
               </div>
             ));
           }
@@ -125,4 +145,4 @@ const Items = (props: Props) => {
   );
 };
 
-export default React.memo(Items);
+export default memo(Items);

@@ -41,6 +41,10 @@ function Schedule() {
     await router.push("/");
   }, [router]);
 
+  const copyToClipboard = useCallback(async () => {
+    await global.navigator.clipboard.writeText(`${window.location.href}/share`);
+  }, []);
+
   return (
     <>
       <Head>
@@ -49,13 +53,16 @@ function Schedule() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="container  mx-auto max-w-screen-xl gap-12 pt-3">
-        <div className="absolute right-24 top-0 hidden sm:block">
-          <div className="flex w-14 cursor-pointer flex-col items-center pt-3 text-xl hover:bg-blue-100">
+        <div className="absolute right-28 top-0 hidden sm:block">
+          <div
+            className="flex w-14 cursor-pointer flex-col items-center pt-3 text-xl hover:bg-blue-100"
+            onClick={() => void copyToClipboard()}
+          >
             🔗
             <div className="text-xxs text-center text-gray-500">シェア</div>
           </div>
         </div>
-        <div className="absolute right-12 top-0 hidden sm:block">
+        <div className="absolute right-14 top-0 hidden sm:block">
           <div className="flex w-14 cursor-pointer flex-col items-center pt-3 text-xl hover:bg-blue-100">
             🖨️
             <div className="text-xxs text-center text-gray-500">印刷</div>

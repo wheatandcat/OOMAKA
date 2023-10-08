@@ -11,7 +11,6 @@ type Props = {
   date?: DateValue;
   emoji?: string;
   value?: string;
-  input?: boolean;
   maxDate: dayjs.Dayjs;
   minDate: dayjs.Dayjs;
   onRefresh: () => void;
