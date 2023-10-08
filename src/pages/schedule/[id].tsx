@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { signIn, signOut } from "next-auth/react";
+import { signIn, signOut, useSession } from "next-auth/react";
 import { useEffect, useCallback, memo } from "react";
 import { useRouter } from "next/router";
 import Period from "~/features/schedules/components/Period";
@@ -7,20 +7,17 @@ import Items from "~/features/schedules/components/Items";
 import { api } from "~/utils/api";
 import dayjs from "~/utils/dayjs";
 import { monthItems, getScheduleInMonth } from "~/utils/schedule";
-import useLocalStorage from "~/hooks/useLocalStorage";
-
-const sessionData = true;
 
 function Schedule() {
+  const { data: sessionData } = useSession();
   const router = useRouter();
   const { id } = router.query;
-  const { setValueAndStorage } = useLocalStorage("URL_ID");
   const url = api.url.exists.useQuery({ id: String(id) });
 
   useEffect(() => {
     if (url.data === false) {
       // 存在しないURLの場合はトップページに戻す
-      void router.push(`/`);
+      void router.push("/");
     }
   }, [url.data, router]);
 
@@ -31,10 +28,16 @@ function Schedule() {
   );
 
   const onLogout = useCallback(async () => {
-    await signOut();
-    setValueAndStorage("");
-    void router.push(`/`);
-  }, [router, setValueAndStorage]);
+    window.localStorage.setItem("URL_ID", "");
+    await signOut({
+      callbackUrl: "/",
+    });
+  }, []);
+
+  const onToIndex = useCallback(async () => {
+    window.localStorage.setItem("URL_ID", "");
+    await router.push("/");
+  }, [router]);
 
   return (
     <>
@@ -61,7 +64,9 @@ function Schedule() {
           if (sessionData) {
             void onLogout();
           } else {
-            void signIn();
+            void signIn("credentials", {
+              callbackUrl: "/",
+            });
           }
         }}
       >
@@ -95,6 +100,25 @@ function Schedule() {
                 />
               </div>
             ))
+          )}
+        </div>
+        <div className="mb-10 flex justify-center">
+          {sessionData ? (
+            <button
+              type="button"
+              className="mb-1 mr-1 rounded-md border border-red-700 px-5 py-2.5 text-center text-sm font-medium text-red-700 hover:bg-red-800 hover:text-white focus:outline-none focus:ring-2 focus:ring-red-300 dark:border-red-500 dark:text-red-500 dark:hover:bg-red-500 dark:hover:text-white dark:focus:ring-red-800"
+              onClick={() => void onLogout()}
+            >
+              ログアウト
+            </button>
+          ) : (
+            <button
+              type="button"
+              className="mb-1 mr-1 rounded-md border border-gray-700 px-5 py-2.5 text-center text-sm font-medium text-blue-700 hover:bg-blue-800 hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-300 dark:border-gray-500 dark:text-gray-500 dark:hover:bg-gray-500 dark:hover:text-white dark:focus:ring-gray-800"
+              onClick={() => void onToIndex()}
+            >
+              トップページに戻る
+            </button>
           )}
         </div>
       </main>

@@ -38,16 +38,11 @@ const createArray = (length: number): number[] => {
 
 const Items = (props: Props) => {
   const [items, setItems] = useState(props.defaultItems ?? []);
-  const schedules = api.schedule.fetchInPeriod.useQuery(
-    {
-      urlId: props.urlId,
-      startDate: props.date.toDate(),
-      endDate: props.date.endOf("month").toDate(),
-    },
-    {
-      enabled: false,
-    }
-  );
+  const schedules = api.schedule.fetchInPeriod.useQuery({
+    urlId: props.urlId,
+    startDate: props.date.toDate(),
+    endDate: props.date.endOf("month").toDate(),
+  });
 
   const month = Number(props.date.format("M"));
   const monthItem = [...(monthText[month - 1] ?? "")];

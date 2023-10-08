@@ -2,7 +2,6 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { api } from "~/utils/api";
-import useLocalStorage from "~/hooks/useLocalStorage";
 import { useEffect, useCallback, memo } from "react";
 
 let login = false;
@@ -10,23 +9,32 @@ let login = false;
 function Home() {
   const { data: sessionData } = useSession();
   const router = useRouter();
-  const { value, setValueAndStorage } = useLocalStorage("URL_ID");
-  const url = api.url.existsByUserId.useQuery({
-    userId: String(sessionData?.user?.id),
-  });
+  const url = api.url.existsByUserId.useQuery(
+    {
+      userId: String(sessionData?.user?.id),
+    },
+    {
+      enabled: !!sessionData?.user?.id,
+    }
+  );
 
   useEffect(() => {
-    if (value && value !== "") {
-      void router.push(`/schedule/${value}`);
-    }
-  }, [value, router]);
+    const check = async () => {
+      const res: string | null = window.localStorage.getItem("URL_ID");
+      if (res) {
+        await router.push(`/schedule/${res}`);
+      }
+    };
+
+    void check();
+  }, [router]);
 
   const createMutation = api.url.create.useMutation({
     onError: (error) => {
       console.log(error);
     },
     onSuccess: async (data) => {
-      setValueAndStorage(data.id);
+      window.localStorage.setItem("URL_ID", data.id);
       await router.push(`/schedule/${data.id}`);
     },
   });
@@ -34,23 +42,27 @@ function Home() {
   const onLogIn = useCallback(async () => {
     const res = await url.refetch();
     if (res.data) {
-      setValueAndStorage(res.data.id);
+      window.localStorage.setItem("URL_ID", res.data.id);
       await router.push(`/schedule/${res.data.id}`);
     } else {
       createMutation.mutate({ userId: String(sessionData?.user?.id) });
     }
-  }, [createMutation, router, sessionData?.user?.id, setValueAndStorage, url]);
+  }, [createMutation, router, sessionData?.user?.id, url]);
 
   useEffect(() => {
     if (sessionData && !login) {
       login = true;
       void onLogIn();
     }
-  }, [onLogIn, sessionData, setValueAndStorage, url]);
+  }, [onLogIn, sessionData]);
 
   const onCreateURL = useCallback(() => {
     createMutation.mutate({ userId: "" });
   }, [createMutation]);
+
+  if (sessionData?.user?.id) {
+    return null;
+  }
 
   return (
     <>

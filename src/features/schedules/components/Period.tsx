@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { memo } from "react";
 import dayjs from "dayjs";
 
 type Props = {
@@ -24,4 +24,4 @@ const Period = (props: Props) => (
   </div>
 );
 
-export default Period;
+export default memo(Period);
