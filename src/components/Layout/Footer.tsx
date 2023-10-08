@@ -1,7 +1,7 @@
 import * as React from "react";
 
 const Footer: React.FC = () => (
-  <div className="footer-text container mx-auto max-w-screen-xl gap-12 px-4 py-2 leading-3">
+  <div className="footer-text container mx-auto max-w-screen-xl gap-12  px-4 py-2 leading-3 sm:px-0">
     <div className="pb-1">
       OOMAKAは1年間のスケジュールをざっくり書き出して、スケジュールを把握するwebサービスです。
     </div>

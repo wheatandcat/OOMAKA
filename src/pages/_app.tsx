@@ -24,9 +24,11 @@ const MyApp: AppType<{ session: Session | null }> = ({
     >
       <SessionProvider session={session}>
         <div className={notojp.className}>
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
+          <div className="container relative mx-auto max-w-screen-xl gap-12 sm:px-4">
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
+          </div>
         </div>
       </SessionProvider>
     </DatesProvider>
