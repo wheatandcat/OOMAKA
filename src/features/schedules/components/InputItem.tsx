@@ -21,6 +21,7 @@ const InputItem = (props: Props) => {
   const [isComposing, setIsComposing] = useState(false);
   const [value, setValue] = useState(props.value ?? "");
   const [isOpen, setIsOpen] = useState(false);
+
   const [date, setDate] = useState<DateValue | null>(props.date ?? null);
   const createMutation = api.schedule.create.useMutation({
     onError: (error) => {
