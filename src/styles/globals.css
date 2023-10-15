@@ -28,3 +28,19 @@
 .text-xxs {
   font-size: 0.5rem;
 }
+
+@media print {
+  .no-print {
+    display: none;
+  }
+
+  .item-container {
+    page-break-inside: avoid;
+    padding-right: 2.5rem !important;
+    padding-bottom: 1rem !important;
+  }
+
+  .screen-container {
+    padding-left: 2rem !important;
+  }
+}

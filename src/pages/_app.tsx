@@ -24,7 +24,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
     >
       <SessionProvider session={session}>
         <div className={notojp.className}>
-          <div className="container relative mx-auto max-w-screen-xl gap-12 sm:px-4">
+          <div className="container relative mx-auto max-w-screen-xl gap-12 ">
             <Layout>
               <Component {...pageProps} />
             </Layout>
