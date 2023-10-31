@@ -1,8 +1,3 @@
-import type {
-  InferGetServerSidePropsType,
-  GetServerSideProps,
-  GetServerSidePropsContext,
-} from "next";
 import Head from "next/head";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { useEffect, useCallback, memo, useState } from "react";
