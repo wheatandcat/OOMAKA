@@ -18,7 +18,20 @@ const getBaseUrl = () => {
 
 /** A set of type-safe react-query hooks for your tRPC API. */
 export const api = createTRPCNext<AppRouter>({
-  config() {
+  config(opts) {
+    const { ctx } = opts;
+    if (typeof window !== "undefined") {
+      // during client requests
+      return {
+        transformer: superjson, // optional - adds superjson serialization
+        links: [
+          httpBatchLink({
+            url: "/api/trpc",
+          }),
+        ],
+      };
+    }
+
     return {
       /**
        * Transformer used for data de-serialization from the server.
@@ -40,6 +53,16 @@ export const api = createTRPCNext<AppRouter>({
         }),
         httpBatchLink({
           url: `${getBaseUrl()}/api/trpc`,
+          headers() {
+            if (!ctx?.req?.headers) {
+              return {};
+            }
+            // To use SSR properly, you need to forward client headers to the server
+            // This is so you can pass through things like cookies when we're server-side rendering
+            return {
+              cookie: ctx.req.headers.cookie,
+            };
+          },
         }),
       ],
     };
@@ -49,7 +72,23 @@ export const api = createTRPCNext<AppRouter>({
    *
    * @see https://trpc.io/docs/nextjs#ssr-boolean-default-false
    */
-  ssr: false,
+  ssr: true,
+  responseMeta(opts) {
+    const { clientErrors } = opts;
+    if (clientErrors.length) {
+      // propagate http first error from API calls
+      return {
+        status: clientErrors[0]?.data?.httpStatus ?? 500,
+      };
+    }
+    // cache request for 1 day + revalidate once every second
+    const ONE_DAY_IN_SECONDS = 60 * 60 * 24;
+    return {
+      headers: {
+        "cache-control": `s-maxage=1, stale-while-revalidate=${ONE_DAY_IN_SECONDS}`,
+      },
+    };
+  },
 });
 
 /**

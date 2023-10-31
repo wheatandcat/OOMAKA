@@ -1,3 +1,8 @@
+import type {
+  InferGetServerSidePropsType,
+  GetServerSideProps,
+  GetServerSidePropsContext,
+} from "next";
 import Head from "next/head";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { useEffect, useCallback, memo, useState } from "react";
@@ -9,6 +14,7 @@ import dayjs from "~/utils/dayjs";
 import { monthItems, getScheduleInMonth } from "~/utils/schedule";
 import Pagination from "~/features/schedules/components/Pagination";
 import { toast } from "react-toastify";
+import { type Schedule } from "@prisma/client";
 
 function Schedule() {
   const { data: sessionData } = useSession();
@@ -26,6 +32,7 @@ function Schedule() {
   }, [url.data, router]);
 
   const schedules = api.schedule.fetch.useQuery({ urlId: String(id) });
+
   const months = monthItems(
     Number(startDate.format("M")),
     Number(startDate.year())
@@ -121,7 +128,6 @@ function Schedule() {
             </div>
           </div>
         </div>
-
         <div className="relative hidden justify-between sm:flex">
           <Period
             startDate={startDate.format()}

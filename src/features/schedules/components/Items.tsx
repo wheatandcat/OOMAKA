@@ -1,4 +1,5 @@
 import React, { memo, useState, useCallback, useEffect } from "react";
+
 import { Big_Shoulders_Text } from "@next/font/google";
 import { type Schedule } from "@prisma/client";
 import type dayjs from "~/utils/dayjs";
@@ -43,11 +44,19 @@ const Items = (props: Props) => {
   const [items, setItems] = useState(props.defaultItems ?? []);
   const prevDate = usePrevious<dayjs.Dayjs>(props.date);
 
-  const schedules = api.schedule.fetchInPeriod.useQuery({
-    urlId: props.urlId,
-    startDate: props.date.toDate(),
-    endDate: props.date.endOf("month").toDate(),
-  });
+  const schedules = api.schedule.fetchInPeriod.useQuery(
+    {
+      urlId: props.urlId,
+      startDate: props.date.toDate(),
+      endDate: props.date.endOf("month").toDate(),
+    },
+    {
+      trpc: {
+        ssr: false,
+      },
+      enabled: false, // 初回はfetchしない
+    }
+  );
 
   const month = Number(props.date.format("M"));
   const monthItem = [...(monthText[month - 1] ?? "")];

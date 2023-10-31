@@ -18,11 +18,12 @@ function Share() {
   useEffect(() => {
     if (url.data === false) {
       // 存在しないURLの場合はトップページに戻す
-      void router.push("/404");
+      void router.push("/error");
     }
   }, [url.data, router]);
 
   const schedules = api.schedule.fetch.useQuery({ urlId: String(id) });
+
   const months = monthItems(
     Number(startDate.format("M")),
     Number(startDate.year())
