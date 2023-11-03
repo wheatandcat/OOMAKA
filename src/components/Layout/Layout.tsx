@@ -10,10 +10,12 @@ type LayoutProps = Required<{
 
 const Layout = ({ children }: LayoutProps) => (
   <>
-    <Header />
-    <ToastContainer />
-    {children}
-    <Footer />
+    <div className="container relative mx-auto max-w-screen-xl gap-12 ">
+      <Header />
+      <ToastContainer />
+      {children}
+      <Footer />
+    </div>
   </>
 );
 
