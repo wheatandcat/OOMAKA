@@ -44,3 +44,15 @@
     padding-left: 2rem !important;
   }
 }
+
+.signin-bg {
+  background-color: #291e1edf;
+}
+
+.signin-logo-title {
+  letter-spacing: 0.6rem;
+}
+
+.signin-mini-logo-title {
+  font-size: 8px;
+}
