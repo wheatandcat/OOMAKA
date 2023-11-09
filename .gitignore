@@ -40,3 +40,5 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
+apple-gen-secret.mjs
+AuthKey.p8

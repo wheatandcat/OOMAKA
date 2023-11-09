@@ -8,11 +8,19 @@ import { authOptions } from "~/server/auth";
 
 const authStyle: Record<string, { className: string; color: string }> = {
   Discord: {
-    className: "bg-blue-500 text-white hover:bg-blue-700",
+    className: "bg-blue-600 text-white border border-blue-500",
     color: "blue",
   },
   GitHub: {
-    className: "bg-gray-700 text-white",
+    className: "bg-gray-700 text-white border border-gray-700 ",
+    color: "gray",
+  },
+  Google: {
+    className: "bg-white text-black border border-black",
+    color: "gray",
+  },
+  Apple: {
+    className: "bg-black text-white border border-black",
     color: "gray",
   },
 };
@@ -42,9 +50,9 @@ export default function SignIn({
                   return (
                     <div key={provider.name}>
                       <button
-                        className={`my-3 w-72 rounded-lg px-4 py-2 font-bold text-white ${String(
+                        className={`my-3 w-72 rounded-lg px-4 py-2 font-bold ${String(
                           item?.className
-                        )}]}`}
+                        )}`}
                         onClick={() => void signIn(provider.id)}
                       >
                         {provider.name} でログイン
