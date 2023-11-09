@@ -53,9 +53,7 @@ export default function SignIn({
                         className={`my-3 w-72 rounded-lg px-4 py-2 font-bold ${String(
                           item?.className
                         )}`}
-                        onClick={() =>
-                          void signIn(provider.id).catch(console.log)
-                        }
+                        onClick={() => void signIn(provider.id)}
                       >
                         {provider.name} でログイン
                       </button>
