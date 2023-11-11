@@ -5,6 +5,8 @@ import type {
 import { getProviders, signIn } from "next-auth/react";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "~/server/auth";
+import { useRouter } from "next/router";
+import SignInError from "~/features/auth/components/SignInError";
 
 const authStyle: Record<string, { className: string; color: string }> = {
   Discord: {
@@ -28,6 +30,8 @@ const authStyle: Record<string, { className: string; color: string }> = {
 export default function SignIn({
   providers,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+  const { error } = useRouter().query;
+
   return (
     <div>
       <div className="signin-bg fixed top-0 h-screen w-screen" />
@@ -35,7 +39,7 @@ export default function SignIn({
         <div className="container z-10 flex h-screen flex-col items-center justify-center">
           <div className=" rounded-xl border bg-white px-20 py-4">
             <div>
-              <div className="pb-10 text-center">
+              <div className="pb-10 pt-5 text-center">
                 <div className="signin-mini-logo-title">
                   年間スケジュール、まとめるなら
                 </div>
@@ -43,6 +47,11 @@ export default function SignIn({
                   OOMAKA
                 </div>
               </div>
+              {error && (
+                <div className="pb-6">
+                  <SignInError error={String(error)}></SignInError>
+                </div>
+              )}
               <div className="flex flex-col items-center pb-10">
                 {Object.values(providers ?? {}).map((provider) => {
                   const item = authStyle[String(provider?.name)];
@@ -61,7 +70,7 @@ export default function SignIn({
                   );
                 })}
               </div>
-              <div className="pb-8 text-center text-sm text-gray-500">
+              <div className="pb-5 text-center text-sm text-gray-500">
                 利用規約およびプライバシーポリシーに同意の上、
                 <br />
                 ログインへお進みください。
