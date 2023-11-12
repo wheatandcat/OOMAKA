@@ -90,30 +90,8 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   console.log("session:", session);
 
   if (session) {
-    const urlItem = await prisma.url.findFirst({
-      where: {
-        userId: String(session.user.id),
-      },
-    });
-    if (urlItem) {
-      return {
-        redirect: {
-          destination: `/schedule/${urlItem.id}`,
-        },
-      };
-    }
-    // 存在しない場合はカレンダーを新規作成する
-    const createUrl = await prisma.url.create({
-      data: {
-        id: uuidv4(),
-        userId: String(session.user.id),
-      },
-    });
-    return {
-      redirect: {
-        destination: `/schedule/${createUrl.id}`,
-      },
-    };
+    console.log("redirect!!");
+    return { redirect: { destination: "/" } };
   }
 
   const providers = await getProviders();
