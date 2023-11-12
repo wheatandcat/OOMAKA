@@ -91,8 +91,9 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 
   if (session) {
     console.log("redirect!!");
-
-    return { redirect: { destination: "/", redirect: false } };
+    context.res.writeHead(302, { Location: "/" });
+    context.res.end();
+    return { props: {} };
   }
 
   const providers = await getProviders();
