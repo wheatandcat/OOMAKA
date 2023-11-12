@@ -53,6 +53,14 @@ export const authOptions: NextAuthOptions = {
       clientId: env.DISCORD_CLIENT_ID,
       clientSecret: env.DISCORD_CLIENT_SECRET,
     }),
+    AppleProvider({
+      clientId: env.APPLE_ID,
+      clientSecret: env.APPLE_SECRET,
+    }),
+    GoogleProvider({
+      clientId: env.GOOGLE_CLIENT_ID,
+      clientSecret: env.GOOGLE_CLIENT_SECRET,
+    }),
 
     /**
      * ...add more providers here.
@@ -65,6 +73,10 @@ export const authOptions: NextAuthOptions = {
      */
   ],
   secret: env.NEXTAUTH_SECRET,
+  pages: {
+    signIn: "/auth/signin",
+    error: "/auth/signin",
+  },
 };
 
 /**
