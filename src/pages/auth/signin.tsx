@@ -35,6 +35,8 @@ export default function SignIn({
   const { error } = router.query;
   const { data: sessionData } = useSession();
 
+  console.log("sessionData:", sessionData);
+
   if (sessionData) {
     void router.replace("/");
     return null;
@@ -91,8 +93,10 @@ export default function SignIn({
   );
 }
 
-export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-  const session = await getServerAuthSession(ctx);
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const session = await getServerAuthSession(context);
+
+  console.log("session:", session);
 
   if (session) {
     const urlItem = await prisma.url.findFirst({
@@ -103,7 +107,6 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     if (urlItem) {
       return {
         redirect: {
-          parament: false,
           destination: `/schedule/${urlItem.id}`,
         },
       };
@@ -118,7 +121,6 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     return {
       redirect: {
         destination: `/schedule/${createUrl.id}`,
-        parament: false,
       },
     };
   }
@@ -126,9 +128,6 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const providers = await getProviders();
 
   return {
-    props: {
-      session,
-      providers: providers ?? [],
-    },
+    props: { providers: providers ?? [] },
   };
-};
+}
