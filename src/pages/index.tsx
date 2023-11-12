@@ -1,6 +1,6 @@
 import { type GetServerSideProps } from "next";
 import { signIn, useSession } from "next-auth/react";
-import { getServerAuthSession } from "../server/auth";
+import { getServerAuthSession } from "~/server/auth";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { api } from "~/utils/api";
