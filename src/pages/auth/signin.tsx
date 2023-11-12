@@ -68,7 +68,7 @@ export default function SignIn({
                     <div key={provider.name}>
                       <button
                         className={`my-3 w-72 rounded-lg px-4 py-2 font-bold ${String(
-                          item?.className
+                          item?.className,
                         )}`}
                         onClick={() => void signIn(provider.id)}
                       >
@@ -91,9 +91,8 @@ export default function SignIn({
   );
 }
 
-export async function getServerSideProps(context: GetServerSidePropsContext) {
-  const session = await getServerAuthSession(context);
-  console.log("session:", session);
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  const session = await getServerAuthSession(ctx);
 
   if (session) {
     const urlItem = await prisma.url.findFirst({
@@ -104,6 +103,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     if (urlItem) {
       return {
         redirect: {
+          parament: false,
           destination: `/schedule/${urlItem.id}`,
         },
       };
@@ -118,6 +118,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     return {
       redirect: {
         destination: `/schedule/${createUrl.id}`,
+        parament: false,
       },
     };
   }
@@ -125,6 +126,9 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   const providers = await getProviders();
 
   return {
-    props: { providers: providers ?? [] },
+    props: {
+      session,
+      providers: providers ?? [],
+    },
   };
-}
+};
