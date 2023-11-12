@@ -92,7 +92,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   if (session) {
     console.log("redirect!!");
 
-    return { redirect: { destination: "/", redirect: true } };
+    return { redirect: { destination: "/", redirect: false } };
   }
 
   const providers = await getProviders();
