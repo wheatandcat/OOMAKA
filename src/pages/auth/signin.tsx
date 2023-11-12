@@ -49,7 +49,7 @@ export default function SignIn({
                   OOMAKA
                 </div>
               </div>
-              {error && (
+              {!!error && (
                 <div className="pb-6">
                   <SignInError error={String(error)}></SignInError>
                 </div>
