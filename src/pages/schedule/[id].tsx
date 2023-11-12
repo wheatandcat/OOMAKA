@@ -1,6 +1,8 @@
+import { type GetServerSideProps } from "next";
 import Head from "next/head";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { useEffect, useCallback, memo, useState } from "react";
+import { getServerAuthSession } from "~/server/auth";
 import { useRouter } from "next/router";
 import Period from "~/features/schedules/components/Period";
 import Items from "~/features/schedules/components/Items";
@@ -11,6 +13,13 @@ import Pagination from "~/features/schedules/components/Pagination";
 import { toast } from "react-toastify";
 import Layout from "~/components/Layout/Layout";
 import { type Schedule } from "@prisma/client";
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const session = await getServerAuthSession(ctx);
+  return {
+    props: { session },
+  };
+};
 
 function Schedule() {
   const { data: sessionData } = useSession();
@@ -31,7 +40,7 @@ function Schedule() {
 
   const months = monthItems(
     Number(startDate.format("M")),
-    Number(startDate.year())
+    Number(startDate.year()),
   );
 
   const onLogout = useCallback(async () => {
@@ -151,7 +160,7 @@ function Schedule() {
                     date={item}
                     defaultItems={getScheduleInMonth(
                       item,
-                      schedules.data ?? []
+                      schedules.data ?? [],
                     )}
                     share={print}
                   />
