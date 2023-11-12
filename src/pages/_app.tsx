@@ -2,7 +2,6 @@ import { type Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
 import { type AppType } from "next/app";
 import { api } from "~/utils/api";
-import Layout from "~/components/Layout/Layout";
 import "~/styles/globals.css";
 import { Noto_Sans_JP } from "@next/font/google";
 import "dayjs/locale/ja";
