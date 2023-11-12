@@ -8,3 +8,9 @@ https://oomaka.vercel.app/
 ```bash
 $ npx prisma migrate dev
 ```
+
+## ローカル起動
+
+```bash
+$ pnpm run dev
+```
