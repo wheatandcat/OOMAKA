@@ -70,9 +70,7 @@ function Home() {
     createMutation.mutate({ userId: "" });
   }, [createMutation]);
 
-  if (sessionData?.user?.id) {
-    return null;
-  }
+  console.log("sessionData:", sessionData);
 
   return (
     <Layout>
