@@ -23,8 +23,6 @@ export const env = createEnv({
     // Add `.min(1) on ID and SECRET if you want to make sure they're not empty
     DISCORD_CLIENT_ID: z.string(),
     DISCORD_CLIENT_SECRET: z.string(),
-    GITHUB_ID: z.string(),
-    GITHUB_SECRET: z.string(),
     APPLE_ID: z.string(),
     APPLE_SECRET: z.string(),
     GOOGLE_CLIENT_ID: z.string(),
@@ -51,8 +49,6 @@ export const env = createEnv({
     NEXTAUTH_URL: process.env.NEXTAUTH_URL,
     DISCORD_CLIENT_ID: process.env.DISCORD_CLIENT_ID,
     DISCORD_CLIENT_SECRET: process.env.DISCORD_CLIENT_SECRET,
-    GITHUB_ID: process.env.GITHUB_ID,
-    GITHUB_SECRET: process.env.GITHUB_SECRET,
     APPLE_ID: process.env.APPLE_ID,
     APPLE_SECRET: process.env.APPLE_SECRET,
     GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
