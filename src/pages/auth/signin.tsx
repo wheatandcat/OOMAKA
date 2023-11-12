@@ -2,9 +2,8 @@ import type {
   GetServerSidePropsContext,
   InferGetServerSidePropsType,
 } from "next";
-import { getProviders, signIn } from "next-auth/react";
-import { getServerSession } from "next-auth/next";
-import { authOptions } from "~/server/auth";
+import { getProviders, signIn, useSession } from "next-auth/react";
+import { getServerAuthSession } from "~/server/auth";
 import { useRouter } from "next/router";
 import SignInError from "~/features/auth/components/SignInError";
 import { v4 as uuidv4 } from "uuid";
@@ -32,7 +31,14 @@ const authStyle: Record<string, { className: string; color: string }> = {
 export default function SignIn({
   providers,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  const { error } = useRouter().query;
+  const router = useRouter();
+  const { error } = router.query;
+  const { data: sessionData } = useSession();
+
+  if (sessionData) {
+    void router.replace("/");
+    return null;
+  }
 
   return (
     <div>
@@ -86,19 +92,34 @@ export default function SignIn({
 }
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
-  const session = await getServerSession(context.req, context.res, authOptions);
+  const session = await getServerAuthSession(context);
   console.log("session:", session);
 
   if (session) {
-    console.log("redirect!!");
-    try {
-      context.res.writeHead(302, { Location: "/" });
-      context.res.end();
-    } catch (error) {
-      console.error(error);
+    const urlItem = await prisma.url.findFirst({
+      where: {
+        userId: String(session.user.id),
+      },
+    });
+    if (urlItem) {
+      return {
+        redirect: {
+          destination: `/schedule/${urlItem.id}`,
+        },
+      };
     }
-
-    return { props: {} };
+    // 存在しない場合はカレンダーを新規作成する
+    const createUrl = await prisma.url.create({
+      data: {
+        id: uuidv4(),
+        userId: String(session.user.id),
+      },
+    });
+    return {
+      redirect: {
+        destination: `/schedule/${createUrl.id}`,
+      },
+    };
   }
 
   const providers = await getProviders();

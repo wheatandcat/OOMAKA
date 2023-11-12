@@ -1,4 +1,6 @@
+import { type GetServerSideProps } from "next";
 import { signIn, useSession } from "next-auth/react";
+import { getServerAuthSession } from "../server/auth";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { api } from "~/utils/api";
@@ -6,6 +8,13 @@ import { useEffect, useCallback, memo } from "react";
 import Layout from "~/components/Layout/Layout";
 
 let login = false;
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const session = await getServerAuthSession(ctx);
+  return {
+    props: { session },
+  };
+};
 
 function Home() {
   const { data: sessionData } = useSession();
