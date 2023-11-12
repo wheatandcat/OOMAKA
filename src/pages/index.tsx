@@ -1,5 +1,5 @@
 import { type GetServerSideProps } from "next";
-import { signIn, signOut, useSession } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import { getServerAuthSession } from "../server/auth";
 import Head from "next/head";
 import { useRouter } from "next/router";
@@ -70,7 +70,9 @@ function Home() {
     createMutation.mutate({ userId: "" });
   }, [createMutation]);
 
-  console.log("sessionData:", sessionData);
+  if (sessionData?.user?.id) {
+    return null;
+  }
 
   return (
     <Layout>
@@ -96,22 +98,13 @@ function Home() {
                   新しいカレンダーを作る
                 </button>
                 <br />
-                {!sessionData && (
-                  <button
-                    className="my-3 w-72 rounded-full bg-blue-500 px-10 py-3  font-semibold text-white no-underline transition hover:bg-blue-300"
-                    onClick={() => void signIn()}
-                  >
-                    ログイン
-                  </button>
-                )}
-                {sessionData && (
-                  <button
-                    className="w-72 rounded-full bg-red-500 px-10 py-3  font-semibold text-white no-underline transition hover:bg-red-300"
-                    onClick={() => void signOut()}
-                  >
-                    ログアウト
-                  </button>
-                )}
+
+                <button
+                  className="my-3 w-72 rounded-full bg-blue-500 px-10 py-3  font-semibold text-white no-underline transition hover:bg-blue-300"
+                  onClick={() => void signIn()}
+                >
+                  ログイン
+                </button>
               </div>
             </div>
           </div>
