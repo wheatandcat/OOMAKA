@@ -25,7 +25,7 @@ function Home() {
     },
     {
       enabled: !!sessionData?.user?.id,
-    }
+    },
   );
 
   useEffect(() => {

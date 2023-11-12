@@ -6,10 +6,16 @@ https://oomaka.vercel.app/
 ## マイグレーション
 
 ```bash
-$ npx prisma migrate dev
+$ pnpm db:push
 ```
 
-## ローカル起動 1
+## DB確認
+
+```bash
+$ pnpm db:studio
+```
+
+## ローカル起動
 
 ```bash
 $ pnpm run dev
