@@ -7,6 +7,8 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "~/server/auth";
 import { useRouter } from "next/router";
 import SignInError from "~/features/auth/components/SignInError";
+import { v4 as uuidv4 } from "uuid";
+import { prisma } from "~/server/db";
 
 const authStyle: Record<string, { className: string; color: string }> = {
   Discord: {
@@ -86,13 +88,31 @@ export default function SignIn({
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const session = await getServerSession(context.req, context.res, authOptions);
 
-  console.log("session:", session);
-
-  // If the user is already logged in, redirect.
-  // Note: Make sure not to redirect to the same page
-  // To avoid an infinite loop!
   if (session) {
-    return { redirect: { destination: "/" } };
+    const urlItem = await prisma.url.findFirst({
+      where: {
+        userId: String(session.user.id),
+      },
+    });
+    if (urlItem) {
+      return {
+        redirect: {
+          destination: `/schedule/${urlItem.id}`,
+        },
+      };
+    }
+    // 存在しない場合はカレンダーを新規作成する
+    const createUrl = await prisma.url.create({
+      data: {
+        id: uuidv4(),
+        userId: String(session.user.id),
+      },
+    });
+    return {
+      redirect: {
+        destination: `/schedule/${createUrl.id}`,
+      },
+    };
   }
 
   const providers = await getProviders();
