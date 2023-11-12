@@ -91,8 +91,13 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 
   if (session) {
     console.log("redirect!!");
-    context.res.writeHead(302, { Location: "/" });
-    context.res.end();
+    try {
+      context.res.writeHead(302, { Location: "/" });
+      context.res.end();
+    } catch (error) {
+      console.error(error);
+    }
+
     return { props: {} };
   }
 
