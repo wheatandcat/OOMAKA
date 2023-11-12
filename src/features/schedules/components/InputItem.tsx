@@ -121,7 +121,7 @@ const InputItem = (props: Props) => {
         }
       }
     },
-    [isComposing, save]
+    [isComposing, save],
   );
 
   const onRemoveDate = useCallback(() => {
@@ -166,7 +166,7 @@ const InputItem = (props: Props) => {
       setDate(tDate);
       setIsOpen(false);
     },
-    [value, props.id, props.urlId, props.maxDate, updateMutation]
+    [value, props.id, props.urlId, props.maxDate, updateMutation],
   );
 
   return (

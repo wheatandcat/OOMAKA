@@ -1,6 +1,6 @@
 import React, { memo, useState, useCallback, useEffect } from "react";
 
-import { Big_Shoulders_Text } from "@next/font/google";
+import { Big_Shoulders_Text } from "next/font/google";
 import { type Schedule } from "@prisma/client";
 import type dayjs from "~/utils/dayjs";
 import { api } from "~/utils/api";
