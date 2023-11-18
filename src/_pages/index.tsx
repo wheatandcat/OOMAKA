@@ -9,12 +9,14 @@ import Layout from "~/components/Layout/Layout";
 
 let login = false;
 
+/*
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const session = await getServerAuthSession(ctx);
   return {
     props: { session },
   };
 };
+*/
 
 function Home() {
   const { data: sessionData } = useSession();

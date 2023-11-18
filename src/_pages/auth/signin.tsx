@@ -7,7 +7,7 @@ import { getServerAuthSession } from "~/server/auth";
 import { useRouter } from "next/router";
 import SignInError from "~/features/auth/components/SignInError";
 import { v4 as uuidv4 } from "uuid";
-import { prisma } from "~/server/db";
+//import { prisma } from "~/server/db";
 
 const authStyle: Record<string, { className: string; color: string }> = {
   Discord: {
@@ -93,6 +93,7 @@ export default function SignIn({
   );
 }
 
+/*
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const session = await getServerAuthSession(context);
 
@@ -131,3 +132,4 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     props: { providers: providers ?? [] },
   };
 }
+*/

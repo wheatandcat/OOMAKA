@@ -6,10 +6,10 @@ export const scheduleRouter = createTRPCRouter({
     .input(
       z.object({
         urlId: z.string(),
-      })
+      }),
     )
-    .query(async ({ ctx, input }) => {
-      const schedules = await ctx.prisma.schedule.findMany({
+    .query(({ ctx, input }) => {
+      return ctx.db.schedule.findMany({
         where: {
           urlId: input.urlId,
         },
@@ -17,7 +17,6 @@ export const scheduleRouter = createTRPCRouter({
           day: "asc",
         },
       });
-      return schedules;
     }),
   fetchInPeriod: publicProcedure
     .input(
@@ -25,10 +24,10 @@ export const scheduleRouter = createTRPCRouter({
         urlId: z.string(),
         startDate: z.date(),
         endDate: z.date(),
-      })
+      }),
     )
     .query(async ({ ctx, input }) => {
-      const schedules = await ctx.prisma.schedule.findMany({
+      const schedules = await ctx.db.schedule.findMany({
         where: {
           urlId: input.urlId,
           date: {
@@ -50,10 +49,10 @@ export const scheduleRouter = createTRPCRouter({
         date: z.date(),
         emoji: z.string(),
         text: z.string(),
-      })
+      }),
     )
     .mutation(async ({ ctx, input }) => {
-      const schedule = await ctx.prisma.schedule.create({
+      const schedule = await ctx.db.schedule.create({
         data: {
           urlId: input.urlId,
           day: input.day,
@@ -68,10 +67,10 @@ export const scheduleRouter = createTRPCRouter({
     .input(
       z.object({
         id: z.string(),
-      })
+      }),
     )
     .mutation(async ({ ctx, input }) => {
-      const schedule = await ctx.prisma.schedule.delete({
+      const schedule = await ctx.db.schedule.delete({
         where: {
           id: input.id,
         },
@@ -87,10 +86,10 @@ export const scheduleRouter = createTRPCRouter({
         date: z.date(),
         emoji: z.string(),
         text: z.string(),
-      })
+      }),
     )
     .mutation(async ({ ctx, input }) => {
-      const schedule = await ctx.prisma.schedule.update({
+      const schedule = await ctx.db.schedule.update({
         where: {
           id: input.id,
         },
