@@ -2,35 +2,27 @@
 
 import { signIn, signOut } from "next-auth/react";
 import { useEffect, useCallback, useState } from "react";
-import { useRouter, useParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import Period from "~/features/schedules/components/Period";
 import Items from "~/features/schedules/components/Items";
-import { api } from "~/utils/api";
 import dayjs from "~/utils/dayjs";
 import { monthItems, getScheduleInMonth } from "~/utils/schedule";
 import Pagination from "~/features/schedules/components/Pagination";
 import { toast } from "react-toastify";
 import Layout from "~/components/Layout/Layout";
+import { type Schedule } from "@prisma/client";
 
 type Props = {
   login: boolean;
+  id: string;
+  schedules: Schedule[];
 };
 
 export function Template(props: Props) {
   const router = useRouter();
-  const { id } = useParams();
-  const url = api.url.exists.useQuery({ id: String(id) });
+
   const [startDate, setStartDate] = useState(dayjs());
   const [print, setPrint] = useState(false);
-
-  useEffect(() => {
-    if (url.data === false) {
-      // 存在しないURLの場合はトップページに戻す
-      router.push("/");
-    }
-  }, [url.data, router]);
-
-  const schedules = api.schedule.fetch.useQuery({ urlId: String(id) });
 
   const months = monthItems(
     Number(startDate.format("M")),
@@ -134,28 +126,19 @@ export function Template(props: Props) {
             />
           </div>
           <div className="flex flex-col flex-nowrap justify-center pt-10 sm:flex-row sm:flex-wrap sm:justify-start">
-            {schedules.isLoading ? (
-              <div className="flex h-screen w-screen items-center justify-center">
-                loading...
+            {months.map((item, index) => (
+              <div
+                key={index}
+                className="item-container px-0 pb-6 sm:pb-16 sm:pr-16"
+              >
+                <Items
+                  urlId={props.id}
+                  date={item}
+                  defaultItems={getScheduleInMonth(item, props.schedules ?? [])}
+                  share={print}
+                />
               </div>
-            ) : (
-              months.map((item, index) => (
-                <div
-                  key={index}
-                  className="item-container px-0 pb-6 sm:pb-16 sm:pr-16"
-                >
-                  <Items
-                    urlId={String(id)}
-                    date={item}
-                    defaultItems={getScheduleInMonth(
-                      item,
-                      schedules.data ?? [],
-                    )}
-                    share={print}
-                  />
-                </div>
-              ))
-            )}
+            ))}
           </div>
           <div className="no-print mb-10 flex justify-center">
             {props.login ? (

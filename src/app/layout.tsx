@@ -24,7 +24,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ja">
-      <body className={`font-sans ${notojp.className}`}>
+      <body className={`${notojp.className}`}>
         <TRPCReactProvider cookies={cookies().toString()}>
           {children}
         </TRPCReactProvider>
