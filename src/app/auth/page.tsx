@@ -4,7 +4,8 @@ import { signIn, useSession } from "next-auth/react";
 import { useRouter, useParams } from "next/navigation";
 import SignInError from "~/features/auth/components/SignInError";
 import { NextAuthProvider } from "~/app/providers";
-import { useEffect } from "react";
+import { useEffect, useCallback, useRef } from "react";
+import { api } from "~/trpc/react";
 
 const providers: {
   id: string;
@@ -45,12 +46,43 @@ function ClientHome() {
   const params = useParams();
   const { error } = params;
   const { data: sessionData } = useSession();
+  const loading = useRef(false);
+
+  const url = api.url.existsByUserId.useQuery(
+    {
+      userId: String(sessionData?.user?.id),
+    },
+    {
+      enabled: false,
+    },
+  );
+
+  const createMutation = api.url.create.useMutation({
+    onError: (error) => {
+      console.log(error);
+    },
+    onSuccess: (data) => {
+      window.localStorage.setItem("URL_ID", data.id);
+      router.push(`/schedule/${data.id}`);
+    },
+  });
+
+  const onRedirect = useCallback(async () => {
+    const u = await url.refetch();
+    if (u) {
+      void router.push(`/schedule/${String(u.data?.id)}`);
+      return;
+    }
+
+    createMutation.mutate({ userId: String(sessionData?.user?.id) });
+  }, [createMutation, router, sessionData?.user?.id, url]);
 
   useEffect(() => {
-    if (sessionData) {
-      void router.push("/");
+    if (sessionData && !loading.current) {
+      loading.current = true;
+      void onRedirect();
     }
-  }, [sessionData, router]);
+  }, [sessionData, onRedirect]);
 
   return (
     <div>
