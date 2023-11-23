@@ -71,7 +71,7 @@ const Items = (props: Props) => {
 
   useEffect(() => {
     if (prevDate) {
-      if (prevDate.isSame(props.date, "month")) {
+      if (!prevDate.isSame(props.date, "month")) {
         setItems(props.defaultItems ?? []);
       }
     }

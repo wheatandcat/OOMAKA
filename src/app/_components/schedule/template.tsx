@@ -19,7 +19,7 @@ type Props = {
 };
 
 export function Template(props: Props) {
-  const router = useRouter();
+const router = useRouter();
 
   const [startDate, setStartDate] = useState(dayjs());
   const [print, setPrint] = useState(false);

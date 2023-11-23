@@ -10,13 +10,7 @@ export const metadata: Metadata = {
   title: "OOMAKA | 年間スケジュール、まとめるなら",
 };
 
-export default async function Home() {
-  const session = await getServerAuthSession();
-
-  if (session?.user?.id) {
-    return null;
-  }
-
+export default function Home() {
   return (
     <Layout>
       <>

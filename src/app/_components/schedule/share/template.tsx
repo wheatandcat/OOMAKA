@@ -1,33 +1,22 @@
-import { type Metadata } from "next";
-import { useEffect, memo, useState, useCallback } from "react";
-import { useRouter } from "next/router";
+"use client";
+
+import { useState, useCallback } from "react";
 import Period from "~/features/schedules/components/Period";
 import Items from "~/features/schedules/components/Items";
-import { api } from "~/utils/api";
 import dayjs from "~/utils/dayjs";
 import { monthItems, getScheduleInMonth } from "~/utils/schedule";
 import Pagination from "~/features/schedules/components/Pagination";
 import { toast } from "react-toastify";
 import Layout from "~/components/Layout/Layout";
+import { type Schedule } from "@prisma/client";
 
-export const metadata: Metadata = {
-  title: "OOMAKA | 年間スケジュール、まとめるなら",
+type Props = {
+  id: string;
+  schedules: Schedule[];
 };
 
-function Share() {
-  const router = useRouter();
-  const { id } = router.query;
-  const url = api.url.exists.useQuery({ id: String(id) });
+export function Template(props: Props) {
   const [startDate, setStartDate] = useState(dayjs());
-
-  useEffect(() => {
-    if (url.data === false) {
-      // 存在しないURLの場合はトップページに戻す
-      void router.push("/error");
-    }
-  }, [url.data, router]);
-
-  const schedules = api.schedule.fetch.useQuery({ urlId: String(id) });
 
   const months = monthItems(
     Number(startDate.format("M")),
@@ -63,25 +52,16 @@ function Share() {
             />
           </div>
           <div className="flex flex-col flex-nowrap justify-center pt-10 sm:flex-row sm:flex-wrap sm:justify-start">
-            {schedules.isLoading ? (
-              <div className="flex h-screen w-screen items-center justify-center">
-                loading...
+            {months.map((item, index) => (
+              <div key={index} className="px-0 pb-6 sm:pb-16 sm:pr-16">
+                <Items
+                  share
+                  urlId={String(props.id)}
+                  date={item}
+                  defaultItems={getScheduleInMonth(item, props.schedules ?? [])}
+                />
               </div>
-            ) : (
-              months.map((item, index) => (
-                <div key={index} className="px-0 pb-6 sm:pb-16 sm:pr-16">
-                  <Items
-                    share
-                    urlId={String(id)}
-                    date={item}
-                    defaultItems={getScheduleInMonth(
-                      item,
-                      schedules.data ?? [],
-                    )}
-                  />
-                </div>
-              ))
-            )}
+            ))}
           </div>
           <div className="mb-10 flex justify-center">
             <button
@@ -97,5 +77,3 @@ function Share() {
     </Layout>
   );
 }
-
-export default memo(Share);
