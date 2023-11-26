@@ -1,4 +1,12 @@
+import "~/styles/globals.css";
 import { ImageResponse } from "next/og";
+import { Noto_Sans_JP } from "next/font/google";
+
+const notojp = Noto_Sans_JP({
+  weight: ["400", "500", "800"],
+  subsets: ["latin"],
+  display: "swap",
+});
 
 export const revalidate = "force-cache";
 export const runtime = "nodejs";
@@ -15,7 +23,6 @@ export default function Image() {
     (
       <div
         style={{
-          fontSize: 48,
           background: "white",
           display: "flex",
           flexDirection: "column",
@@ -28,18 +35,20 @@ export default function Image() {
         <div
           style={{ height: 40, backgroundColor: "#5AC8D8", width: "100%" }}
         />
-        <h1
+        <div
           style={{
             flex: 1,
             maxWidth: "80%",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
+            flexDirection: "column",
           }}
+          className={`${notojp.className}`}
         >
           <div className="mini-logo-title">年間スケジュール、まとめるなら</div>
           <div className="logo-title text-2xl font-bold">OOMAKA</div>
-        </h1>
+        </div>
         <div
           style={{ height: 40, backgroundColor: "#5AC8D8", width: "100%" }}
         />
