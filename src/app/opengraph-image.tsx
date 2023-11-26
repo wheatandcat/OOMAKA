@@ -40,16 +40,15 @@ export default function Image() {
         >
           <div
             style={{
-              fontSize: 8,
+              fontSize: 16,
             }}
           >
             年間スケジュール、まとめるなら
           </div>
           <div
             style={{
-              fontSize: 20,
-              fontWeight: "bold",
-              fontFamily: "Noto Sans JP",
+              fontSize: 48,
+              fontWeight: 900,
               letterSpacing: "0.5rem",
             }}
           >
