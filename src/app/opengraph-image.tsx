@@ -1,12 +1,4 @@
-import "~/styles/globals.css";
 import { ImageResponse } from "next/og";
-import { Noto_Sans_JP } from "next/font/google";
-
-const notojp = Noto_Sans_JP({
-  weight: ["400", "500", "800"],
-  subsets: ["latin"],
-  display: "swap",
-});
 
 export const revalidate = "force-cache";
 export const runtime = "nodejs";
@@ -33,24 +25,39 @@ export default function Image() {
         }}
       >
         <div
-          style={{ height: 40, backgroundColor: "#5AC8D8", width: "100%" }}
+          style={{ height: 40, backgroundColor: "#000000", width: "100%" }}
         />
         <div
           style={{
             flex: 1,
             maxWidth: "80%",
             display: "flex",
-            alignItems: "center",
             justifyContent: "center",
             flexDirection: "column",
+            paddingTop: 30,
+            paddingBottom: 30,
           }}
-          className={`${notojp.className}`}
         >
-          <div className="mini-logo-title">年間スケジュール、まとめるなら</div>
-          <div className="logo-title text-2xl font-bold">OOMAKA</div>
+          <div
+            style={{
+              fontSize: 8,
+            }}
+          >
+            年間スケジュール、まとめるなら
+          </div>
+          <div
+            style={{
+              fontSize: 20,
+              fontWeight: "bold",
+              fontFamily: "Noto Sans JP",
+              letterSpacing: "0.5rem",
+            }}
+          >
+            OOMAKA
+          </div>
         </div>
         <div
-          style={{ height: 40, backgroundColor: "#5AC8D8", width: "100%" }}
+          style={{ height: 40, backgroundColor: "#000000", width: "100%" }}
         />
       </div>
     ),
