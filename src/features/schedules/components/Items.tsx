@@ -55,7 +55,7 @@ const Items = (props: Props) => {
         ssr: false,
       },
       enabled: false, // 初回はfetchしない
-    }
+    },
   );
 
   const month = Number(props.date.format("M"));
@@ -71,7 +71,7 @@ const Items = (props: Props) => {
 
   useEffect(() => {
     if (prevDate) {
-      if (prevDate.isSame(props.date, "month")) {
+      if (!prevDate.isSame(props.date, "month")) {
         setItems(props.defaultItems ?? []);
       }
     }

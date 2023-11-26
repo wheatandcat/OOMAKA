@@ -1,46 +1,88 @@
-import type {
-  GetServerSidePropsContext,
-  InferGetServerSidePropsType,
-} from "next";
-import { getProviders, signIn, useSession } from "next-auth/react";
-import { getServerAuthSession } from "~/server/auth";
-import { useRouter } from "next/router";
-import SignInError from "~/features/auth/components/SignInError";
-import { v4 as uuidv4 } from "uuid";
-import { prisma } from "~/server/db";
+"use client";
 
-const authStyle: Record<string, { className: string; color: string }> = {
-  Discord: {
+import { signIn, useSession } from "next-auth/react";
+import { useRouter, useParams } from "next/navigation";
+import SignInError from "~/features/auth/components/SignInError";
+import { NextAuthProvider } from "~/app/providers";
+import { useEffect, useCallback, useRef } from "react";
+import { api } from "~/trpc/react";
+
+const providers: {
+  id: string;
+  name: string;
+  className: string;
+  color: string;
+}[] = [
+  {
+    id: "discord",
+    name: "Discord",
     className: "bg-blue-600 text-white border border-blue-500",
     color: "blue",
   },
-  GitHub: {
-    className: "bg-gray-700 text-white border border-gray-700 ",
-    color: "gray",
-  },
-  Google: {
+  {
+    id: "google",
+    name: "Google",
     className: "bg-white text-black border border-black",
     color: "gray",
   },
-  Apple: {
+  {
+    id: "apple",
+    name: "Apple",
     className: "bg-black text-white border border-black",
     color: "gray",
   },
-};
+];
 
-export default function SignIn({
-  providers,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+export default function SignIn() {
+  return (
+    <NextAuthProvider>
+      <ClientHome />
+    </NextAuthProvider>
+  );
+}
+
+function ClientHome() {
   const router = useRouter();
-  const { error } = router.query;
+  const params = useParams();
+  const { error } = params;
   const { data: sessionData } = useSession();
+  const loading = useRef(false);
 
-  console.log("sessionData:", sessionData);
+  const url = api.url.existsByUserId.useQuery(
+    {
+      userId: String(sessionData?.user?.id),
+    },
+    {
+      enabled: false,
+    },
+  );
 
-  if (sessionData) {
-    void router.replace("/");
-    return null;
-  }
+  const createMutation = api.url.create.useMutation({
+    onError: (error) => {
+      console.log(error);
+    },
+    onSuccess: (data) => {
+      window.localStorage.setItem("URL_ID", data.id);
+      router.push(`/schedule/${data.id}`);
+    },
+  });
+
+  const onRedirect = useCallback(async () => {
+    const u = await url.refetch();
+    if (u) {
+      void router.push(`/schedule/${String(u.data?.id)}`);
+      return;
+    }
+
+    createMutation.mutate({ userId: String(sessionData?.user?.id) });
+  }, [createMutation, router, sessionData?.user?.id, url]);
+
+  useEffect(() => {
+    if (sessionData && !loading.current) {
+      loading.current = true;
+      void onRedirect();
+    }
+  }, [sessionData, onRedirect]);
 
   return (
     <div>
@@ -63,14 +105,12 @@ export default function SignIn({
                 </div>
               )}
               <div className="flex flex-col items-center pb-10">
-                {Object.values(providers ?? {}).map((provider) => {
-                  const item = authStyle[String(provider?.name)];
-
+                {providers.map((provider) => {
                   return (
-                    <div key={provider.name}>
+                    <div key={provider.id}>
                       <button
                         className={`my-3 w-72 rounded-lg px-4 py-2 font-bold ${String(
-                          item?.className,
+                          provider.className,
                         )}`}
                         onClick={() => void signIn(provider.id)}
                       >
@@ -91,43 +131,4 @@ export default function SignIn({
       </div>
     </div>
   );
-}
-
-export async function getServerSideProps(context: GetServerSidePropsContext) {
-  const session = await getServerAuthSession(context);
-
-  console.log("session:", session);
-
-  if (session) {
-    const urlItem = await prisma.url.findFirst({
-      where: {
-        userId: String(session.user.id),
-      },
-    });
-    if (urlItem) {
-      return {
-        redirect: {
-          destination: `/schedule/${urlItem.id}`,
-        },
-      };
-    }
-    // 存在しない場合はカレンダーを新規作成する
-    const createUrl = await prisma.url.create({
-      data: {
-        id: uuidv4(),
-        userId: String(session.user.id),
-      },
-    });
-    return {
-      redirect: {
-        destination: `/schedule/${createUrl.id}`,
-      },
-    };
-  }
-
-  const providers = await getProviders();
-
-  return {
-    props: { providers: providers ?? [] },
-  };
 }
