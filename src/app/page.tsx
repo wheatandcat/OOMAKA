@@ -1,14 +1,9 @@
-import { type Metadata } from "next";
 import { getServerAuthSession } from "~/server/auth";
 import { api } from "~/trpc/server";
 import { redirect } from "next/navigation";
 
 import Layout from "~/components/Layout/Layout";
 import { CreateUrl } from "~/app/_components/create-url";
-
-export const metadata: Metadata = {
-  title: "OOMAKA | 年間スケジュール、まとめるなら",
-};
 
 export default function Home() {
   return (
