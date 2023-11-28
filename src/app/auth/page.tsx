@@ -1,7 +1,7 @@
 "use client";
 
 import { signIn, useSession } from "next-auth/react";
-import { useRouter, useParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import SignInError from "~/features/auth/components/SignInError";
 import { NextAuthProvider } from "~/app/providers";
 import { useEffect, useCallback, useRef } from "react";
@@ -43,8 +43,8 @@ export default function SignIn() {
 
 function ClientHome() {
   const router = useRouter();
-  const params = useParams();
-  const { error } = params;
+  const searchParams = useSearchParams();
+  const error = searchParams.get("error");
   const { data: sessionData } = useSession();
   const loading = useRef(false);
 
