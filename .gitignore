@@ -42,3 +42,5 @@ yarn-error.log*
 *.tsbuildinfo
 apple-gen-secret.mjs
 AuthKey.p8
+localhost.crt
+localhost.key
