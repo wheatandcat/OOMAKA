@@ -86,7 +86,7 @@ function ClientHome() {
 
   return (
     <div>
-      <div className="signin-bg fixed top-0 h-screen w-screen" />
+      <div className="fixed top-0 h-screen w-screen bg-blue-600" />
       <div className="flex items-center justify-center">
         <div className="container z-10 flex h-screen flex-col items-center justify-center">
           <div className=" rounded-xl border bg-white px-20 py-4">

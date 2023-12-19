@@ -54,6 +54,7 @@ model User {
 model Url {
     id       String     @id @default(cuid())
     userId   String?
+    password String?    @db.VarChar(30)
     schedule Schedule[]
 }
 

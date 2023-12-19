@@ -25,6 +25,31 @@ export const urlRouter = createTRPCRouter({
         data,
       });
     }),
+
+  update: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        userId: z.string(),
+        password: z.string().optional(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      if (input.userId !== ctx.session?.user?.id) {
+        throw new Error("ユーザー情報が一致しないので更新できません");
+      }
+
+      const urlItem = await ctx.db.url.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          password: input.password,
+        },
+      });
+
+      return urlItem;
+    }),
   exists: publicProcedure
     .input(
       z.object({
@@ -37,7 +62,7 @@ export const urlRouter = createTRPCRouter({
           id: input.id,
         },
       });
-      return urlItem !== null;
+      return urlItem;
     }),
   existsByUserId: publicProcedure
     .input(
