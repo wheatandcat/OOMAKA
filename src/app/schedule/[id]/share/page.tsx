@@ -1,6 +1,6 @@
 import { api } from "~/trpc/server";
 import { redirect } from "next/navigation";
-import { Template } from "~/app/_components/schedule/share/template";
+import { Template } from "~/features/schedules/share/components/template";
 
 export default async function Page({ params }: { params: { id: string } }) {
   const url = await api.url.exists.query({ id: params.id });

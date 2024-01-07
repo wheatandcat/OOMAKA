@@ -3,7 +3,7 @@ import { api } from "~/trpc/server";
 import { redirect } from "next/navigation";
 
 import Layout from "~/components/Layout/Layout";
-import { CreateUrl } from "~/app/_components/create-url";
+import { CreateUrl } from "~/features/top/components/create-url";
 
 export default function Home() {
   return (

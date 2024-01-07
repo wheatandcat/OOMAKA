@@ -1,6 +1,6 @@
 import { getServerAuthSession } from "~/server/auth";
 import { redirect } from "next/navigation";
-import { Template } from "~/app/_components/schedule/template";
+import { Template } from "~/features/schedules/components/template";
 import { api } from "~/trpc/server";
 
 export default async function Page({ params }: { params: { id: string } }) {
