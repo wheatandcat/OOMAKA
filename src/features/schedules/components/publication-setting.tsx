@@ -42,13 +42,13 @@ const PublicationSetting = (props: Props) => {
         theme: "light",
       });
     },
-    onSuccess: (data) => {
+    onSuccess: () => {
       let text = "パスワードを設定しました";
-      if (data.password) {
-        setInputPassword(false);
-      } else {
+      if (!inputPassword) {
         text = "誰でも閲覧可能にしました";
         setInputPassword(true);
+      } else {
+        setInputPassword(false);
       }
 
       toast.success(text, {
@@ -65,10 +65,6 @@ const PublicationSetting = (props: Props) => {
   });
 
   const onSubmit: SubmitHandler<Input> = (data) => {
-    if (data.password === "") {
-      return;
-    }
-
     updateMutation.mutate({
       id: props.id,
       userId: props.userId,
@@ -85,16 +81,16 @@ const PublicationSetting = (props: Props) => {
   };
 
   return (
-    // eslint-disable-next-line @typescript-eslint/no-misused-promises
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="no-print mb-4 max-w-2xl rounded-none border border-gray-200 bg-gray-100 px-3 py-3 sm:rounded">
-        <div className="text-sm font-bold">公開範囲設定</div>
-        <div className="pt-1 text-xs text-red-600">
-          ※パスワードを設定しないと誰でもカレンダーに閲覧が可能になります。
-        </div>
-        <div className="mt-2 flex flex-col items-start sm:flex-row sm:items-center  ">
+    <div className="no-print mb-4 max-w-2xl rounded-none border border-gray-200 bg-gray-100 px-3 py-3 sm:rounded">
+      <div className="text-sm font-bold">公開範囲設定</div>
+      <div className="pt-1 text-xs text-red-600">
+        ※パスワードを設定しないと誰でもカレンダーに閲覧が可能になります。
+      </div>
+      {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div className="mt-2 flex flex-col items-start sm:flex-row sm:items-center">
           <div className="flex flex-col items-start sm:flex-row sm:items-center ">
-            {inputPassword ? (
+            {inputPassword && (
               <>
                 <div className="mr-2 flex items-center">
                   <input
@@ -162,36 +158,37 @@ const PublicationSetting = (props: Props) => {
                   </div>
                 </div>
               </>
-            ) : (
-              <div className="flex items-center">
-                <div>
-                  <button
-                    className="rounded border border-gray-400 bg-gray-100 text-center text-xs no-underline hover:bg-gray-200 disabled:opacity-50"
-                    style={{
-                      padding: "0.1rem 0.5rem",
-                    }}
-                    onClick={() => setInputPassword(true)}
-                  >
-                    パスワードを変更する
-                  </button>
-                </div>
-                <div className="ml-2">
-                  <button
-                    className="rounded border border-gray-400 bg-gray-100 text-center text-xs no-underline hover:bg-gray-200 disabled:opacity-50"
-                    style={{
-                      padding: "0.1rem 0.5rem",
-                    }}
-                    onClick={() => onReset()}
-                  >
-                    誰でも閲覧可能にする
-                  </button>
-                </div>
-              </div>
             )}
           </div>
         </div>
-      </div>
-    </form>
+      </form>
+      {!inputPassword && (
+        <div className="flex items-center">
+          <div>
+            <button
+              className="rounded border border-gray-400 bg-gray-100 text-center text-xs no-underline hover:bg-gray-200 disabled:opacity-50"
+              style={{
+                padding: "0.1rem 0.5rem",
+              }}
+              onClick={() => setInputPassword(true)}
+            >
+              パスワードを変更する
+            </button>
+          </div>
+          <div className="ml-2">
+            <button
+              className="rounded border border-gray-400 bg-gray-100 text-center text-xs no-underline hover:bg-gray-200 disabled:opacity-50"
+              style={{
+                padding: "0.1rem 0.5rem",
+              }}
+              onClick={() => onReset()}
+            >
+              誰でも閲覧可能にする
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
   );
 };
 

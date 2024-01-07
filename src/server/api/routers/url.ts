@@ -4,6 +4,8 @@ import {
   publicProcedure,
   protectedProcedure,
 } from "~/server/api/trpc";
+import bcrypt from "bcrypt";
+
 import { v4 as uuidv4 } from "uuid";
 
 export const urlRouter = createTRPCRouter({
@@ -18,8 +20,6 @@ export const urlRouter = createTRPCRouter({
         id: uuidv4(),
         userId: input.userId ?? "",
       };
-
-      console.log("data:", data);
 
       return ctx.db.url.create({
         data,
@@ -39,12 +39,20 @@ export const urlRouter = createTRPCRouter({
         throw new Error("ユーザー情報が一致しないので更新できません");
       }
 
+      let hashedPassword = "";
+      if (input.password) {
+        hashedPassword = await bcrypt.hash(input.password, 10);
+      }
+
+      console.log("id:", input.id);
+      console.log("hashedPassword:", hashedPassword);
+
       const urlItem = await ctx.db.url.update({
         where: {
           id: input.id,
         },
         data: {
-          password: input.password,
+          password: hashedPassword,
         },
       });
 
@@ -93,13 +101,12 @@ export const urlRouter = createTRPCRouter({
         },
       });
 
-      console.log("urlItem:", urlItem?.password, input.password);
+      const ok = await bcrypt.compare(
+        input.password,
+        String(urlItem?.password),
+      );
 
-      if (urlItem?.password === input.password) {
-        return true;
-      }
-
-      return false;
+      return ok;
     }),
 
   test: protectedProcedure.query(() => {
