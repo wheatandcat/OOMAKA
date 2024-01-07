@@ -17,6 +17,7 @@ type Props = {
   login: boolean;
   id: string;
   userId: string;
+  isPassword: boolean;
   schedules: Schedule[];
 };
 
@@ -117,7 +118,13 @@ export function Template(props: Props) {
               </div>
             </div>
           </div>
-          <PublicationSetting id={props.id} userId={props.userId} />
+          {props.login && (
+            <PublicationSetting
+              id={props.id}
+              userId={props.userId}
+              isPassword={props.isPassword}
+            />
+          )}
           <div className="relative hidden justify-between sm:flex">
             <Period
               startDate={startDate.format()}

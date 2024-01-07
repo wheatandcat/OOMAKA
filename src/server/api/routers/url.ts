@@ -79,6 +79,28 @@ export const urlRouter = createTRPCRouter({
 
       return urlItem;
     }),
+  checkPassword: publicProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        password: z.string(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const urlItem = await ctx.db.url.findUnique({
+        where: {
+          id: input.id,
+        },
+      });
+
+      console.log("urlItem:", urlItem?.password, input.password);
+
+      if (urlItem?.password === input.password) {
+        return true;
+      }
+
+      return false;
+    }),
 
   test: protectedProcedure.query(() => {
     return "test";

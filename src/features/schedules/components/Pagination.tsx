@@ -16,7 +16,7 @@ const Pagination = (props: Props) => {
         <svg
           className="inline-flex h-6 w-6 leading-none text-gray-500"
           fill="none"
-          viewBox="0 0 24 24"
+          viewBox="0 0 24 24" 
           stroke="currentColor"
         >
           <path
