@@ -11,7 +11,7 @@ export default async function Page({ params }: { params: { id: string } }) {
     redirect("/");
   }
 
-  if (url.password !== null) {
+  if (url?.password !== null) {
     const key = hashText(`item_${params.id}`);
 
     const ok = cookies().has(key);
