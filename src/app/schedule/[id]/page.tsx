@@ -24,7 +24,7 @@ export default async function Page({ params }: { params: { id: string } }) {
       login={!!session}
       schedules={schedules}
       id={params.id}
-      isPassword={!!url.password}
+      isPassword={url.password !== null}
       userId={session?.user?.id ?? ""}
     />
   );

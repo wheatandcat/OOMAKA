@@ -39,9 +39,9 @@ export const urlRouter = createTRPCRouter({
         throw new Error("ユーザー情報が一致しないので更新できません");
       }
 
-      let hashedPassword = "";
-      if (input.password) {
-        hashedPassword = await bcrypt.hash(input.password, 10);
+      let hashedPassword = null;
+      if (String(input?.password) !== "") {
+        hashedPassword = await bcrypt.hash(String(input.password), 10);
       }
 
       const urlItem = await ctx.db.url.update({
