@@ -44,9 +44,6 @@ export const urlRouter = createTRPCRouter({
         hashedPassword = await bcrypt.hash(input.password, 10);
       }
 
-      console.log("id:", input.id);
-      console.log("hashedPassword:", hashedPassword);
-
       const urlItem = await ctx.db.url.update({
         where: {
           id: input.id,
@@ -108,8 +105,4 @@ export const urlRouter = createTRPCRouter({
 
       return ok;
     }),
-
-  test: protectedProcedure.query(() => {
-    return "test";
-  }),
 });

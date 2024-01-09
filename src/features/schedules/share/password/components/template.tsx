@@ -1,9 +1,11 @@
 "use client";
 import React, { memo, useState } from "react";
 import Header from "~/components/Layout/Header";
-import { useForm, type SubmitHandler } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { api } from "~/trpc/react";
 import { useRouter } from "next/navigation";
+import nookies from "nookies";
+import { hashText } from "~/utils/encryption";
 
 type Props = {
   urlId: string;
@@ -17,7 +19,7 @@ function Template(props: Props) {
   const router = useRouter();
   const [error, setError] = useState(false);
 
-  const { register, watch, handleSubmit } = useForm<Input>({
+  const { register, watch } = useForm<Input>({
     defaultValues: {
       password: "",
     },
@@ -37,13 +39,20 @@ function Template(props: Props) {
     },
   );
 
-  const onSubmit: SubmitHandler<Input> = async () => {
+  const onSubmit = async () => {
     const check = await checkPassword.refetch();
-    console.log("onSubmit:", check.data);
     if (!check.data) {
       setError(true);
       return;
     }
+
+    const key = hashText(`item_${props.urlId}`);
+
+    nookies.set(null, key, "true", {
+      maxAge: 60 * 60,
+      path: "/",
+      secure: true, // 本番環境ではsecureに
+    });
 
     router.push(`/schedule/${props.urlId}/share`);
   };
@@ -51,8 +60,9 @@ function Template(props: Props) {
   return (
     <div className="container relative mx-auto max-w-screen-xl gap-12 ">
       <Header />
+
       {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <div>
         <div className="mt-5">
           <div className="text-xl font-bold">パスワードを入力してください</div>
           <div className="flex items-center pt-4">
@@ -71,11 +81,11 @@ function Template(props: Props) {
             </div>
             <div>
               <button
-                type="submit"
                 className="ml-1 rounded border border-gray-400 bg-gray-100 text-center text-xl font-thin no-underline hover:bg-gray-200"
                 style={{
                   padding: "0 0.4rem",
                 }}
+                onClick={() => void onSubmit()}
               >
                 入力
               </button>
@@ -87,7 +97,7 @@ function Template(props: Props) {
             </div>
           )}
         </div>
-      </form>
+      </div>
     </div>
   );
 }
