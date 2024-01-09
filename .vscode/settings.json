@@ -3,7 +3,7 @@
   "editor.formatOnSave": true,
   // ファイル保存時、同時に行われるアクション
   "editor.codeActionsOnSave": {
-    "source.fixAll.prettier": "explicit"
+    "source.fixAll.prettier": "true"
   },
   // ファイル保存時、最終行に改行を挿入する
   "files.insertFinalNewline": true,
