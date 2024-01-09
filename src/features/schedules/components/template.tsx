@@ -11,15 +11,18 @@ import Pagination from "~/features/schedules/components/Pagination";
 import { toast } from "react-toastify";
 import Layout from "~/components/Layout/Layout";
 import { type Schedule } from "@prisma/client";
+import PublicationSetting from "./publication-setting";
 
 type Props = {
   login: boolean;
   id: string;
+  userId: string;
+  isPassword: boolean;
   schedules: Schedule[];
 };
 
 export function Template(props: Props) {
-const router = useRouter();
+  const router = useRouter();
 
   const [startDate, setStartDate] = useState(dayjs());
   const [print, setPrint] = useState(false);
@@ -115,6 +118,13 @@ const router = useRouter();
               </div>
             </div>
           </div>
+          {props.login && (
+            <PublicationSetting
+              id={props.id}
+              userId={props.userId}
+              isPassword={props.isPassword}
+            />
+          )}
           <div className="relative hidden justify-between sm:flex">
             <Period
               startDate={startDate.format()}

@@ -4,6 +4,8 @@ import {
   publicProcedure,
   protectedProcedure,
 } from "~/server/api/trpc";
+import bcrypt from "bcrypt";
+
 import { v4 as uuidv4 } from "uuid";
 
 export const urlRouter = createTRPCRouter({
@@ -19,11 +21,39 @@ export const urlRouter = createTRPCRouter({
         userId: input.userId ?? "",
       };
 
-      console.log("data:", data);
-
       return ctx.db.url.create({
         data,
       });
+    }),
+
+  update: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        userId: z.string(),
+        password: z.string().optional(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      if (input.userId !== ctx.session?.user?.id) {
+        throw new Error("ユーザー情報が一致しないので更新できません");
+      }
+
+      let hashedPassword = "";
+      if (input.password) {
+        hashedPassword = await bcrypt.hash(input.password, 10);
+      }
+
+      const urlItem = await ctx.db.url.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          password: hashedPassword,
+        },
+      });
+
+      return urlItem;
     }),
   exists: publicProcedure
     .input(
@@ -37,7 +67,7 @@ export const urlRouter = createTRPCRouter({
           id: input.id,
         },
       });
-      return urlItem !== null;
+      return urlItem;
     }),
   existsByUserId: publicProcedure
     .input(
@@ -54,8 +84,25 @@ export const urlRouter = createTRPCRouter({
 
       return urlItem;
     }),
+  checkPassword: publicProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        password: z.string(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const urlItem = await ctx.db.url.findUnique({
+        where: {
+          id: input.id,
+        },
+      });
 
-  test: protectedProcedure.query(() => {
-    return "test";
-  }),
+      const ok = await bcrypt.compare(
+        input.password,
+        String(urlItem?.password),
+      );
+
+      return ok;
+    }),
 });
