@@ -27,7 +27,6 @@ export const env = createEnv({
     APPLE_SECRET: z.string(),
     GOOGLE_CLIENT_ID: z.string(),
     GOOGLE_CLIENT_SECRET: z.string(),
-    HASH_KEYWORD: z.string(),
   },
 
   /**
@@ -54,7 +53,6 @@ export const env = createEnv({
     APPLE_SECRET: process.env.APPLE_SECRET,
     GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
     GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
-    HASH_KEYWORD: process.env.HASH_KEYWORD,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation.
