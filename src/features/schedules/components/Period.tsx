@@ -16,7 +16,7 @@ const Period = (props: Props) => (
         .split("/")[0]
     }
     年{JpZodiac[(dayjs(props.startDate).year() + 8) % 12]} 〜{" "}
-    {dayjs(props.endDate).year()}/{" "}
+    {dayjs(props.endDate).year()}/
     {
       new Intl.DateTimeFormat("ja-JP-u-ca-japanese", { era: "long" })
         .format(new Date(props.endDate))
