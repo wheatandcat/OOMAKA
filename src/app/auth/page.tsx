@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import SignInError from "~/features/auth/components/SignInError";
 import { NextAuthProvider } from "~/app/providers";
 import { useEffect, useCallback, useRef } from "react";
+import Link from "next/link";
 import { api } from "~/trpc/react";
 
 const providers: {
@@ -45,12 +46,22 @@ function ClientHome() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const error = searchParams.get("error");
+  const urlID = getUrlId(location.href);
   const { data: sessionData } = useSession();
   const loading = useRef(false);
 
   const url = api.url.existsByUserId.useQuery(
     {
       userId: String(sessionData?.user?.id),
+    },
+    {
+      enabled: false,
+    },
+  );
+
+  const url2 = api.url.exists.useQuery(
+    {
+      id: String(urlID),
     },
     {
       enabled: false,
@@ -67,15 +78,46 @@ function ClientHome() {
     },
   });
 
+  const updateMutation = api.url.update.useMutation({
+    onError: (error) => {
+      console.log(error);
+    },
+    onSuccess: (data) => {
+      window.localStorage.setItem("URL_ID", data.id);
+      router.push(`/schedule/${data.id}`);
+    },
+  });
+
   const onRedirect = useCallback(async () => {
-    const u = await url.refetch();
-    if (u) {
-      void router.push(`/schedule/${String(u.data?.id)}`);
+    const u1 = await url.refetch();
+    if (u1?.data?.id) {
+      void router.push(`/schedule/${String(u1.data?.id)}`);
       return;
     }
 
+    if (urlID) {
+      const u2 = await url2.refetch();
+      if (u2?.data?.id) {
+        // 既にカレンダーが存在する場合は、認証したユーザー情報と紐付ける
+        updateMutation.mutate({
+          id: String(u2.data?.id),
+          userId: String(sessionData?.user?.id),
+          password: "",
+        });
+        return;
+      }
+    }
+
     createMutation.mutate({ userId: String(sessionData?.user?.id) });
-  }, [createMutation, router, sessionData?.user?.id, url]);
+  }, [
+    createMutation,
+    router,
+    sessionData?.user?.id,
+    updateMutation,
+    url,
+    url2,
+    urlID,
+  ]);
 
   useEffect(() => {
     if (sessionData && !loading.current) {
@@ -121,7 +163,22 @@ function ClientHome() {
                 })}
               </div>
               <div className="pb-5 text-center text-sm text-gray-500">
-                利用規約およびプライバシーポリシーに同意の上、
+                <Link
+                  href="/terms"
+                  target="_blank"
+                  className="font-medium text-blue-400"
+                >
+                  利用規約
+                </Link>
+                および
+                <Link
+                  href="/privacy"
+                  target="_blank"
+                  className="font-medium text-blue-400"
+                >
+                  プライバシーポリシー
+                </Link>
+                に同意の上、
                 <br />
                 ログインへお進みください。
               </div>
@@ -131,4 +188,23 @@ function ClientHome() {
       </div>
     </div>
   );
+}
+
+function getUrlId(encodedUrl: string): string | null {
+  // 外側のURLをパースする
+  const url = new URL(encodedUrl);
+  const callbackUrl = url.searchParams.get("callbackUrl");
+
+  if (!callbackUrl) {
+    return null;
+  }
+
+  // callbackUrlをデコードし、URLパラメータを解析する
+  const decodedCallbackUrl = decodeURIComponent(callbackUrl);
+  const callbackUrlParams = new URLSearchParams(
+    decodedCallbackUrl.split("?")[1],
+  );
+
+  // "urlID" の値を取得する
+  return callbackUrlParams.get("urlID");
 }

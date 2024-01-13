@@ -105,7 +105,7 @@ export function Template(props: Props) {
                   void onLogout();
                 } else {
                   void signIn("credentials", {
-                    callbackUrl: "/",
+                    callbackUrl: `/?urlID=${props.id}`,
                   });
                 }
               }}
@@ -119,13 +119,15 @@ export function Template(props: Props) {
             </div>
           </div>
           {props.login && (
-            <PublicationSetting
-              id={props.id}
-              userId={props.userId}
-              isPassword={props.isPassword}
-            />
+            <div className="flex pb-3 pl-6 sm:pb-3 sm:pl-0">
+              <PublicationSetting
+                id={props.id}
+                userId={props.userId}
+                isPassword={props.isPassword}
+              />
+            </div>
           )}
-          <div className="relative hidden justify-between sm:flex">
+          <div className="relative flex justify-between pl-6 sm:pl-0">
             <Period
               startDate={startDate.format()}
               endDate={startDate.add(1, "years").format()}

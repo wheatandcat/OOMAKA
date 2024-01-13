@@ -7,7 +7,7 @@ type Props = {
 
 const Pagination = (props: Props) => {
   return (
-    <div className="no-print rounded-lg">
+    <div className="no-print hidden rounded-lg sm:block">
       <button
         type="button"
         className="inline-flex cursor-pointer items-center rounded-l-lg border border-r-0 p-1 leading-none transition duration-100 ease-in-out hover:bg-gray-100"
@@ -16,7 +16,7 @@ const Pagination = (props: Props) => {
         <svg
           className="inline-flex h-6 w-6 leading-none text-gray-500"
           fill="none"
-          viewBox="0 0 24 24" 
+          viewBox="0 0 24 24"
           stroke="currentColor"
         >
           <path
