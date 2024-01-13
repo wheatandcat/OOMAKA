@@ -105,7 +105,7 @@ export function Template(props: Props) {
                   void onLogout();
                 } else {
                   void signIn("credentials", {
-                    callbackUrl: "/",
+                    callbackUrl: `/?urlID=${props.id}`,
                   });
                 }
               }}

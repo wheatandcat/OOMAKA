@@ -8,6 +8,8 @@ import usePrevious from "~/hooks/usePrevious";
 import InputItem from "./InputItem";
 import ShareItem from "./ShareItem";
 
+const MAX_ITEMS = 5;
+
 const bigShoulders = Big_Shoulders_Text({
   weight: ["400", "500", "800"],
   subsets: ["latin"],
@@ -126,21 +128,25 @@ const Items = (props: Props) => {
         {props.share ? (
           <ShareItem noEmoji />
         ) : (
-          <InputItem
-            urlId={props.urlId}
-            minDate={props.date}
-            maxDate={props.date.endOf("month")}
-            onRefresh={() => {
-              onRefresh().catch((error) => {
-                console.error(error);
-              });
-            }}
-          />
+          <>
+            {items.length < MAX_ITEMS && (
+              <InputItem
+                urlId={props.urlId}
+                minDate={props.date}
+                maxDate={props.date.endOf("month")}
+                onRefresh={() => {
+                  onRefresh().catch((error) => {
+                    console.error(error);
+                  });
+                }}
+              />
+            )}
+          </>
         )}
 
         {(() => {
-          if (items.length <= 4) {
-            const myArray = createArray(4 - items.length);
+          if (items.length <= MAX_ITEMS - 1) {
+            const myArray = createArray(MAX_ITEMS - 1 - items.length);
             return myArray.map((_, index) => (
               <div className="input-item border-b border-gray-300" key={index}>
                 <div className="h-6" />

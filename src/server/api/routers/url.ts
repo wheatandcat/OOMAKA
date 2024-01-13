@@ -49,6 +49,7 @@ export const urlRouter = createTRPCRouter({
           id: input.id,
         },
         data: {
+          userId: input.userId,
           password: hashedPassword,
         },
       });

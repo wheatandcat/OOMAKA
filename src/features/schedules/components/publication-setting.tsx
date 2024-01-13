@@ -16,7 +16,7 @@ type Input = {
 };
 
 const PublicationSetting = (props: Props) => {
-  const [isRotated, setIsRotated] = useState(false);
+  const [show, setShow] = useState(false);
   const width = useWindowWidth();
 
   const {
@@ -84,21 +84,17 @@ const PublicationSetting = (props: Props) => {
     });
   };
 
-  const handleClick = () => {
-    setIsRotated(!isRotated);
-  };
-
   const hight = width > 767 ? "30px" : "50px";
 
   return (
     <div>
       <div
         className="onClick={handleClick} flex cursor-pointer text-sm font-bold"
-        onClick={handleClick}
+        onClick={() => setShow(!show)}
       >
         <div
           className={` ${
-            isRotated ? "rotate-90" : "rotate-0"
+            show ? "rotate-90" : "rotate-0"
           } transition-transform duration-300 ease-in-out`}
         >
           ▶
@@ -108,7 +104,7 @@ const PublicationSetting = (props: Props) => {
 
       <div
         className={`transition-height overflow-hidden duration-500 ease-in-out`}
-        style={{ height: isRotated ? hight : "0px" }}
+        style={{ height: show ? hight : "0" }}
       >
         {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
         <form onSubmit={handleSubmit(onSubmit)}>
