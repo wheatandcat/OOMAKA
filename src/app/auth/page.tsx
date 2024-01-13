@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import SignInError from "~/features/auth/components/SignInError";
 import { NextAuthProvider } from "~/app/providers";
 import { useEffect, useCallback, useRef } from "react";
+import Link from "next/link";
 import { api } from "~/trpc/react";
 
 const providers: {
@@ -162,7 +163,22 @@ function ClientHome() {
                 })}
               </div>
               <div className="pb-5 text-center text-sm text-gray-500">
-                利用規約およびプライバシーポリシーに同意の上、
+                <Link
+                  href="/terms"
+                  target="_blank"
+                  className="font-medium text-blue-400"
+                >
+                  利用規約
+                </Link>
+                および
+                <Link
+                  href="/privacy"
+                  target="_blank"
+                  className="font-medium text-blue-400"
+                >
+                  プライバシーポリシー
+                </Link>
+                に同意の上、
                 <br />
                 ログインへお進みください。
               </div>

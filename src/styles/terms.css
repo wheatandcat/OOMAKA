@@ -1,0 +1,65 @@
+body {
+  overflow-x: hidden;
+}
+
+h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+
+  @media screen and (max-width: 767px) {
+    font-size: 1rem;
+  }
+}
+
+p {
+  font-size: 0.75rem;
+  margin-bottom: 1rem;
+  padding-left: 1rem;
+
+  @media screen and (max-width: 767px) {
+    font-size: 0.5rem;
+    padding-left: 0.2rem;
+  }
+}
+
+h2 {
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 0.25rem 0;
+  margin-bottom: 0.5rem;
+  border-bottom: 1px solid #eee;
+}
+
+ol {
+  padding-left: 1rem;
+  margin-bottom: 1rem;
+  counter-reset: count 0;
+  list-style-position: inside;
+
+  @media screen and (max-width: 767px) {
+    padding-left: 0.25rem;
+  }
+
+  li {
+    padding-left: 0.5em;
+    text-indent: -1em;
+    font-size: 0.75rem;
+    margin-bottom: 0.25rem;
+    line-height: 1.2 rem;
+    overflow-wrap: break-word;
+    word-break: keep-all;
+
+    @media screen and (max-width: 767px) {
+      font-size: 0.5rem;
+      padding-left: 0.2rem;
+    }
+  }
+
+  li:before {
+    content: counter(count) ". ";
+    counter-increment: count 1;
+    color: #353434;
+    font-weight: 500;
+  }
+}
