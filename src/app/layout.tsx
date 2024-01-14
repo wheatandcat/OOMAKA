@@ -16,6 +16,7 @@ const description = "OOMAKAは年間スケジュールを大まかにまとめ�
 const url = "https://oomaka.vercel.app";
 
 export const metadata = {
+  metadataBase: new URL(url),
   title: siteName,
   description,
   icons: [{ rel: "icon", url: "/favicon.ico" }],

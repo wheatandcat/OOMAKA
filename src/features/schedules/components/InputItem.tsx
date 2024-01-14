@@ -124,6 +124,17 @@ const InputItem = (props: Props) => {
     [isComposing, save],
   );
 
+  const onBlur = useCallback(
+    (e: React.FocusEvent<HTMLInputElement>) => {
+      if (value) {
+        if (save() === "new") {
+          e.currentTarget.value = "";
+        }
+      }
+    },
+    [value, save],
+  );
+
   const onRemoveDate = useCallback(() => {
     if (props.id) {
       const variables = {
@@ -174,6 +185,9 @@ const InputItem = (props: Props) => {
         setValue("");
         setDate(null);
         setLoading(true);
+        setIsOpen(false);
+      } else {
+        setDate(tDate);
         setIsOpen(false);
       }
     },
@@ -235,9 +249,11 @@ const InputItem = (props: Props) => {
           }}
           onCompositionStart={() => setIsComposing(true)}
           onCompositionEnd={() => setIsComposing(false)}
+          onBlur={onBlur}
           onKeyDown={onKeyDown}
           maxLength={10}
           disabled={loading}
+          enterKeyHint="done"
         />
       </div>
     </div>
