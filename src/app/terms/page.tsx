@@ -3,7 +3,7 @@ import "~/styles/terms.css";
 
 export default function Terms() {
   return (
-    <div className="container mx-auto px-4">
+    <div className="container mx-auto px-4 ">
       <Header />
       <main className="my-5">
         <div>

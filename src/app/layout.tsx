@@ -2,7 +2,6 @@ import "~/styles/globals.css";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Noto_Sans_JP } from "next/font/google";
 import { cookies } from "next/headers";
-
 import { TRPCReactProvider } from "~/trpc/react";
 
 const notojp = Noto_Sans_JP({
@@ -16,6 +15,7 @@ const description = "OOMAKAは年間スケジュールを大まかにまとめ�
 const url = "https://oomaka.vercel.app";
 
 export const metadata = {
+  metadataBase: new URL(url),
   title: siteName,
   description,
   icons: [{ rel: "icon", url: "/favicon.ico" }],

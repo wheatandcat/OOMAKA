@@ -1,5 +1,6 @@
 body {
   overflow-x: hidden;
+  word-break: break-all;
 }
 
 h1 {
@@ -18,7 +19,7 @@ p {
   padding-left: 1rem;
 
   @media screen and (max-width: 767px) {
-    font-size: 0.5rem;
+    font-size: 0.75rem;
     padding-left: 0.2rem;
   }
 }
@@ -38,6 +39,7 @@ ol {
   list-style-position: inside;
 
   @media screen and (max-width: 767px) {
+    font-size: 0.75rem;
     padding-left: 0.25rem;
   }
 
@@ -51,7 +53,7 @@ ol {
     word-break: keep-all;
 
     @media screen and (max-width: 767px) {
-      font-size: 0.5rem;
+      font-size: 0.75rem;
       padding-left: 0.2rem;
     }
   }

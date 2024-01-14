@@ -12,6 +12,7 @@ import { toast } from "react-toastify";
 import Layout from "~/components/Layout/Layout";
 import { type Schedule } from "@prisma/client";
 import PublicationSetting from "./publication-setting";
+import "dayjs/locale/ja";
 
 type Props = {
   login: boolean;

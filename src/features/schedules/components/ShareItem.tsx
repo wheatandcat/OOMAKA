@@ -36,6 +36,7 @@ const ShareItem = (props: Props) => {
           placeholder=""
           defaultValue={props.value}
           disabled
+          enterKeyHint="done"
         />
       </div>
     </div>

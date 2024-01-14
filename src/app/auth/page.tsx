@@ -1,7 +1,7 @@
 "use client";
 
 import { signIn, useSession } from "next-auth/react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import SignInError from "~/features/auth/components/SignInError";
 import { NextAuthProvider } from "~/app/providers";
 import { useEffect, useCallback, useRef } from "react";
@@ -46,7 +46,7 @@ function ClientHome() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const error = searchParams.get("error");
-  const urlID = getUrlId(location.href);
+  const urlID = getUrlId();
   const { data: sessionData } = useSession();
   const loading = useRef(false);
 
@@ -166,7 +166,7 @@ function ClientHome() {
                   );
                 })}
               </div>
-              <div className="pb-5 text-center text-sm text-gray-500">
+              <div className="http://localhost:3000/ pb-5 text-center text-xs text-gray-500 sm:text-sm">
                 <Link
                   href="/terms"
                   target="_blank"
@@ -182,8 +182,7 @@ function ClientHome() {
                 >
                   プライバシーポリシー
                 </Link>
-                に同意の上、
-                <br />
+                に同意の上、 <br />
                 ログインへお進みください。
               </div>
             </div>
@@ -194,21 +193,27 @@ function ClientHome() {
   );
 }
 
-function getUrlId(encodedUrl: string): string | null {
-  // 外側のURLをパースする
-  const url = new URL(encodedUrl);
-  const callbackUrl = url.searchParams.get("callbackUrl");
+function getUrlId(): string | null {
+  if (typeof window !== "undefined") {
+    const encodedUrl = window.location.href;
 
-  if (!callbackUrl) {
-    return null;
+    // 外側のURLをパースする
+    const url = new URL(encodedUrl);
+    const callbackUrl = url.searchParams.get("callbackUrl");
+
+    if (!callbackUrl) {
+      return null;
+    }
+
+    // callbackUrlをデコードし、URLパラメータを解析する
+    const decodedCallbackUrl = decodeURIComponent(callbackUrl);
+    const callbackUrlParams = new URLSearchParams(
+      decodedCallbackUrl.split("?")[1],
+    );
+
+    // "urlID" の値を取得する
+    return callbackUrlParams.get("urlID");
   }
 
-  // callbackUrlをデコードし、URLパラメータを解析する
-  const decodedCallbackUrl = decodeURIComponent(callbackUrl);
-  const callbackUrlParams = new URLSearchParams(
-    decodedCallbackUrl.split("?")[1],
-  );
-
-  // "urlID" の値を取得する
-  return callbackUrlParams.get("urlID");
+  return "";
 }

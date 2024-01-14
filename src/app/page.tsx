@@ -13,7 +13,7 @@ export default function Home() {
       <main className="item-center flex min-h-screen flex-col bg-gradient-to-b py-5">
         <div className="flex flex-col-reverse items-center gap-12 lg:container lg:flex-row lg:items-center">
           <div>
-            <div className="text-3xl font-extrabold">
+            <div className="text-xl font-extrabold sm:text-3xl">
               今年の予定、ざっくり決める
             </div>
             <p className="break-all pt-5 text-sm leading-7">
