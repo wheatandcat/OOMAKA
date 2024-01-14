@@ -83,9 +83,9 @@ export function Template(props: Props) {
       <>
         <main className="screen-container container mx-auto max-w-screen-xl gap-12 pt-3">
           <div className="no-print">
-            <div className="absolute right-20 top-0 sm:right-28">
+            <div className="absolute right-10 top-0 sm:right-28">
               <div
-                className="flex w-10 cursor-pointer flex-col items-center pt-3 hover:bg-blue-100 sm:w-14 sm:text-xl"
+                className="flex w-10 cursor-pointer flex-col items-center pb-3 pt-3 hover:bg-blue-100 sm:w-14 sm:pb-0 sm:text-xl"
                 onClick={() => void onShare()}
               >
                 🔗
@@ -95,7 +95,7 @@ export function Template(props: Props) {
               </div>
             </div>
             <div
-              className="absolute right-10 top-0 sm:right-14"
+              className="absolute right-14 top-0 hidden sm:block"
               onClick={() => void onPrint()}
             >
               <div className="flex w-10 cursor-pointer flex-col items-center pt-3 hover:bg-blue-100 sm:w-14 sm:text-xl">
@@ -117,7 +117,7 @@ export function Template(props: Props) {
                 }
               }}
             >
-              <div className="flex w-10 cursor-pointer flex-col items-center pt-3 hover:bg-blue-100 sm:w-14 sm:text-xl">
+              <div className="flex w-10 cursor-pointer flex-col items-center pb-3 pt-3 hover:bg-blue-100 sm:w-14 sm:pb-0 sm:text-xl">
                 {props.login ? "🔓" : "🗝️"}
                 <div className="text-xxs hidden text-center text-gray-500 sm:block">
                   {props.login ? "ログアウト" : "ログイン"}

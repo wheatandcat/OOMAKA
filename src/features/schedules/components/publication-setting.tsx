@@ -88,7 +88,7 @@ const PublicationSetting = (props: Props) => {
   const height = sp ? "60px" : "40px";
 
   return (
-    <div>
+    <div className="no-print">
       <div
         className="onClick={handleClick} flex cursor-pointer text-sm font-bold"
         onClick={() => setShow(!show)}

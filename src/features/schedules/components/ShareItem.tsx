@@ -10,8 +10,8 @@ type Props = {
 
 const ShareItem = (props: Props) => {
   return (
-    <div className="input-item items-center">
-      <div className="relative block h-6">
+    <div className="b-1 flex h-[32px] items-center border-b border-gray-300 pb-3 sm:h-[32px] sm:pb-0">
+      <div className="relative block">
         <span className="absolute top-1/2 h-4 w-4 -translate-y-1/2 transform rounded text-center">
           {(() => {
             if (props.noEmoji) {
@@ -30,14 +30,9 @@ const ShareItem = (props: Props) => {
           })()}
         </span>
 
-        <input
-          type="text"
-          className="block w-full border-b border-gray-300 bg-white py-1 pl-7 outline-none sm:pl-5"
-          placeholder=""
-          defaultValue={props.value}
-          disabled
-          enterKeyHint="done"
-        />
+        <div className="h-[19px] w-[167px] bg-white py-[3px] pl-7 outline-none sm:h-[19px] sm:py-[2px] sm:pl-5">
+          {props.value}
+        </div>
       </div>
     </div>
   );
