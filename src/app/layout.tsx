@@ -26,11 +26,13 @@ export const metadata = {
     siteName,
     locale: "ja_JP",
     type: "website",
+    images: [`${url}/api/og`],
   },
   twitter: {
     card: "summary_large_image",
     title: siteName,
     description,
+    images: [`${url}/api/og`],
   },
   alternates: {
     canonical: url,
