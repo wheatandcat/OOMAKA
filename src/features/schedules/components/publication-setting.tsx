@@ -85,7 +85,7 @@ const PublicationSetting = (props: Props) => {
   };
 
   const sp = width > 767 ? false : true;
-  const hight = sp ? "60px" : "40px";
+  const height = sp ? "60px" : "40px";
 
   return (
     <div>
@@ -105,7 +105,7 @@ const PublicationSetting = (props: Props) => {
 
       <div
         className={`transition-height overflow-hidden duration-500 ease-in-out`}
-        style={{ height: show ? hight : "0" }}
+        style={{ height: show ? height : "0" }}
       >
         {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
         <form onSubmit={handleSubmit(onSubmit)}>
