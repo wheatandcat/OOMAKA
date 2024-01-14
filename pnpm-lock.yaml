@@ -53,6 +53,9 @@ dependencies:
   '@vercel/og':
     specifier: ^0.6.2
     version: 0.6.2
+  '@vercel/speed-insights':
+    specifier: ^1.0.3
+    version: 1.0.3
   bcrypt:
     specifier: ^5.1.1
     version: 5.1.1
@@ -1103,6 +1106,11 @@ packages:
       '@resvg/resvg-wasm': 2.4.0
       satori: 0.10.9
       yoga-wasm-web: 0.3.3
+    dev: false
+
+  /@vercel/speed-insights@1.0.3:
+    resolution: {integrity: sha512-bKIt0HDdF6hP2bJZyS+za3k6sKeAXNRLSIUbwVwvyvKdsHBWS6ILBvmD1wXHZZyTqjU1TP7dTE/F6lHM6rBdKA==}
+    requiresBuild: true
     dev: false
 
   /abbrev@1.1.1:

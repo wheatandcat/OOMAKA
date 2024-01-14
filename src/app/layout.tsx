@@ -1,5 +1,5 @@
 import "~/styles/globals.css";
-
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Noto_Sans_JP } from "next/font/google";
 import { cookies } from "next/headers";
 
@@ -50,6 +50,7 @@ export default function RootLayout({
         <TRPCReactProvider cookies={cookies().toString()}>
           {children}
         </TRPCReactProvider>
+        <SpeedInsights />
       </body>
     </html>
   );
