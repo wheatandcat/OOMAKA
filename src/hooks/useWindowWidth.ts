@@ -2,18 +2,20 @@ import { useState, useEffect } from "react";
 
 // ウィンドウ横幅を追跡するカスタムフック
 const useWindowWidth = () => {
-  const [width, setWidth] = useState(window?.innerWidth ?? 0);
+  const [width, setWidth] = useState(() => {
+    return typeof window !== "undefined" ? window.innerWidth : 0;
+  });
 
   useEffect(() => {
     const handleResize = () => {
-      setWidth(window?.innerWidth);
+      setWidth(window.innerWidth);
     };
 
-    window?.addEventListener?.("resize", handleResize);
+    window.addEventListener("resize", handleResize);
 
     // コンポーネントのアンマウント時にイベントリスナーをクリーンアップ
     return () => {
-      window?.removeEventListener?.("resize", handleResize);
+      window.removeEventListener("resize", handleResize);
     };
   }, []);
 
