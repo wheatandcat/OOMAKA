@@ -133,11 +133,12 @@ const PublicationSetting = (props: Props) => {
                         <input
                           data-tooltip-target="tooltip-bottom"
                           data-tooltip-placement="bottom"
-                          className="focus:shadow-outline w-60 appearance-none border bg-white py-[2px] pl-1 text-sm leading-tight text-gray-700 focus:outline-none disabled:bg-gray-200"
+                          className="focus:shadow-outline w-60 appearance-none border bg-white py-[2px] pl-1 leading-tight text-gray-700 focus:outline-none disabled:bg-gray-200"
                           type="password"
                           id="password"
                           placeholder={isPassword ? "" : "パスワードなし"}
                           disabled={!isPassword}
+                          enterKeyHint="done"
                           {...register("password", {
                             required: true,
                             minLength: {
@@ -172,7 +173,7 @@ const PublicationSetting = (props: Props) => {
                         type="submit"
                         className="ml-1 rounded border border-gray-400 bg-gray-100 text-center text-xs no-underline hover:bg-gray-200 disabled:opacity-50"
                         style={{
-                          padding: "0.25rem 0.5rem",
+                          padding: sp ? "0.25rem 0.5rem" : "0.2rem 0.5rem",
                         }}
                         disabled={!!errors.password?.message}
                       >
@@ -191,7 +192,7 @@ const PublicationSetting = (props: Props) => {
               <button
                 className="rounded border border-gray-400 bg-gray-100 text-center text-xs no-underline hover:bg-gray-200 disabled:opacity-50"
                 style={{
-                  padding: sp ? "0.25rem 0.5rem" : "0.1rem 0.5rem",
+                  padding: "0.1rem 0.5rem",
                 }}
                 onClick={() => setInputPassword(true)}
               >
