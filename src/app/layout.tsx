@@ -1,5 +1,5 @@
 import "~/styles/globals.css";
-
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Noto_Sans_JP } from "next/font/google";
 import { cookies } from "next/headers";
 
@@ -12,7 +12,7 @@ const notojp = Noto_Sans_JP({
 });
 
 const siteName = "OOMAKA | 年間スケジュール、まとめるなら";
-const description = "サイトの説明";
+const description = "OOMAKAは年間スケジュールを大まかにまとめるサービスです。";
 const url = "https://oomaka.vercel.app";
 
 export const metadata = {
@@ -26,11 +26,13 @@ export const metadata = {
     siteName,
     locale: "ja_JP",
     type: "website",
+    images: [`${url}/api/og`],
   },
   twitter: {
     card: "summary_large_image",
     title: siteName,
     description,
+    images: [`${url}/api/og`],
   },
   alternates: {
     canonical: url,
@@ -48,6 +50,7 @@ export default function RootLayout({
         <TRPCReactProvider cookies={cookies().toString()}>
           {children}
         </TRPCReactProvider>
+        <SpeedInsights />
       </body>
     </html>
   );

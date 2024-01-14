@@ -1,16 +1,12 @@
-import { ImageResponse } from "next/og";
+import { ImageResponse } from "@vercel/og";
 
-export const revalidate = "force-cache";
-export const runtime = "nodejs";
+export const runtime = "edge";
 
-export const alt = "OGP画像";
-export const size = {
-  width: 1200,
-  height: 630,
-};
-export const contentType = "image/png";
+export async function GET() {
+  const fontData = await fetch(
+    new URL("../../../../public/NotoSansJP-Bold2.ttf", import.meta.url),
+  ).then((res) => res.arrayBuffer());
 
-export default function Image() {
   return new ImageResponse(
     (
       <div
@@ -22,6 +18,7 @@ export default function Image() {
           justifyContent: "center",
           width: "100%",
           height: "100%",
+          fontFamily: '"NotoSansJP"',
         }}
       >
         <div
@@ -48,8 +45,9 @@ export default function Image() {
           <div
             style={{
               fontSize: 72,
-              fontWeight: 900,
+              fontWeight: 800,
               letterSpacing: "0.5rem",
+              paddingLeft: "2rem",
             }}
           >
             OOMAKA
@@ -61,7 +59,15 @@ export default function Image() {
       </div>
     ),
     {
-      ...size,
+      width: 1200,
+      height: 630,
+      fonts: [
+        {
+          name: "NotoSansJP",
+          data: fontData,
+          style: "normal",
+        },
+      ],
     },
   );
 }

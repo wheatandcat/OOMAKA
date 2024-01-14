@@ -7,7 +7,7 @@ type Props = {
 
 const Pagination = (props: Props) => {
   return (
-    <div className="no-print hidden rounded-lg sm:block">
+    <div className="no-print mr-16 mt-4 flex justify-end rounded-lg sm:mr-0 sm:mt-0">
       <button
         type="button"
         className="inline-flex cursor-pointer items-center rounded-l-lg border border-r-0 p-1 leading-none transition duration-100 ease-in-out hover:bg-gray-100"
