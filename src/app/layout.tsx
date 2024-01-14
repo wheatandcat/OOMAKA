@@ -2,7 +2,6 @@ import "~/styles/globals.css";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Noto_Sans_JP } from "next/font/google";
 import { cookies } from "next/headers";
-
 import { TRPCReactProvider } from "~/trpc/react";
 
 const notojp = Noto_Sans_JP({

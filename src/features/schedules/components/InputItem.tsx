@@ -228,6 +228,8 @@ const InputItem = (props: Props) => {
               defaultDate={props.minDate.toDate()}
               minDate={props.minDate.toDate()}
               maxDate={props.maxDate.toDate()}
+              locale="ja"
+              monthLabelFormat="YYYY年M月"
             />
             <br />
             <button
