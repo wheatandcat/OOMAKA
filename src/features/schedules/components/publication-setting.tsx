@@ -84,7 +84,8 @@ const PublicationSetting = (props: Props) => {
     });
   };
 
-  const hight = width > 767 ? "30px" : "50px";
+  const sp = width > 767 ? false : true;
+  const hight = sp ? "60px" : "40px";
 
   return (
     <div>
@@ -112,7 +113,7 @@ const PublicationSetting = (props: Props) => {
             <div className="flex flex-col items-start sm:flex-row sm:items-center ">
               {inputPassword && (
                 <>
-                  <div className="mr-2 flex items-center">
+                  <div className="mb-1 mr-2 flex items-center sm:mb-0">
                     <input
                       id="isPassword"
                       type="checkbox"
@@ -171,7 +172,7 @@ const PublicationSetting = (props: Props) => {
                         type="submit"
                         className="ml-1 rounded border border-gray-400 bg-gray-100 text-center text-xs no-underline hover:bg-gray-200 disabled:opacity-50"
                         style={{
-                          padding: "0.1rem 0.5rem",
+                          padding: "0.25rem 0.5rem",
                         }}
                         disabled={!!errors.password?.message}
                       >
@@ -190,7 +191,7 @@ const PublicationSetting = (props: Props) => {
               <button
                 className="rounded border border-gray-400 bg-gray-100 text-center text-xs no-underline hover:bg-gray-200 disabled:opacity-50"
                 style={{
-                  padding: "0.1rem 0.5rem",
+                  padding: sp ? "0.25rem 0.5rem" : "0.1rem 0.5rem",
                 }}
                 onClick={() => setInputPassword(true)}
               >
