@@ -4,6 +4,7 @@ import { api } from "~/trpc/server";
 import { redirect } from "next/navigation";
 import Header from "~/components/Layout/Header";
 import { CreateUrl } from "~/features/top/components/create-url";
+import { cookies } from "next/headers";
 
 export default function Home() {
   return (
@@ -57,6 +58,12 @@ async function CrudShowcase() {
     const url = await api.url.existsByUserId.query({
       userId: String(session?.user.id),
     });
+    if (url) redirect(`/schedule/${String(url?.id)}`);
+  }
+
+  const urlId = cookies().get("URL_ID");
+  if (urlId) {
+    const url = await api.url.exists.query({ id: String(urlId.value) });
     if (url) redirect(`/schedule/${String(url?.id)}`);
   }
 

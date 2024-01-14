@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
-import { useEffect, useCallback } from "react";
+import { useCallback } from "react";
 import { api } from "~/trpc/react";
 
 export function CreateUrl() {
@@ -13,21 +13,11 @@ export function CreateUrl() {
       console.log(error);
     },
     onSuccess: (data) => {
-      window.localStorage.setItem("URL_ID", data.id);
+      document.cookie = `URL_ID=${encodeURIComponent(data.id)}; path=/`;
+      router.refresh();
       router.push(`/schedule/${data.id}`);
     },
   });
-
-  useEffect(() => {
-    const check = () => {
-      const res: string | null = window.localStorage.getItem("URL_ID");
-      if (res) {
-        router.push(`/schedule/${res}`);
-      }
-    };
-
-    void check();
-  }, [router]);
 
   const onCreateURL = useCallback(() => {
     createMutation.mutate({ userId: "" });

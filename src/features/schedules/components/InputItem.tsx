@@ -159,14 +159,32 @@ const InputItem = (props: Props) => {
           emoji: "",
           text: value,
         };
-        console.log(variables);
         updateMutation.mutate(variables);
+        setDate(tDate);
+        setIsOpen(false);
+      } else if (value) {
+        const variables = {
+          urlId: props.urlId,
+          day: tDate?.getDate?.() ?? 99,
+          date: tDate ?? dayjs(props.maxDate).toDate(),
+          emoji: "",
+          text: value,
+        };
+        createMutation.mutate(variables);
+        setValue("");
+        setDate(null);
+        setLoading(true);
+        setIsOpen(false);
       }
-
-      setDate(tDate);
-      setIsOpen(false);
     },
-    [value, props.id, props.urlId, props.maxDate, updateMutation],
+    [
+      props.id,
+      props.urlId,
+      props.maxDate,
+      value,
+      updateMutation,
+      createMutation,
+    ],
   );
 
   return (
@@ -211,8 +229,10 @@ const InputItem = (props: Props) => {
           type="text"
           className="block w-full border-b border-gray-300 py-1 pl-7 outline-none focus:border-blue-500 disabled:cursor-not-allowed disabled:text-gray-300 sm:pl-5"
           placeholder="タスクを入力"
-          defaultValue={value}
-          onChange={(e) => setValue(e.currentTarget.value)}
+          value={value}
+          onChange={(e) => {
+            setValue(e.currentTarget.value);
+          }}
           onCompositionStart={() => setIsComposing(true)}
           onCompositionEnd={() => setIsComposing(false)}
           onKeyDown={onKeyDown}
