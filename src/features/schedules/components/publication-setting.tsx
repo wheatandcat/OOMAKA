@@ -84,7 +84,8 @@ const PublicationSetting = (props: Props) => {
     });
   };
 
-  const hight = width > 767 ? "30px" : "50px";
+  const sp = width > 767 ? false : true;
+  const height = sp ? "60px" : "40px";
 
   return (
     <div>
@@ -104,7 +105,7 @@ const PublicationSetting = (props: Props) => {
 
       <div
         className={`transition-height overflow-hidden duration-500 ease-in-out`}
-        style={{ height: show ? hight : "0" }}
+        style={{ height: show ? height : "0" }}
       >
         {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -112,7 +113,7 @@ const PublicationSetting = (props: Props) => {
             <div className="flex flex-col items-start sm:flex-row sm:items-center ">
               {inputPassword && (
                 <>
-                  <div className="mr-2 flex items-center">
+                  <div className="mb-1 mr-2 flex items-center sm:mb-0">
                     <input
                       id="isPassword"
                       type="checkbox"
@@ -132,11 +133,12 @@ const PublicationSetting = (props: Props) => {
                         <input
                           data-tooltip-target="tooltip-bottom"
                           data-tooltip-placement="bottom"
-                          className="focus:shadow-outline w-60 appearance-none border bg-white py-[2px] pl-1 text-sm leading-tight text-gray-700 focus:outline-none disabled:bg-gray-200"
+                          className="focus:shadow-outline w-60 appearance-none border bg-white py-[2px] pl-1 leading-tight text-gray-700 focus:outline-none disabled:bg-gray-200"
                           type="password"
                           id="password"
                           placeholder={isPassword ? "" : "パスワードなし"}
                           disabled={!isPassword}
+                          enterKeyHint="done"
                           {...register("password", {
                             required: true,
                             minLength: {
@@ -171,7 +173,7 @@ const PublicationSetting = (props: Props) => {
                         type="submit"
                         className="ml-1 rounded border border-gray-400 bg-gray-100 text-center text-xs no-underline hover:bg-gray-200 disabled:opacity-50"
                         style={{
-                          padding: "0.1rem 0.5rem",
+                          padding: sp ? "0.25rem 0.5rem" : "0.2rem 0.5rem",
                         }}
                         disabled={!!errors.password?.message}
                       >
