@@ -73,7 +73,8 @@ function ClientHome() {
       console.log(error);
     },
     onSuccess: (data) => {
-      window.localStorage.setItem("URL_ID", data.id);
+      document.cookie = `URL_ID=${encodeURIComponent(data.id)}; path=/`;
+      router.refresh();
       router.push(`/schedule/${data.id}`);
     },
   });
@@ -83,7 +84,8 @@ function ClientHome() {
       console.log(error);
     },
     onSuccess: (data) => {
-      window.localStorage.setItem("URL_ID", data.id);
+      document.cookie = `URL_ID=${encodeURIComponent(data.id)}; path=/`;
+      router.refresh();
       router.push(`/schedule/${data.id}`);
     },
   });
@@ -91,6 +93,8 @@ function ClientHome() {
   const onRedirect = useCallback(async () => {
     const u1 = await url.refetch();
     if (u1?.data?.id) {
+      document.cookie = `URL_ID=${encodeURIComponent(u1?.data?.id)}; path=/`;
+      router.refresh();
       void router.push(`/schedule/${String(u1.data?.id)}`);
       return;
     }

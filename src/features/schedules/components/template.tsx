@@ -33,14 +33,16 @@ export function Template(props: Props) {
   );
 
   const onLogout = useCallback(async () => {
-    window.localStorage.setItem("URL_ID", "");
+    document.cookie = `URL_ID=${encodeURIComponent("")}; path=/`;
+    router.refresh();
     await signOut({
       callbackUrl: "/",
     });
-  }, []);
+  }, [router]);
 
   const onToIndex = useCallback(() => {
-    window.localStorage.setItem("URL_ID", "");
+    document.cookie = `URL_ID=${encodeURIComponent("")}; path=/`;
+    router.refresh();
     router.push("/");
   }, [router]);
 
