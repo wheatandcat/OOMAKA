@@ -1,4 +1,11 @@
 import { ImageResponse } from "next/og";
+import { Noto_Sans_JP } from "next/font/google";
+
+const notojp = Noto_Sans_JP({
+  weight: ["400", "500", "800"],
+  subsets: ["latin"],
+  display: "swap",
+});
 
 export const revalidate = "force-cache";
 export const runtime = "nodejs";
@@ -14,6 +21,7 @@ export default function Image() {
   return new ImageResponse(
     (
       <div
+        className={`${notojp.className}`}
         style={{
           background: "white",
           display: "flex",

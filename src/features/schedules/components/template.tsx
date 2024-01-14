@@ -80,26 +80,30 @@ export function Template(props: Props) {
       <>
         <main className="screen-container container mx-auto max-w-screen-xl gap-12 pt-3">
           <div className="no-print">
-            <div className="absolute right-28 top-0 hidden sm:block">
+            <div className="absolute right-20 top-0 sm:right-28">
               <div
-                className="flex w-14 cursor-pointer flex-col items-center pt-3 text-xl hover:bg-blue-100"
+                className="flex w-10 cursor-pointer flex-col items-center pt-3 hover:bg-blue-100 sm:w-14 sm:text-xl"
                 onClick={() => void onShare()}
               >
                 🔗
-                <div className="text-xxs text-center text-gray-500">シェア</div>
+                <div className="text-xxs hidden text-center  text-gray-500 sm:block">
+                  シェア
+                </div>
               </div>
             </div>
             <div
-              className="absolute right-14 top-0 hidden sm:block"
+              className="absolute right-10 top-0 sm:right-14"
               onClick={() => void onPrint()}
             >
-              <div className="flex w-14 cursor-pointer flex-col items-center pt-3 text-xl hover:bg-blue-100">
+              <div className="flex w-10 cursor-pointer flex-col items-center pt-3 hover:bg-blue-100 sm:w-14 sm:text-xl">
                 🖨️
-                <div className="text-xxs text-center text-gray-500">印刷</div>
+                <div className="text-xxs hidden text-center  text-gray-500 sm:block">
+                  印刷
+                </div>
               </div>
             </div>
             <div
-              className="absolute right-0 top-0 hidden sm:block"
+              className="absolute right-0 top-0"
               onClick={() => {
                 if (props.login) {
                   void onLogout();
@@ -110,9 +114,9 @@ export function Template(props: Props) {
                 }
               }}
             >
-              <div className="flex w-14 cursor-pointer flex-col items-center pt-3 text-xl hover:bg-blue-100">
+              <div className="flex w-10 cursor-pointer flex-col items-center pt-3 hover:bg-blue-100 sm:w-14 sm:text-xl">
                 {props.login ? "🔓" : "🗝️"}
-                <div className="text-xxs text-center text-gray-500">
+                <div className="text-xxs hidden text-center text-gray-500 sm:block">
                   {props.login ? "ログアウト" : "ログイン"}
                 </div>
               </div>
@@ -127,7 +131,7 @@ export function Template(props: Props) {
               />
             </div>
           )}
-          <div className="relative flex justify-between pl-6 sm:pl-0">
+          <div className="relative flex flex-col justify-between pl-6 sm:flex-row sm:pl-0">
             <Period
               startDate={startDate.format()}
               endDate={startDate.add(1, "years").format()}
@@ -137,7 +141,7 @@ export function Template(props: Props) {
               onPrev={() => setStartDate(startDate.subtract(1, "months"))}
             />
           </div>
-          <div className="flex flex-col flex-nowrap justify-center pt-10 sm:flex-row sm:flex-wrap sm:justify-start">
+          <div className="flex flex-col flex-nowrap justify-center pt-0 sm:flex-row sm:flex-wrap sm:justify-start sm:pt-10">
             {months.map((item, index) => (
               <div
                 key={index}

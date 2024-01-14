@@ -12,7 +12,7 @@ const notojp = Noto_Sans_JP({
 });
 
 const siteName = "OOMAKA | 年間スケジュール、まとめるなら";
-const description = "サイトの説明";
+const description = "OOMAKAは年間スケジュールを大まかにまとめるサービスです。";
 const url = "https://oomaka.vercel.app";
 
 export const metadata = {
