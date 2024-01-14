@@ -205,7 +205,7 @@ const InputItem = (props: Props) => {
     <div className="input-item items-center">
       <div className="relative block h-6">
         <span
-          className="absolute top-1/2 h-4 w-4 -translate-y-1/2 transform cursor-pointer rounded text-center hover:bg-blue-100"
+          className="absolute top-1/2 h-4 w-4  -translate-y-1/2 transform cursor-pointer rounded text-center sm:hover:bg-blue-100"
           onClick={() => setIsOpen(true)}
         >
           {(() => {
