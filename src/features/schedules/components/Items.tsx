@@ -125,24 +125,27 @@ const Items = (props: Props) => {
           );
         })}
 
-        {props.share ? (
-          <ShareItem noEmoji />
-        ) : (
-          <>
-            {items.length < MAX_ITEMS && (
-              <InputItem
-                urlId={props.urlId}
-                minDate={props.date}
-                maxDate={props.date.endOf("month")}
-                onRefresh={() => {
-                  onRefresh().catch((error) => {
-                    console.error(error);
-                  });
-                }}
-              />
-            )}
-          </>
-        )}
+        {(() => {
+          if (items.length < MAX_ITEMS) {
+            if (props.share) {
+              return <ShareItem noEmoji />;
+            } else {
+              return (
+                <InputItem
+                  urlId={props.urlId}
+                  minDate={props.date}
+                  maxDate={props.date.endOf("month")}
+                  onRefresh={() => {
+                    onRefresh().catch((error) => {
+                      console.error(error);
+                    });
+                  }}
+                />
+              );
+            }
+          }
+          return null;
+        })()}
 
         {(() => {
           if (items.length <= MAX_ITEMS - 1) {
