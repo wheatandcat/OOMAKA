@@ -37,9 +37,26 @@ export function Template(props: Props) {
     });
   }, []);
 
+  const onPrint = useCallback(() => {
+    setTimeout(() => window.print(), 100);
+  }, []);
+
   return (
     <Layout>
       <main className="container mx-auto max-w-screen-xl gap-12 pt-3">
+        <div className="no-print">
+          <div
+            className="absolute right-0 top-0 hidden sm:block"
+            onClick={() => void onPrint()}
+          >
+            <div className="flex w-10 cursor-pointer flex-col items-center pt-3 hover:bg-blue-100 sm:w-14 sm:text-xl">
+              🖨️
+              <div className="text-xxs hidden text-center  text-gray-500 sm:block">
+                印刷
+              </div>
+            </div>
+          </div>
+        </div>
         <div className="relative hidden justify-between sm:flex">
           <Period
             startDate={startDate.format()}
@@ -50,9 +67,13 @@ export function Template(props: Props) {
             onPrev={() => setStartDate(startDate.subtract(1, "months"))}
           />
         </div>
-        <div className="flex flex-col flex-nowrap justify-center pt-10 sm:flex-row sm:flex-wrap sm:justify-start">
+
+        <div className="flex flex-col flex-nowrap justify-center pt-0 sm:flex-row sm:flex-wrap sm:justify-start sm:pt-10">
           {months.map((item, index) => (
-            <div key={index} className="px-0 pb-6 sm:pb-16 sm:pr-16">
+            <div
+              key={index}
+              className="item-container px-0 pb-6 sm:pb-16 sm:pr-16"
+            >
               <Items
                 share
                 urlId={String(props.id)}
@@ -62,7 +83,7 @@ export function Template(props: Props) {
             </div>
           ))}
         </div>
-        <div className="mb-10 flex justify-center">
+        <div className="no-print mb-10 flex justify-center">
           <button
             type="button"
             className="mb-1 mr-1 rounded-md border border-gray-700 px-5 py-2.5 text-center text-sm font-medium text-blue-700 hover:bg-blue-800 hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-300 dark:border-gray-500 dark:text-gray-500 dark:hover:bg-gray-500 dark:hover:text-white dark:focus:ring-gray-800"

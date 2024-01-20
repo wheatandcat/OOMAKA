@@ -30,6 +30,14 @@
 }
 
 @media print {
+  @page {
+    size: landscape;
+    display: flex;
+    justify-items: center;
+    align-items: center;
+    flex-direction: column;
+  }
+
   .no-print {
     display: none;
   }
@@ -37,11 +45,16 @@
   .item-container {
     page-break-inside: avoid;
     padding-right: 2.5rem !important;
-    padding-bottom: 1rem !important;
+    padding-bottom: 2rem !important;
   }
 
   .screen-container {
     padding-left: 2rem !important;
+  }
+
+  .input-item {
+    margin-bottom: 0 !important;
+    height: 30px !important;
   }
 }
 
