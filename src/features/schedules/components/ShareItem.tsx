@@ -10,8 +10,8 @@ type Props = {
 
 const ShareItem = (props: Props) => {
   return (
-    <div className="input-item flex h-6 w-[155px] items-center justify-start border-b border-gray-300">
-      <div className="h-4 w-4 rounded text-center">
+    <div className="share-item flex h-6 items-center justify-start border-b border-gray-300 sm:w-[155px]">
+      <div className="w-6 rounded text-center sm:h-4 sm:w-4">
         {(() => {
           if (props.noEmoji) {
             return null;

@@ -16,12 +16,28 @@
 }
 
 .input-item {
-  margin-bottom: 0.6rem;
+  height: 36px;
+}
+
+.share-item {
+  height: 36px;
+}
+
+.input-item-first {
+  height: 27px !important;
 }
 
 @media screen and (min-width: 640px) {
   .input-item {
-    margin-bottom: 0.1rem;
+    height: 27px;
+  }
+
+  .share-item {
+    height: 27px;
+  }
+
+  .input-item-first {
+    height: 22px !important;
   }
 }
 
@@ -53,8 +69,11 @@
   }
 
   .input-item {
-    margin-bottom: 0 !important;
-    height: 30px !important;
+    height: 27px !important;
+  }
+
+  .share-item {
+    height: 27px;
   }
 }
 
