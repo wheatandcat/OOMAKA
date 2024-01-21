@@ -149,12 +149,18 @@ const Items = (props: Props) => {
 
         {(() => {
           if (items.length <= MAX_ITEMS - 1) {
+            const itemClass = "input-item";
             const myArray = createArray(MAX_ITEMS - 1 - items.length);
-            return myArray.map((_, index) => (
-              <div className="input-item border-b border-gray-300" key={index}>
-                <div className="h-6" />
-              </div>
-            ));
+            return myArray.map((_, index) => {
+              const firstClass =
+                index === 0 && !props.share ? "input-item-first" : "";
+              return (
+                <div
+                  className={`${itemClass} ${firstClass} border-b border-gray-300`}
+                  key={index}
+                />
+              );
+            });
           }
           return null;
         })()}
