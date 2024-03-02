@@ -49,7 +49,7 @@ const Items = (props: Props) => {
   const schedules = api.schedule.fetchInPeriod.useQuery(
     {
       urlId: props.urlId,
-      startDate: props.date.toDate(),
+      startDate: props.date.startOf("day").toDate(),
       endDate: props.date.endOf("month").toDate(),
     },
     {
@@ -68,6 +68,7 @@ const Items = (props: Props) => {
     if (r.error) {
       return;
     }
+
     setItems(r.data ?? []);
   }, [schedules]);
 
