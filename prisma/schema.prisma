@@ -6,7 +6,7 @@ generator client {
 }
 
 datasource db {
-    provider = "postgresql"
+    provider = "sqlite"
     // NOTE: When using mysql or sqlserver, uncomment the @db.Text annotations in model Account below
     // Further reading:
     // https://next-auth.js.org/adapters/prisma#create-the-prisma-schema
@@ -14,21 +14,34 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
+model Post {
+    id        Int      @id @default(autoincrement())
+    name      String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    createdBy   User   @relation(fields: [createdById], references: [id])
+    createdById String
+
+    @@index([name])
+}
+
 // Necessary for Next auth
 model Account {
-    id                String  @id @default(cuid())
-    userId            String
-    type              String
-    provider          String
-    providerAccountId String
-    refresh_token     String? // @db.Text
-    access_token      String? // @db.Text
-    expires_at        Int?
-    token_type        String?
-    scope             String?
-    id_token          String? // @db.Text
-    session_state     String?
-    user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+    id                       String  @id @default(cuid())
+    userId                   String
+    type                     String
+    provider                 String
+    providerAccountId        String
+    refresh_token            String? // @db.Text
+    access_token             String? // @db.Text
+    expires_at               Int?
+    token_type               String?
+    scope                    String?
+    id_token                 String? // @db.Text
+    session_state            String?
+    user                     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+    refresh_token_expires_in Int?
 
     @@unique([provider, providerAccountId])
 }
@@ -49,27 +62,7 @@ model User {
     image         String?
     accounts      Account[]
     sessions      Session[]
-}
-
-model Url {
-    id       String     @id @default(cuid())
-    userId   String?
-    password String?    @db.Char(60)
-    schedule Schedule[]
-}
-
-model Schedule {
-    id        String   @id @default(cuid())
-    urlId     String
-    date      DateTime
-    day       Int?
-    emoji     String?  @db.VarChar(5)
-    text      String   @db.VarChar(10)
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-    url       Url      @relation(fields: [urlId], references: [id], onDelete: Cascade)
-
-    @@index([urlId, date, day])
+    posts         Post[]
 }
 
 model VerificationToken {
@@ -78,4 +71,25 @@ model VerificationToken {
     expires    DateTime
 
     @@unique([identifier, token])
+}
+
+model Url {
+    id       String     @id @default(cuid())
+    userId   String?
+    password String?
+    schedule Schedule[]
+}
+
+model Schedule {
+    id        String   @id @default(cuid())
+    urlId     String
+    date      DateTime
+    day       Int?
+    emoji     String?
+    text      String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    url       Url      @relation(fields: [urlId], references: [id], onDelete: Cascade)
+
+    @@index([urlId, date, day])
 }

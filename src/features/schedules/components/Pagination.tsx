@@ -27,7 +27,7 @@ const Pagination = (props: Props) => {
           />
         </svg>
       </button>
-      <div className="inline-flex h-6 border-r"></div>
+      <div className="inline-flex h-6 border-r" />
       <button
         type="button"
         className="inline-flex cursor-pointer items-center rounded-r-lg border border-l-0 p-1 leading-none transition duration-100 ease-in-out hover:bg-gray-100"

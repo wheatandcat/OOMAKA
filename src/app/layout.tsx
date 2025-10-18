@@ -1,7 +1,6 @@
 import "~/styles/globals.css";
-import { SpeedInsights } from "@vercel/speed-insights/next";
+
 import { Noto_Sans_JP } from "next/font/google";
-import { cookies } from "next/headers";
 import { TRPCReactProvider } from "~/trpc/react";
 
 const notojp = Noto_Sans_JP({
@@ -41,16 +40,11 @@ export const metadata = {
 
 export default function RootLayout({
   children,
-}: {
-  children: React.ReactNode;
-}) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="ja">
       <body className={`${notojp.className}`}>
-        <TRPCReactProvider cookies={cookies().toString()}>
-          {children}
-        </TRPCReactProvider>
-        <SpeedInsights />
+        <TRPCReactProvider>{children}</TRPCReactProvider>
       </body>
     </html>
   );

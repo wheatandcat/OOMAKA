@@ -1,5 +1,5 @@
 import React, { memo } from "react";
-import { type DateValue } from "@mantine/dates";
+import type { DateValue } from "@mantine/dates";
 
 type Props = {
   date?: DateValue;
@@ -23,9 +23,8 @@ const ShareItem = (props: Props) => {
 
           if (props.date) {
             return props.date.getDate();
-          } else {
-            return "🗓️";
           }
+          return "🗓️";
         })()}
       </div>
 

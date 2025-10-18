@@ -6,7 +6,7 @@ export const scheduleRouter = createTRPCRouter({
     .input(
       z.object({
         urlId: z.string(),
-      }),
+      })
     )
     .query(({ ctx, input }) => {
       return ctx.db.schedule.findMany({
@@ -24,7 +24,7 @@ export const scheduleRouter = createTRPCRouter({
         urlId: z.string(),
         startDate: z.date(),
         endDate: z.date(),
-      }),
+      })
     )
     .query(async ({ ctx, input }) => {
       const schedules = await ctx.db.schedule.findMany({
@@ -49,7 +49,7 @@ export const scheduleRouter = createTRPCRouter({
         date: z.date(),
         emoji: z.string(),
         text: z.string(),
-      }),
+      })
     )
     .mutation(async ({ ctx, input }) => {
       const schedule = await ctx.db.schedule.create({
@@ -67,7 +67,7 @@ export const scheduleRouter = createTRPCRouter({
     .input(
       z.object({
         id: z.string(),
-      }),
+      })
     )
     .mutation(async ({ ctx, input }) => {
       const schedule = await ctx.db.schedule.delete({
@@ -86,7 +86,7 @@ export const scheduleRouter = createTRPCRouter({
         date: z.date(),
         emoji: z.string(),
         text: z.string(),
-      }),
+      })
     )
     .mutation(async ({ ctx, input }) => {
       const schedule = await ctx.db.schedule.update({

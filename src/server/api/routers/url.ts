@@ -13,7 +13,7 @@ export const urlRouter = createTRPCRouter({
     .input(
       z.object({
         userId: z.string().optional(),
-      }),
+      })
     )
     .mutation(async ({ ctx, input }) => {
       const data = {
@@ -32,7 +32,7 @@ export const urlRouter = createTRPCRouter({
         id: z.string(),
         userId: z.string(),
         password: z.string().optional(),
-      }),
+      })
     )
     .mutation(async ({ ctx, input }) => {
       if (input.userId !== ctx.session?.user?.id) {
@@ -60,7 +60,7 @@ export const urlRouter = createTRPCRouter({
     .input(
       z.object({
         id: z.string(),
-      }),
+      })
     )
     .query(async ({ ctx, input }) => {
       const urlItem = await ctx.db.url.findUnique({
@@ -74,7 +74,7 @@ export const urlRouter = createTRPCRouter({
     .input(
       z.object({
         userId: z.string(),
-      }),
+      })
     )
     .query(async ({ ctx, input }) => {
       const urlItem = await ctx.db.url.findFirst({
@@ -90,7 +90,7 @@ export const urlRouter = createTRPCRouter({
       z.object({
         id: z.string(),
         password: z.string(),
-      }),
+      })
     )
     .query(async ({ ctx, input }) => {
       const urlItem = await ctx.db.url.findUnique({
@@ -101,7 +101,7 @@ export const urlRouter = createTRPCRouter({
 
       const ok = await bcrypt.compare(
         input.password,
-        String(urlItem?.password),
+        String(urlItem?.password)
       );
 
       return ok;

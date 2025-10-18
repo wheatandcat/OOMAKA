@@ -190,6 +190,7 @@ const PublicationSetting = (props: Props) => {
           <div className="flex items-center">
             <div>
               <button
+                type="button"
                 className="rounded border border-gray-400 bg-gray-100 text-center text-xs no-underline hover:bg-gray-200 disabled:opacity-50"
                 style={{
                   padding: "0.1rem 0.5rem",
@@ -201,6 +202,7 @@ const PublicationSetting = (props: Props) => {
             </div>
             <div className="ml-2">
               <button
+                type="button"
                 className="rounded border border-gray-400 bg-gray-100 text-center text-xs no-underline hover:bg-gray-200 disabled:opacity-50"
                 style={{
                   padding: "0.1rem 0.5rem",

@@ -1,17 +1,17 @@
 import React, { memo, useState, useCallback, useEffect } from "react";
 
-import { Big_Shoulders_Text } from "next/font/google";
-import { type Schedule } from "@prisma/client";
+import { Roboto } from "next/font/google";
+import type { Schedule } from "@prisma/client";
 import type dayjs from "~/utils/dayjs";
-import { api } from "~/utils/api";
+import { api } from "~/trpc/react";
 import usePrevious from "~/hooks/usePrevious";
 import InputItem from "./InputItem";
 import ShareItem from "./ShareItem";
 
 const MAX_ITEMS = 5;
 
-const bigShoulders = Big_Shoulders_Text({
-  weight: ["400", "500", "800"],
+const roboto = Roboto({
+  weight: ["400", "500", "700"],
   subsets: ["latin"],
   display: "swap",
 });
@@ -57,7 +57,7 @@ const Items = (props: Props) => {
         ssr: false,
       },
       enabled: false, // 初回はfetchしない
-    },
+    }
   );
 
   const month = Number(props.date.format("M"));
@@ -84,7 +84,7 @@ const Items = (props: Props) => {
     <div className="flex px-8 sm:w-fit sm:px-0">
       <div>
         <div
-          className={`w-6 text-center text-4xl font-bold text-gray-300 ${bigShoulders.className}`}
+          className={`w-6 text-center text-4xl font-bold text-gray-300 ${roboto.className}`}
         >
           {month}
         </div>
@@ -130,20 +130,19 @@ const Items = (props: Props) => {
           if (items.length < MAX_ITEMS) {
             if (props.share) {
               return <ShareItem noEmoji />;
-            } else {
-              return (
-                <InputItem
-                  urlId={props.urlId}
-                  minDate={props.date}
-                  maxDate={props.date.endOf("month")}
-                  onRefresh={() => {
-                    onRefresh().catch((error) => {
-                      console.error(error);
-                    });
-                  }}
-                />
-              );
             }
+            return (
+              <InputItem
+                urlId={props.urlId}
+                minDate={props.date}
+                maxDate={props.date.endOf("month")}
+                onRefresh={() => {
+                  onRefresh().catch((error) => {
+                    console.error(error);
+                  });
+                }}
+              />
+            );
           }
           return null;
         })()}

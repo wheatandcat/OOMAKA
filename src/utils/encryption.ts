@@ -8,7 +8,7 @@ const generateKey = async () => {
       length: 256,
     },
     true,
-    ["encrypt", "decrypt"],
+    ["encrypt", "decrypt"]
   );
   return key;
 };
@@ -33,7 +33,7 @@ const encryptText = async (text: string) => {
       iv: iv,
     },
     key,
-    encodedText,
+    encodedText
   );
 
   const base64String = bufferToBase64(encrypted);
@@ -50,7 +50,7 @@ const decryptText = async (encrypted: ArrayBuffer) => {
       iv: iv,
     },
     key,
-    encrypted,
+    encrypted
   );
   const decodedText = new TextDecoder().decode(decrypted);
   return decodedText;

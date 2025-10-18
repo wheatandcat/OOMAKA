@@ -1,26 +1,29 @@
-# OOMAKA
+# Create T3 App
 
-<img width="640" alt="スクリーンショット 2024-01-15 23 24 55" src="https://github.com/wheatandcat/OOMAKA/assets/19209314/eb4ce04c-d804-4d00-8d1c-01d4ee880663">
+This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
 
+## What's next? How do I make an app with this?
 
+We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
 
-■ URL<br/>
-https://oomaka.vercel.app/
+If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
 
-## マイグレーション
+- [Next.js](https://nextjs.org)
+- [NextAuth.js](https://next-auth.js.org)
+- [Prisma](https://prisma.io)
+- [Drizzle](https://orm.drizzle.team)
+- [Tailwind CSS](https://tailwindcss.com)
+- [tRPC](https://trpc.io)
 
-```bash
-$ pnpm db:push
-```
+## Learn More
 
-## DB確認
+To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
 
-```bash
-$ pnpm db:studio
-```
+- [Documentation](https://create.t3.gg/)
+- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
 
-## ローカル起動
+You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
 
-```bash
-$ pnpm run dev
-```
+## How do I deploy this?
+
+Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.

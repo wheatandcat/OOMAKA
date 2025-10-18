@@ -1,7 +1,7 @@
-import * as React from "react";
+import type { FC } from "react";
 import Link from "next/link";
 
-const Header: React.FC = () => (
+const Header: FC = () => (
   <div className="no-print container relative mx-auto flex max-w-screen-xl justify-between gap-12 px-4 sm:px-0">
     <div className="py-2">
       <Link href="/">

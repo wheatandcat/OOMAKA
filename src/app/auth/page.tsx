@@ -1,7 +1,7 @@
 "use client";
 
 import { signIn, useSession } from "next-auth/react";
-import { useRouter, useSearchParams, usePathname } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import SignInError from "~/features/auth/components/SignInError";
 import { NextAuthProvider } from "~/app/providers";
 import { useEffect, useCallback, useRef } from "react";
@@ -56,7 +56,7 @@ function ClientHome() {
     },
     {
       enabled: false,
-    },
+    }
   );
 
   const url2 = api.url.exists.useQuery(
@@ -65,7 +65,7 @@ function ClientHome() {
     },
     {
       enabled: false,
-    },
+    }
   );
 
   const createMutation = api.url.create.useMutation({
@@ -147,7 +147,7 @@ function ClientHome() {
               </div>
               {!!error && (
                 <div className="pb-6">
-                  <SignInError error={String(error)}></SignInError>
+                  <SignInError error={String(error)} />
                 </div>
               )}
               <div className="flex flex-col items-center pb-10">
@@ -155,8 +155,9 @@ function ClientHome() {
                   return (
                     <div key={provider.id}>
                       <button
+                        type="button"
                         className={`my-3 w-72 rounded-lg px-4 py-2 font-bold ${String(
-                          provider.className,
+                          provider.className
                         )}`}
                         onClick={() => void signIn(provider.id)}
                       >
@@ -208,7 +209,7 @@ function getUrlId(): string | null {
     // callbackUrlをデコードし、URLパラメータを解析する
     const decodedCallbackUrl = decodeURIComponent(callbackUrl);
     const callbackUrlParams = new URLSearchParams(
-      decodedCallbackUrl.split("?")[1],
+      decodedCallbackUrl.split("?")[1]
     );
 
     // "urlID" の値を取得する
