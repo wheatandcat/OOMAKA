@@ -1,5 +1,5 @@
 import "~/styles/globals.css";
-
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Noto_Sans_JP } from "next/font/google";
 import { TRPCReactProvider } from "~/trpc/react";
 
@@ -45,6 +45,7 @@ export default function RootLayout({
     <html lang="ja">
       <body className={`${notojp.className}`}>
         <TRPCReactProvider>{children}</TRPCReactProvider>
+        <SpeedInsights />
       </body>
     </html>
   );

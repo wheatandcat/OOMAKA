@@ -1,7 +1,9 @@
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import type { DefaultSession, NextAuthConfig } from "next-auth";
 import DiscordProvider from "next-auth/providers/discord";
-
+import AppleProvider from "next-auth/providers/apple";
+import GoogleProvider from "next-auth/providers/google";
+import { env } from "~/env.js";
 import { db } from "~/server/db";
 
 /**
@@ -42,7 +44,19 @@ export const authConfig = {
      *
      * @see https://next-auth.js.org/providers/github
      */
+    AppleProvider({
+      clientId: env.AUTH_APPLE_ID,
+      clientSecret: env.AUTH_APPLE_SECRET,
+    }),
+    GoogleProvider({
+      clientId: env.AUTH_GOOGLE_ID,
+      clientSecret: env.AUTH_GOOGLE_SECRET,
+    }),
   ],
+  // カスタムページを実装する場合は設定する
+  pages: {
+    signIn: "/auth",
+  },
   adapter: PrismaAdapter(db),
   callbacks: {
     session: ({ session, user }) => ({

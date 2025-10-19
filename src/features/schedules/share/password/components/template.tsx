@@ -33,10 +33,11 @@ function Template(props: Props) {
     },
     {
       enabled: false,
-      onError: (error) => {
+      throwOnError(error) {
         console.log(error);
+        return true;
       },
-    },
+    }
   );
 
   const onSubmit = async () => {

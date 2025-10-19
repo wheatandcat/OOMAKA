@@ -133,7 +133,7 @@ const PublicationSetting = (props: Props) => {
                         <input
                           data-tooltip-target="tooltip-bottom"
                           data-tooltip-placement="bottom"
-                          className="w-60 appearance-none bg-white py-[2px] pl-1 text-gray-700 leading-tight focus:shadow-outline focus:outline-none disabled:bg-gray-200"
+                          className="w-60 appearance-none border border-gray-300 bg-white py-[2px] pl-1 text-gray-700 leading-tight focus:shadow-outline focus:outline-none disabled:bg-gray-200"
                           type="password"
                           id="password"
                           placeholder={isPassword ? "" : "パスワードなし"}
