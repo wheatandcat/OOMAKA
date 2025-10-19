@@ -120,7 +120,7 @@ const InputItem = (props: Props) => {
         }
       }
     },
-    [isComposing, save],
+    [isComposing, save]
   );
 
   const onBlur = useCallback(
@@ -131,7 +131,7 @@ const InputItem = (props: Props) => {
         }
       }
     },
-    [value, save],
+    [value, save]
   );
 
   const onRemoveDate = useCallback(() => {
@@ -197,14 +197,13 @@ const InputItem = (props: Props) => {
       value,
       updateMutation,
       createMutation,
-    ],
+    ]
   );
 
   return (
     <div className="input-item items-center">
       <div className="relative block h-6">
         <span
-          type="button"
           className="-translate-y-1/2 absolute top-1/2 h-4 w-4 transform cursor-pointer rounded text-center sm:hover:bg-blue-100"
           onClick={() => setIsOpen(true)}
         >
