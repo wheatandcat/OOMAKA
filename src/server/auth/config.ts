@@ -49,8 +49,8 @@ export const authConfig = {
       clientSecret: env.AUTH_APPLE_SECRET,
     }),
     GoogleProvider({
-      clientId: env.AUTH_GOOGLE_ID,
-      clientSecret: env.AUTH_GOOGLE_SECRET,
+      clientId: env.AUTH_GOOGLE_CLIENT_ID,
+      clientSecret: env.AUTH_GOOGLE_CLIENT_SECRET,
     }),
   ],
   // カスタムページを実装する場合は設定する

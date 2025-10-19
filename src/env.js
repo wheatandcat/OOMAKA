@@ -15,8 +15,8 @@ export const env = createEnv({
     AUTH_DISCORD_SECRET: z.string(),
     AUTH_APPLE_ID: z.string().optional(),
     AUTH_APPLE_SECRET: z.string().optional(),
-    AUTH_GOOGLE_ID: z.string().optional(),
-    AUTH_GOOGLE_SECRET: z.string().optional(),
+    AUTH_GOOGLE_CLIENT_ID: z.string().optional(),
+    AUTH_GOOGLE_CLIENT_SECRET: z.string().optional(),
     DATABASE_URL: z.string().url(),
     NODE_ENV: z
       .enum(["development", "test", "production"])
@@ -42,8 +42,8 @@ export const env = createEnv({
     AUTH_DISCORD_SECRET: process.env.AUTH_DISCORD_SECRET,
     AUTH_APPLE_ID: process.env.AUTH_APPLE_ID,
     AUTH_APPLE_SECRET: process.env.AUTH_APPLE_SECRET,
-    AUTH_GOOGLE_ID: process.env.AUTH_GOOGLE_ID,
-    AUTH_GOOGLE_SECRET: process.env.AUTH_GOOGLE_SECRET,
+    AUTH_GOOGLE_CLIENT_ID: process.env.AUTH_GOOGLE_CLIENT_ID,
+    AUTH_GOOGLE_CLIENT_SECRET: process.env.AUTH_GOOGLE_CLIENT_SECRET,
     DATABASE_URL: process.env.DATABASE_URL,
     NODE_ENV: process.env.NODE_ENV,
   },
