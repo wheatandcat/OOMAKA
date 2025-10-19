@@ -5,29 +5,29 @@ import { api } from "~/trpc/server";
 import { hashText } from "~/utils/encryption";
 
 export default async function Page({
-	params,
+  params,
 }: {
-	params: Promise<{ id: string }>;
+  params: Promise<{ id: string }>;
 }) {
-	const { id } = await params;
-	const url = await api.url.exists({ id });
-	if (!!url === false) {
-		// 存在しないURLの場合はトップページに戻す
-		redirect("/");
-	}
+  const { id } = await params;
+  const url = await api.url.exists({ id });
+  if (!!url === false) {
+    // 存在しないURLの場合はトップページに戻す
+    redirect("/");
+  }
 
-	if (url?.password !== null) {
-		const key = hashText(`item_${id}`);
+  if (url?.password !== null) {
+    const key = hashText(`item_${id}`);
 
-		const cookieStore = await cookies();
-		const ok = cookieStore.has(key);
+    const cookieStore = await cookies();
+    const ok = cookieStore.has(key);
 
-		if (!ok) {
-			redirect(`/schedule/${id}/share/password`);
-		}
-	}
+    if (!ok) {
+      redirect(`/schedule/${id}/share/password`);
+    }
+  }
 
-	const schedules = await api.schedule.fetch({ urlId: id });
+  const schedules = await api.schedule.fetch({ urlId: id });
 
-	return <Template schedules={schedules} id={id} />;
+  return <Template schedules={schedules} id={id} />;
 }

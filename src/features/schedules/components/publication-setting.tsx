@@ -133,7 +133,7 @@ const PublicationSetting = (props: Props) => {
                         <input
                           data-tooltip-target="tooltip-bottom"
                           data-tooltip-placement="bottom"
-                          className="w-60 appearance-none  bg-white py-[2px] pl-1 text-gray-700 leading-tight focus:shadow-outline focus:outline-none disabled:bg-gray-200"
+                          className="w-60 appearance-none bg-white py-[2px] pl-1 text-gray-700 leading-tight focus:shadow-outline focus:outline-none disabled:bg-gray-200"
                           type="password"
                           id="password"
                           placeholder={isPassword ? "" : "パスワードなし"}
@@ -171,7 +171,7 @@ const PublicationSetting = (props: Props) => {
                     <div>
                       <button
                         type="submit"
-                        className="ml-1 rounded border border-gray-400 bg-gray-100 text-center text-xs no-underline hover:bg-gray-200 disabled:opacity-50 setting-button"
+                        className="setting-button ml-1 rounded border border-gray-400 bg-gray-100 text-center text-xs no-underline hover:bg-gray-200 disabled:opacity-50"
                         disabled={!!errors.password?.message}
                       >
                         設定

@@ -3,7 +3,7 @@ import dayjs from "~/utils/dayjs";
 
 export const monthItems = (
   startMonth: number,
-  startYear: number
+  startYear: number,
 ): dayjs.Dayjs[] => {
   const months: dayjs.Dayjs[] = [];
   for (let i = 0; i < 12; i++) {
@@ -23,7 +23,7 @@ export const monthItems = (
 
 export const getScheduleInMonth = (
   date: dayjs.Dayjs,
-  schedule: Schedule[]
+  schedule: Schedule[],
 ): Schedule[] => {
   return schedule.filter((s) => {
     return (
