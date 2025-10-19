@@ -1,14 +1,9 @@
-import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import {
-  getServerSession,
-  type DefaultSession,
-  type NextAuthOptions,
-} from "next-auth";
-import DiscordProvider from "next-auth/providers/discord";
+import { PrismaAdapter } from "@auth/prisma-adapter";
+import type { DefaultSession, NextAuthConfig } from "next-auth";
 import AppleProvider from "next-auth/providers/apple";
+import DiscordProvider from "next-auth/providers/discord";
 import GoogleProvider from "next-auth/providers/google";
-
-import { env } from "~/env.mjs";
+import { env } from "~/env.js";
 import { db } from "~/server/db";
 
 /**
@@ -37,31 +32,9 @@ declare module "next-auth" {
  *
  * @see https://next-auth.js.org/configuration/options
  */
-export const authOptions: NextAuthOptions = {
-  callbacks: {
-    session: ({ session, user }) => ({
-      ...session,
-      user: {
-        ...session.user,
-        id: user.id,
-      },
-    }),
-  },
-  adapter: PrismaAdapter(db),
+export const authConfig = {
   providers: [
-    DiscordProvider({
-      clientId: env.DISCORD_CLIENT_ID,
-      clientSecret: env.DISCORD_CLIENT_SECRET,
-    }),
-    AppleProvider({
-      clientId: env.APPLE_ID,
-      clientSecret: env.APPLE_SECRET,
-    }),
-    GoogleProvider({
-      clientId: env.GOOGLE_CLIENT_ID,
-      clientSecret: env.GOOGLE_CLIENT_SECRET,
-    }),
-
+    DiscordProvider,
     /**
      * ...add more providers here.
      *
@@ -71,17 +44,28 @@ export const authOptions: NextAuthOptions = {
      *
      * @see https://next-auth.js.org/providers/github
      */
+    AppleProvider({
+      clientId: env.AUTH_APPLE_ID,
+      clientSecret: env.AUTH_APPLE_SECRET,
+    }),
+    GoogleProvider({
+      clientId: env.AUTH_GOOGLE_ID,
+      clientSecret: env.AUTH_GOOGLE_SECRET,
+    }),
   ],
-  secret: env.NEXTAUTH_SECRET,
+  // カスタムページを実装する場合は設定する
   pages: {
     signIn: "/auth",
-    error: "/auth",
   },
-};
-
-/**
- * Wrapper for `getServerSession` so that you don't need to import the `authOptions` in every file.
- *
- * @see https://next-auth.js.org/configuration/nextjs
- */
-export const getServerAuthSession = () => getServerSession(authOptions);
+  adapter: PrismaAdapter(db),
+  callbacks: {
+    session: ({ session, user }) => ({
+      ...session,
+      user: {
+        ...session.user,
+        id: user.id,
+      },
+    }),
+  },
+  trustHost: true,
+} satisfies NextAuthConfig;

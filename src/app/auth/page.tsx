@@ -1,11 +1,11 @@
 "use client";
 
 import { signIn, useSession } from "next-auth/react";
-import { useRouter, useSearchParams, usePathname } from "next/navigation";
-import SignInError from "~/features/auth/components/SignInError";
-import { NextAuthProvider } from "~/app/providers";
-import { useEffect, useCallback, useRef } from "react";
 import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Suspense, useCallback, useEffect, useRef } from "react";
+import { NextAuthProvider } from "~/app/providers";
+import SignInError from "~/features/auth/components/SignInError";
 import { api } from "~/trpc/react";
 
 const providers: {
@@ -37,7 +37,9 @@ const providers: {
 export default function SignIn() {
   return (
     <NextAuthProvider>
-      <ClientHome />
+      <Suspense fallback={<div>Loading...</div>}>
+        <ClientHome />
+      </Suspense>
     </NextAuthProvider>
   );
 }
@@ -137,17 +139,17 @@ function ClientHome() {
         <div className="container z-10 flex h-screen flex-col items-center justify-center">
           <div className=" rounded-xl border bg-white px-20 py-4">
             <div>
-              <div className="pb-10 pt-5 text-center">
+              <div className="pt-5 pb-10 text-center">
                 <div className="signin-mini-logo-title">
                   年間スケジュール、まとめるなら
                 </div>
-                <div className="signin-logo-title text-xl font-bold">
+                <div className="signin-logo-title font-bold text-xl">
                   OOMAKA
                 </div>
               </div>
               {!!error && (
                 <div className="pb-6">
-                  <SignInError error={String(error)}></SignInError>
+                  <SignInError error={String(error)} />
                 </div>
               )}
               <div className="flex flex-col items-center pb-10">
@@ -155,6 +157,7 @@ function ClientHome() {
                   return (
                     <div key={provider.id}>
                       <button
+                        type="button"
                         className={`my-3 w-72 rounded-lg px-4 py-2 font-bold ${String(
                           provider.className,
                         )}`}
@@ -166,7 +169,7 @@ function ClientHome() {
                   );
                 })}
               </div>
-              <div className="http://localhost:3000/ pb-5 text-center text-xs text-gray-500 sm:text-sm">
+              <div className="http://localhost:3000/ pb-5 text-center text-gray-500 text-xs sm:text-sm">
                 <Link
                   href="/terms"
                   target="_blank"

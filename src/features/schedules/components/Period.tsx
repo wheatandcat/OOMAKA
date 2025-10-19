@@ -1,6 +1,6 @@
+import dayjs from "dayjs";
 import React, { memo } from "react";
 import { JpZodiac } from "~/utils/emoji";
-import dayjs from "dayjs";
 
 type Props = {
   startDate: string;
@@ -8,7 +8,7 @@ type Props = {
 };
 
 const Period = (props: Props) => (
-  <div className="text-xl font-bold">
+  <div className="font-bold text-xl">
     {dayjs(props.startDate).year()}/
     {
       new Intl.DateTimeFormat("ja-JP-u-ca-japanese", { era: "long" })

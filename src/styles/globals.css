@@ -1,6 +1,4 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
 .mini-logo-title {
   font-size: 10px;
@@ -87,4 +85,12 @@
 
 .signin-mini-logo-title {
   font-size: 8px;
+}
+
+.setting-button {
+  padding: 0.2rem 0.5rem;
+
+  @media screen and (min-width: 767px) {
+    padding: 0.25rem 0.5rem;
+  }
 }

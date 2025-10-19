@@ -1,7 +1,7 @@
-import { type ReactElement } from "react";
-import Header from "./Header";
-import Footer from "./Footer";
+import type { ReactElement } from "react";
 import { ToastContainer } from "react-toastify";
+import Footer from "./Footer";
+import Header from "./Header";
 import "react-toastify/dist/ReactToastify.css";
 
 type LayoutProps = Required<{

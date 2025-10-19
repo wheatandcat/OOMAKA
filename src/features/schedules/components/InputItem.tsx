@@ -1,7 +1,7 @@
-import React, { memo, useState, useCallback } from "react";
-import { DatePicker, type DateValue } from "@mantine/dates";
 import { Modal } from "@mantine/core";
-import { api } from "~/utils/api";
+import { DatePicker, type DateValue } from "@mantine/dates";
+import { memo, useCallback, useState } from "react";
+import { api } from "~/trpc/react";
 import dayjs from "~/utils/dayjs";
 import { getEmoji } from "~/utils/emoji";
 
@@ -74,31 +74,30 @@ const InputItem = (props: Props) => {
         };
         updateMutation.mutate(variables);
         return "update";
-      } else {
-        const variables = {
-          urlId: props.urlId,
-          day: date ? date.getDate() : 99,
-          date: date ? date : dayjs(props.maxDate).toDate(),
-          emoji,
-          text: value,
-        };
-
-        createMutation.mutate(variables);
-
-        setValue("");
-        setDate(null);
-        setLoading(true);
-        return "new";
       }
-    } else {
-      // valueが空の場合は削除
-      if (props.id) {
-        const variables = {
-          id: props.id ?? "",
-        };
-        deleteMutation.mutate(variables);
-        return "delete";
-      }
+      const variables = {
+        urlId: props.urlId,
+        day: date ? date.getDate() : 99,
+        date: date ? date : dayjs(props.maxDate).toDate(),
+        emoji,
+        text: value,
+      };
+
+      createMutation.mutate(variables);
+
+      setValue("");
+      setDate(null);
+      setLoading(true);
+      return "new";
+    }
+
+    // valueが空の場合は削除
+    if (props.id) {
+      const variables = {
+        id: props.id ?? "",
+      };
+      deleteMutation.mutate(variables);
+      return "delete";
     }
   }, [
     date,
@@ -205,7 +204,7 @@ const InputItem = (props: Props) => {
     <div className="input-item items-center">
       <div className="relative block h-6">
         <span
-          className="absolute top-1/2 h-4 w-4 -translate-y-1/2 transform cursor-pointer rounded text-center sm:hover:bg-blue-100"
+          className="-translate-y-1/2 absolute top-1/2 h-4 w-4 transform cursor-pointer rounded text-center sm:hover:bg-blue-100"
           onClick={() => setIsOpen(true)}
         >
           {(() => {
@@ -215,9 +214,8 @@ const InputItem = (props: Props) => {
 
             if (date) {
               return date.getDate();
-            } else {
-              return "🗓️";
             }
+            return "🗓️";
           })()}
         </span>
         <Modal opened={isOpen} onClose={() => setIsOpen(false)}>
@@ -233,6 +231,7 @@ const InputItem = (props: Props) => {
             />
             <br />
             <button
+              type="button"
               className="rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
               onClick={onRemoveDate}
             >
@@ -243,7 +242,7 @@ const InputItem = (props: Props) => {
 
         <input
           type="text"
-          className="block w-full border-b border-gray-300 py-1 pl-7 outline-none focus:border-blue-500 disabled:cursor-not-allowed disabled:text-gray-300 sm:pl-5"
+          className="block w-full border-gray-300 border-b py-1 pl-7 outline-none focus:border-blue-500 disabled:cursor-not-allowed disabled:text-gray-300 sm:pl-5"
           placeholder="タスクを入力"
           value={value}
           onChange={(e) => {

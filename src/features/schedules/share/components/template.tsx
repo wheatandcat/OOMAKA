@@ -1,14 +1,14 @@
 "use client";
 
-import { useState, useCallback } from "react";
-import Period from "~/features/schedules/components/Period";
-import Items from "~/features/schedules/components/Items";
-import dayjs from "~/utils/dayjs";
-import { monthItems, getScheduleInMonth } from "~/utils/schedule";
-import Pagination from "~/features/schedules/components/Pagination";
+import type { Schedule } from "@prisma/client";
+import { useCallback, useState } from "react";
 import { toast } from "react-toastify";
 import Layout from "~/components/Layout/Layout";
-import { type Schedule } from "@prisma/client";
+import Items from "~/features/schedules/components/Items";
+import Pagination from "~/features/schedules/components/Pagination";
+import Period from "~/features/schedules/components/Period";
+import dayjs from "~/utils/dayjs";
+import { getScheduleInMonth, monthItems } from "~/utils/schedule";
 
 type Props = {
   id: string;
@@ -46,12 +46,12 @@ export function Template(props: Props) {
       <main className="container mx-auto max-w-screen-xl gap-12 pt-3">
         <div className="no-print">
           <div
-            className="absolute right-0 top-0 hidden sm:block"
+            className="absolute top-0 right-0 hidden sm:block"
             onClick={() => void onPrint()}
           >
             <div className="flex w-10 cursor-pointer flex-col items-center pt-3 hover:bg-blue-100 sm:w-14 sm:text-xl">
               🖨️
-              <div className="text-xxs hidden text-center  text-gray-500 sm:block">
+              <div className="hidden text-center text-gray-500 text-xxs sm:block">
                 印刷
               </div>
             </div>
@@ -72,7 +72,7 @@ export function Template(props: Props) {
           {months.map((item, index) => (
             <div
               key={index}
-              className="item-container px-0 pb-6 sm:pb-16 sm:pr-16"
+              className="item-container px-0 pb-6 sm:pr-16 sm:pb-16"
             >
               <Items
                 share
@@ -86,7 +86,7 @@ export function Template(props: Props) {
         <div className="no-print mb-10 flex justify-center">
           <button
             type="button"
-            className="mb-1 mr-1 rounded-md border border-gray-700 px-5 py-2.5 text-center text-sm font-medium text-blue-700 hover:bg-blue-800 hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-300 dark:border-gray-500 dark:text-gray-500 dark:hover:bg-gray-500 dark:hover:text-white dark:focus:ring-gray-800"
+            className="mr-1 mb-1 rounded-md border border-gray-700 px-5 py-2.5 text-center font-medium text-blue-700 text-sm hover:bg-blue-800 hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-300 dark:border-gray-500 dark:text-gray-500 dark:focus:ring-gray-800 dark:hover:bg-gray-500 dark:hover:text-white"
             onClick={() => void onShare()}
           >
             リンクをコピー

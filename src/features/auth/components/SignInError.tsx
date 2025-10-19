@@ -27,7 +27,7 @@ const SignInError = ({ error }: Props) => {
   const errorMessage = String(error && (errors[error] ?? errors.default));
   return (
     <div
-      className="relative w-80 rounded border border-red-400 bg-red-100 px-4 py-3 text-xs text-red-700"
+      className="relative w-80 rounded border border-red-400 bg-red-100 px-4 py-3 text-red-700 text-xs"
       role="alert"
     >
       <div>{errorMessage}</div>

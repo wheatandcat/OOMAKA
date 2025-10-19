@@ -1,5 +1,5 @@
-import { ImageResponse } from "next/og";
 import dayjs from "dayjs";
+import { ImageResponse } from "next/og";
 import { JpZodiac } from "~/utils/emoji";
 
 export const size = {
@@ -13,22 +13,20 @@ export const contentType = "image/png";
 
 export default function Icon() {
   return new ImageResponse(
-    (
-      <div
-        style={{
-          fontSize: 24,
-          borderRadius: "50%",
-          width: "100%",
-          height: "100%",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          color: "#333",
-        }}
-      >
-        <span>{JpZodiac[(dayjs().year() + 8) % 12]} </span>
-      </div>
-    ),
+    <div
+      style={{
+        fontSize: 24,
+        borderRadius: "50%",
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        color: "#333",
+      }}
+    >
+      <span>{JpZodiac[(dayjs().year() + 8) % 12]} </span>
+    </div>,
     {
       ...size,
     },

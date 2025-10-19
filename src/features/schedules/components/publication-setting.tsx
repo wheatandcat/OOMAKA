@@ -1,8 +1,8 @@
 import { memo, useState } from "react";
-import { useForm, type SubmitHandler } from "react-hook-form";
+import { type SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-import { api } from "~/trpc/react";
 import useWindowWidth from "~/hooks/useWindowWidth";
+import { api } from "~/trpc/react";
 
 type Props = {
   id: string;
@@ -90,7 +90,7 @@ const PublicationSetting = (props: Props) => {
   return (
     <div className="no-print">
       <div
-        className="onClick={handleClick} flex cursor-pointer text-sm font-bold"
+        className="onClick={handleClick} flex cursor-pointer font-bold text-sm"
         onClick={() => setShow(!show)}
       >
         <div
@@ -104,7 +104,7 @@ const PublicationSetting = (props: Props) => {
       </div>
 
       <div
-        className={`transition-height overflow-hidden duration-500 ease-in-out`}
+        className="overflow-hidden transition-height duration-500 ease-in-out"
         style={{ height: show ? height : "0" }}
       >
         {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
@@ -113,7 +113,7 @@ const PublicationSetting = (props: Props) => {
             <div className="flex flex-col items-start sm:flex-row sm:items-center ">
               {inputPassword && (
                 <>
-                  <div className="mb-1 mr-2 flex items-center sm:mb-0">
+                  <div className="mr-2 mb-1 flex items-center sm:mb-0">
                     <input
                       id="isPassword"
                       type="checkbox"
@@ -122,7 +122,7 @@ const PublicationSetting = (props: Props) => {
                     />
                     <label
                       htmlFor="isPassword"
-                      className="ms-2 text-sm font-medium text-gray-900"
+                      className="ms-2 font-medium text-gray-900 text-sm"
                     >
                       パスワード設定
                     </label>
@@ -133,7 +133,7 @@ const PublicationSetting = (props: Props) => {
                         <input
                           data-tooltip-target="tooltip-bottom"
                           data-tooltip-placement="bottom"
-                          className="focus:shadow-outline w-60 appearance-none border bg-white py-[2px] pl-1 leading-tight text-gray-700 focus:outline-none disabled:bg-gray-200"
+                          className="w-60 appearance-none border border-gray-300 bg-white py-[2px] pl-1 text-gray-700 leading-tight focus:shadow-outline focus:outline-none disabled:bg-gray-200"
                           type="password"
                           id="password"
                           placeholder={isPassword ? "" : "パスワードなし"}
@@ -154,10 +154,10 @@ const PublicationSetting = (props: Props) => {
                           })}
                         />
                         {errors.password?.message && (
-                          <div className="absolute left-0 top-8 z-10 inline-block rounded-lg bg-red-500 px-3  py-2 text-xs font-medium text-white opacity-95  shadow-sm">
+                          <div className="absolute top-8 left-0 z-10 inline-block rounded-lg bg-red-500 px-3 py-2 font-medium text-white text-xs opacity-95 shadow-sm">
                             {errors.password.message}
                             <div
-                              className="absolute -top-2 left-1/4 -translate-x-1/2 bg-red-500"
+                              className="-top-2 -translate-x-1/2 absolute left-1/4 bg-red-500"
                               style={{
                                 height: " calc(tan(40deg) * 40px / 2)",
                                 width: "20px",
@@ -171,10 +171,7 @@ const PublicationSetting = (props: Props) => {
                     <div>
                       <button
                         type="submit"
-                        className="ml-1 rounded border border-gray-400 bg-gray-100 text-center text-xs no-underline hover:bg-gray-200 disabled:opacity-50"
-                        style={{
-                          padding: sp ? "0.25rem 0.5rem" : "0.2rem 0.5rem",
-                        }}
+                        className="setting-button ml-1 rounded border border-gray-400 bg-gray-100 text-center text-xs no-underline hover:bg-gray-200 disabled:opacity-50"
                         disabled={!!errors.password?.message}
                       >
                         設定
@@ -190,6 +187,7 @@ const PublicationSetting = (props: Props) => {
           <div className="flex items-center">
             <div>
               <button
+                type="button"
                 className="rounded border border-gray-400 bg-gray-100 text-center text-xs no-underline hover:bg-gray-200 disabled:opacity-50"
                 style={{
                   padding: "0.1rem 0.5rem",
@@ -201,6 +199,7 @@ const PublicationSetting = (props: Props) => {
             </div>
             <div className="ml-2">
               <button
+                type="button"
                 className="rounded border border-gray-400 bg-gray-100 text-center text-xs no-underline hover:bg-gray-200 disabled:opacity-50"
                 style={{
                   padding: "0.1rem 0.5rem",

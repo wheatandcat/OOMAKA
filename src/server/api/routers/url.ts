@@ -1,10 +1,10 @@
+import bcrypt from "bcrypt";
 import { z } from "zod";
 import {
   createTRPCRouter,
-  publicProcedure,
   protectedProcedure,
+  publicProcedure,
 } from "~/server/api/trpc";
-import bcrypt from "bcrypt";
 
 import { v4 as uuidv4 } from "uuid";
 
