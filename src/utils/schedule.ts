@@ -1,5 +1,5 @@
-import dayjs from "~/utils/dayjs";
 import type { Schedule } from "@prisma/client";
+import dayjs from "~/utils/dayjs";
 
 export const monthItems = (
   startMonth: number,

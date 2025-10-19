@@ -1,16 +1,16 @@
 import React, { memo, useState, useCallback, useEffect } from "react";
 
-import { Roboto } from "next/font/google";
 import type { Schedule } from "@prisma/client";
-import type dayjs from "~/utils/dayjs";
-import { api } from "~/trpc/react";
+import { Big_Shoulders } from "next/font/google";
 import usePrevious from "~/hooks/usePrevious";
+import { api } from "~/trpc/react";
+import type dayjs from "~/utils/dayjs";
 import InputItem from "./InputItem";
 import ShareItem from "./ShareItem";
 
 const MAX_ITEMS = 5;
 
-const roboto = Roboto({
+const bigShoulders = Big_Shoulders({
   weight: ["400", "500", "700"],
   subsets: ["latin"],
   display: "swap",
@@ -84,7 +84,7 @@ const Items = (props: Props) => {
     <div className="flex px-8 sm:w-fit sm:px-0">
       <div>
         <div
-          className={`w-6 text-center text-4xl font-bold text-gray-300 ${roboto.className}`}
+          className={`w-6 text-center font-bold text-4xl text-gray-300 ${bigShoulders.className}`}
         >
           {month}
         </div>
@@ -94,7 +94,7 @@ const Items = (props: Props) => {
           ))}
         </div>
       </div>
-      <div className="w-4/5 py-2 pl-3 text-base font-bold text-gray-600 sm:w-fit sm:text-xs">
+      <div className="w-4/5 py-2 pl-3 font-bold text-base text-gray-600 sm:w-fit sm:text-xs">
         {items.map((t) => {
           if (props.share) {
             return (
@@ -156,7 +156,7 @@ const Items = (props: Props) => {
                 index === 0 && !props.share ? "input-item-first" : "";
               return (
                 <div
-                  className={`${itemClass} ${firstClass} border-b border-gray-300`}
+                  className={`${itemClass} ${firstClass} border-gray-300 border-b`}
                   key={index}
                 />
               );
