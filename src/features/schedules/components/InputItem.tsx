@@ -120,7 +120,7 @@ const InputItem = (props: Props) => {
         }
       }
     },
-    [isComposing, save]
+    [isComposing, save],
   );
 
   const onBlur = useCallback(
@@ -131,7 +131,7 @@ const InputItem = (props: Props) => {
         }
       }
     },
-    [value, save]
+    [value, save],
   );
 
   const onRemoveDate = useCallback(() => {
@@ -197,7 +197,7 @@ const InputItem = (props: Props) => {
       value,
       updateMutation,
       createMutation,
-    ]
+    ],
   );
 
   return (

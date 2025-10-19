@@ -37,7 +37,7 @@ function Template(props: Props) {
         console.log(error);
         return true;
       },
-    }
+    },
   );
 
   const onSubmit = async () => {
