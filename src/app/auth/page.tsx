@@ -3,7 +3,7 @@
 import { signIn, useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useEffect, useRef } from "react";
+import { Suspense, useCallback, useEffect, useRef } from "react";
 import { NextAuthProvider } from "~/app/providers";
 import SignInError from "~/features/auth/components/SignInError";
 import { api } from "~/trpc/react";
@@ -37,7 +37,9 @@ const providers: {
 export default function SignIn() {
   return (
     <NextAuthProvider>
-      <ClientHome />
+      <Suspense fallback={<div>Loading...</div>}>
+        <ClientHome />
+      </Suspense>
     </NextAuthProvider>
   );
 }
