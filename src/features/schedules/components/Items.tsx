@@ -1,7 +1,7 @@
 import React, { memo, useState, useCallback, useEffect } from "react";
 
 import type { Schedule } from "@prisma/client";
-import { Big_Shoulders } from "next/font/google";
+import { Big_Shoulders_Display } from "next/font/google";
 import usePrevious from "~/hooks/usePrevious";
 import { api } from "~/trpc/react";
 import type dayjs from "~/utils/dayjs";
@@ -10,7 +10,7 @@ import ShareItem from "./ShareItem";
 
 const MAX_ITEMS = 5;
 
-const bigShoulders = Big_Shoulders({
+const bigShoulders = Big_Shoulders_Display({
   weight: ["400", "500", "700"],
   subsets: ["latin"],
   display: "swap",
@@ -57,7 +57,7 @@ const Items = (props: Props) => {
         ssr: false,
       },
       enabled: false, // 初回はfetchしない
-    },
+    }
   );
 
   const month = Number(props.date.format("M"));
