@@ -6,6 +6,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 OOMAKAは、スケジュール共有アプリケーションです。Next.js App Router、tRPC、Prisma、NextAuth.jsを使用したフルスタックアプリケーションです。
 
+パッケージマネージャーは pnpm 12（`package.json` の `packageManager` で固定）を使用します。インストール時にビルドスクリプトを実行してよい依存は `pnpm-workspace.yaml` の `allowBuilds` で管理しています。
+
 ## 開発コマンド
 
 ### 基本操作
@@ -33,6 +35,9 @@ pnpm db:migrate
 # 開発環境でマイグレーション生成・実行
 pnpm db:generate
 
+# Prisma Clientの生成（スキーマ変更後に手動で実行。pnpm install時はpostinstallで自動実行）
+pnpm prisma generate
+
 # データベーススキーマを直接プッシュ
 pnpm db:push
 
@@ -57,9 +62,8 @@ pnpm check:unsafe
 
 ### tRPCルーター構成
 
-tRPCルーターは`src/server/api/root.ts`で定義され、以下の3つのルーターで構成:
+tRPCルーターは`src/server/api/root.ts`で定義され、以下の2つのルーターで構成:
 
-- **postRouter** (`src/server/api/routers/post.ts`): 投稿関連
 - **scheduleRouter** (`src/server/api/routers/schedule.ts`): スケジュール操作（CRUD）
 - **urlRouter** (`src/server/api/routers/url.ts`): URL管理
 
@@ -74,9 +78,19 @@ NextAuth.js v5（beta）を使用:
 
 ### データベース
 
-- **ORM**: Prisma
-- **プロバイダー**: SQLite
+- **ORM**: Prisma 7
+- **プロバイダー**: PostgreSQL（`@prisma/adapter-pg` ドライバーアダプター経由で接続）
 - **スキーマ**: `prisma/schema.prisma`
+- **CLI設定**: `prisma.config.ts`（接続URL・マイグレーションのパスを定義。`.env` は dotenv で読み込み）
+- **クライアント**: `src/server/db.ts`
+
+Prisma Clientは`prisma-client`ジェネレーターで`src/generated/prisma`に生成されます（gitignore対象）。型やクライアントは`@prisma/client`ではなく生成先からimportしてください:
+
+```typescript
+import type { Schedule } from "~/generated/prisma/client";
+```
+
+`prisma migrate dev` / `prisma db push` ではClientが自動生成されないため、スキーマ変更後は`pnpm prisma generate`を実行してください。
 
 主要モデル:
 - `User`, `Account`, `Session`: NextAuth.js認証用
@@ -105,8 +119,8 @@ import { db } from "~/server/db";
 - `AUTH_SECRET`: NextAuth.jsシークレット（本番環境のみ必須）
 - `AUTH_DISCORD_ID`, `AUTH_DISCORD_SECRET`: Discord認証
 - `AUTH_APPLE_ID`, `AUTH_APPLE_SECRET`: Apple認証（オプション）
-- `AUTH_GOOGLE_ID`, `AUTH_GOOGLE_SECRET`: Google認証（オプション）
-- `DATABASE_URL`: データベース接続URL
+- `AUTH_GOOGLE_CLIENT_ID`, `AUTH_GOOGLE_CLIENT_SECRET`: Google認証（オプション）
+- `DATABASE_URL`: PostgreSQL接続URL
 
 `.env.example`を参照して`.env`ファイルを作成してください。
 
@@ -151,7 +165,7 @@ fetchInPeriod: publicProcedure
 - Next.js 15
 - TypeScript（strictモード）
 - tRPC
-- Prisma
+- Prisma 7
 - NextAuth.js
 - Tailwind CSS
 - Biome（Linter/Formatter）

@@ -1,7 +1,7 @@
 import React, { memo, useState, useCallback, useEffect } from "react";
 
-import type { Schedule } from "@prisma/client";
 import { Big_Shoulders_Display } from "next/font/google";
+import type { Schedule } from "~/generated/prisma/client";
 import usePrevious from "~/hooks/usePrevious";
 import { api } from "~/trpc/react";
 import type dayjs from "~/utils/dayjs";
@@ -57,7 +57,7 @@ const Items = (props: Props) => {
         ssr: false,
       },
       enabled: false, // 初回はfetchしない
-    }
+    },
   );
 
   const month = Number(props.date.format("M"));
@@ -157,6 +157,7 @@ const Items = (props: Props) => {
               return (
                 <div
                   className={`${itemClass} ${firstClass} border-gray-300 border-b`}
+                  // biome-ignore lint/suspicious/noArrayIndexKey: 空行を並べるだけの固定リストのため
                   key={index}
                 />
               );
