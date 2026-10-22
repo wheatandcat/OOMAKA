@@ -1,0 +1,9 @@
+allowBuilds:
+  '@biomejs/biome': true
+  '@prisma/client': true
+  '@prisma/engines': true
+  '@tailwindcss/oxide': true
+  '@vercel/speed-insights': true
+  bcrypt: true
+  prisma: true
+  sharp: true

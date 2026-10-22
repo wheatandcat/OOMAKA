@@ -1,12 +1,12 @@
 "use client";
 
-import type { Schedule } from "@prisma/client";
 import { useCallback, useState } from "react";
 import { toast } from "react-toastify";
 import Layout from "~/components/Layout/Layout";
 import Items from "~/features/schedules/components/Items";
 import Pagination from "~/features/schedules/components/Pagination";
 import Period from "~/features/schedules/components/Period";
+import type { Schedule } from "~/generated/prisma/client";
 import dayjs from "~/utils/dayjs";
 import { getScheduleInMonth, monthItems } from "~/utils/schedule";
 
@@ -71,6 +71,7 @@ export function Template(props: Props) {
         <div className="flex flex-col flex-nowrap justify-center pt-0 sm:flex-row sm:flex-wrap sm:justify-start sm:pt-10">
           {months.map((item, index) => (
             <div
+              // biome-ignore lint/suspicious/noArrayIndexKey: 月送り時に Items を再マウントさせないため
               key={index}
               className="item-container px-0 pb-6 sm:pr-16 sm:pb-16"
             >

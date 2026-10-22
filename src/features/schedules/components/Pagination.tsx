@@ -12,8 +12,10 @@ const Pagination = (props: Props) => {
         type="button"
         className="inline-flex cursor-pointer items-center rounded-l-lg border border-r-0 p-1 leading-none transition duration-100 ease-in-out hover:bg-gray-100"
         onClick={props.onPrev}
+        aria-label="前の月"
       >
         <svg
+          aria-hidden="true"
           className="inline-flex h-6 w-6 text-gray-500 leading-none"
           fill="none"
           viewBox="0 0 24 24"
@@ -32,8 +34,10 @@ const Pagination = (props: Props) => {
         type="button"
         className="inline-flex cursor-pointer items-center rounded-r-lg border border-l-0 p-1 leading-none transition duration-100 ease-in-out hover:bg-gray-100"
         onClick={props.onNext}
+        aria-label="次の月"
       >
         <svg
+          aria-hidden="true"
           className="inline-flex h-6 w-6 text-gray-500 leading-none"
           fill="none"
           viewBox="0 0 24 24"

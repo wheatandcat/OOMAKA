@@ -82,6 +82,7 @@ function Template(props: Props) {
             </div>
             <div>
               <button
+                type="button"
                 className="ml-1 rounded border border-gray-400 bg-gray-100 text-center font-thin text-xl no-underline hover:bg-gray-200"
                 style={{
                   padding: "0 0.4rem",

@@ -49,3 +49,5 @@ apple-gen-secret.mjs
 AuthKey.p8
 certificates/localhost.crt
 certificates/localhost.key
+# prisma client
+/src/generated/prisma

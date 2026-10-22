@@ -16,8 +16,8 @@ const generateKey = async () => {
 const bufferToBase64 = (buf: ArrayBuffer): string => {
   const byteArr = new Uint8Array(buf);
   let str = "";
-  for (let i = 0; i < byteArr.byteLength; i++) {
-    str += String.fromCharCode(byteArr[i]!);
+  for (const byte of byteArr) {
+    str += String.fromCharCode(byte);
   }
   return window.btoa(str);
 };
