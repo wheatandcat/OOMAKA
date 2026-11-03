@@ -118,7 +118,8 @@ import { db } from "~/server/db";
 
 - `AUTH_SECRET`: NextAuth.jsシークレット（本番環境のみ必須）
 - `AUTH_DISCORD_ID`, `AUTH_DISCORD_SECRET`: Discord認証
-- `AUTH_APPLE_ID`, `AUTH_APPLE_SECRET`: Apple認証（オプション）
+- `AUTH_APPLE_ID`, `AUTH_APPLE_PRIVATE_KEY`, `AUTH_APPLE_KEY_ID`, `AUTH_APPLE_TEAM_ID`: Apple認証（オプション）。`.p8`秘密鍵からClient Secret(JWT)を`src/server/auth/apple.ts`で自動生成する
+- `AUTH_APPLE_SECRET`: 上記の秘密鍵が未設定の場合のみ使う固定Client Secret（最長6か月で失効）
 - `AUTH_GOOGLE_CLIENT_ID`, `AUTH_GOOGLE_CLIENT_SECRET`: Google認証（オプション）
 - `DATABASE_URL`: PostgreSQL接続URL
 

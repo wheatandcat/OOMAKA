@@ -5,6 +5,7 @@ import DiscordProvider from "next-auth/providers/discord";
 import GoogleProvider from "next-auth/providers/google";
 import { env } from "~/env.js";
 import { db } from "~/server/db";
+import { getAppleClientSecret } from "./apple";
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -32,42 +33,43 @@ declare module "next-auth" {
  *
  * @see https://next-auth.js.org/configuration/options
  */
-export const authConfig = {
-  providers: [
-    // Discordがコールバックに`iss`パラメータを付与するようになったため、issuerを明示しないと
-    // Auth.jsのフォールバック値(https://authjs.dev)と不一致になりエラーになる
-    DiscordProvider({ issuer: "https://discord.com" }),
-    /**
-     * ...add more providers here.
-     *
-     * Most other providers require a bit more work than the Discord provider. For example, the
-     * GitHub provider requires you to add the `refresh_token_expires_in` field to the Account
-     * model. Refer to the NextAuth.js docs for the provider you want to use. Example:
-     *
-     * @see https://next-auth.js.org/providers/github
-     */
-    AppleProvider({
-      clientId: env.AUTH_APPLE_ID,
-      clientSecret: env.AUTH_APPLE_SECRET,
-    }),
-    GoogleProvider({
-      clientId: env.AUTH_GOOGLE_CLIENT_ID,
-      clientSecret: env.AUTH_GOOGLE_CLIENT_SECRET,
-    }),
-  ],
-  // カスタムページを実装する場合は設定する
-  pages: {
-    signIn: "/auth",
-  },
-  adapter: PrismaAdapter(db),
-  callbacks: {
-    session: ({ session, user }) => ({
-      ...session,
-      user: {
-        ...session.user,
-        id: user.id,
-      },
-    }),
-  },
-  trustHost: true,
-} satisfies NextAuthConfig;
+export const createAuthConfig = async () =>
+  ({
+    providers: [
+      // Discordがコールバックに`iss`パラメータを付与するようになったため、issuerを明示しないと
+      // Auth.jsのフォールバック値(https://authjs.dev)と不一致になりエラーになる
+      DiscordProvider({ issuer: "https://discord.com" }),
+      /**
+       * ...add more providers here.
+       *
+       * Most other providers require a bit more work than the Discord provider. For example, the
+       * GitHub provider requires you to add the `refresh_token_expires_in` field to the Account
+       * model. Refer to the NextAuth.js docs for the provider you want to use. Example:
+       *
+       * @see https://next-auth.js.org/providers/github
+       */
+      AppleProvider({
+        clientId: env.AUTH_APPLE_ID,
+        clientSecret: await getAppleClientSecret(),
+      }),
+      GoogleProvider({
+        clientId: env.AUTH_GOOGLE_CLIENT_ID,
+        clientSecret: env.AUTH_GOOGLE_CLIENT_SECRET,
+      }),
+    ],
+    // カスタムページを実装する場合は設定する
+    pages: {
+      signIn: "/auth",
+    },
+    adapter: PrismaAdapter(db),
+    callbacks: {
+      session: ({ session, user }) => ({
+        ...session,
+        user: {
+          ...session.user,
+          id: user.id,
+        },
+      }),
+    },
+    trustHost: true,
+  }) satisfies NextAuthConfig;
