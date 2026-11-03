@@ -34,7 +34,9 @@ declare module "next-auth" {
  */
 export const authConfig = {
   providers: [
-    DiscordProvider,
+    // Discordがコールバックに`iss`パラメータを付与するようになったため、issuerを明示しないと
+    // Auth.jsのフォールバック値(https://authjs.dev)と不一致になりエラーになる
+    DiscordProvider({ issuer: "https://discord.com" }),
     /**
      * ...add more providers here.
      *
